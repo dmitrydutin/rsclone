@@ -1,0 +1,25 @@
+{
+    "name": "rsclone",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server/dist/index.js",
+    "scripts": {
+        "start": "node server/dist/index",
+        "heroku-postbuild": "(cd client && npm i && npm run build && cd ..) && (cd server && npm i && npm run build)"
+    },
+    "engines": {
+        "node": "14.x",
+        "npm": "6.x"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dmitrydutin/rsclone.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/dmitrydutin/rsclone/issues"
+    },
+    "homepage": "https://github.com/dmitrydutin/rsclone#readme"
+}
