@@ -1,7 +1,10 @@
 import express from 'express';
 import path from 'path';
+import http from 'http';
+import * as socket from 'socket.io';
 
 import authRouter from './routes/auth';
+import feedRouter from './routes/feed';
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -11,6 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '..', '..', 'client', 'build')));
 
 app.use('/api/auth', authRouter);
+app.use('/feed', feedRouter);
 
 app.get('*', (req, res) => {
     res.sendFile(
@@ -18,6 +22,17 @@ app.get('*', (req, res) => {
     );
 });
 
-app.listen(port, () => {
+const httpServer = http.createServer(app);
+const io = new socket.Server(httpServer);
+
+io.on('connection', (socket) => {
+    console.log('User connected');    
+    socket.on('send-message', (message) => {        
+        io.emit('get-message', message);  
+    });
+});
+
+
+httpServer.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });

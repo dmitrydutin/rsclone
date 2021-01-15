@@ -3,9 +3,11 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
 
 import { AuthReducer } from './reducers/AuthReducer';
+import { NewsReducer } from './reducers/NewsReducer';
 
 const rootReducer = combineReducers({
-    auth: AuthReducer
+    auth: AuthReducer,
+    news: NewsReducer
 });
 
 export default createStore(rootReducer, composeWithDevTools(applyMiddleware(thunkMiddleware)));

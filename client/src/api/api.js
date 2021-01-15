@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const AuthAPI = {
+const AuthAPI = {
     login(login, password) {
         return axios.post('/api/auth/login', { login, password });
     },
@@ -8,3 +8,11 @@ export const AuthAPI = {
         return axios.post('/api/auth/join', { login, password });
     },
 };
+
+const NewsAPI = {
+    createPost(post) {
+        return axios.post('/feed', post);
+    },
+};
+
+export default { NewsAPI, AuthAPI };
