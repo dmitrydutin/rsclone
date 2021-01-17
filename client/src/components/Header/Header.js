@@ -1,14 +1,43 @@
 import styles from './Header.module.css';
 import { connect } from 'react-redux';
+import { Link as RouterLink } from 'react-router-dom';
+
+import AppBar from '@material-ui/core/AppBar';
+import Container from '@material-ui/core/Container';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import Link from '@material-ui/core/Link';
 
 const Header = (props) => {
+    const { isAuth } = props;
+
     return (
-        <header className={styles.header}>
-            <div>Header</div>
-        </header>
+        <AppBar position="static">
+            <Container maxWidth="lg">
+                <Toolbar>
+                    <Typography variant="h6" className={styles.title}>
+                        <Link
+                            component={RouterLink}
+                            to="/"
+                            color="inherit"
+                            underline="none"
+                        >
+                            RSS social network
+                        </Link>
+                    </Typography>
+
+                    <Button color="inherit" component={RouterLink} to="/login">
+                        Login
+                    </Button>
+                </Toolbar>
+            </Container>
+        </AppBar>
     );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+    isAuth: state.auth.isAuth,
+});
 
 export default connect(mapStateToProps)(Header);

@@ -9,8 +9,10 @@ router.post('/login', (req, res) => {
         if (err) return res.status(500).json({ message: err.message, err });
 
         const query = `
-            SELECT users.login, users.password, role.value AS role FROM users
-            INNER JOIN role ON users.role=role.id WHERE login=? AND password=?;
+            SELECT users.id, roles.role
+            FROM users INNER JOIN roles
+            ON users.role_id=roles.id
+            WHERE login=? AND password=?;
         `;
 
         connection.query(query, [login, password], (error, results) => {
