@@ -24,8 +24,10 @@ function Newsfeed({ children }) {
 
     useEffect(() => {
         socket = io();
+        dispatch({ type: 'INIT_POSTS' });
+        console.log('POSTS INITED');
         socket.on('get-message', function (data) {
-            dispatch({ type: 'UPDATE_POSTS', query: data });            
+            dispatch({ type: 'UPDATE_POSTS', query: data });
         });
         //console.log(socket);
 
@@ -38,14 +40,14 @@ function Newsfeed({ children }) {
         // });
     }, []);
     const classes = useStyles();
-    const [textState, setTextState] = useState('');    
+    const [textState, setTextState] = useState('');
     const [state, setState] = useState({ file: '', imagePreviewUrl: '' });
     let { imagePreviewUrl } = state;
     let $imagePreview = null;
     if (imagePreviewUrl) {
         $imagePreview = (
             <div>
-                <img src={imagePreviewUrl} />
+                <img src={imagePreviewUrl} alt={"Image Preview"}/>
                 <button
                     className={styles.closeButton}
                     onClick={(e) => _handleClose(e)}
@@ -100,7 +102,7 @@ function Newsfeed({ children }) {
             dislikes: 0,
             date: getToday(),
         });
-        setTextState('');           
+        setTextState('');
         setState({ file: '', imagePreviewUrl: '' });
     }
 
@@ -114,7 +116,6 @@ function Newsfeed({ children }) {
                             className={styles.input}
                             multiline={true}
                             onChange={(e) => _handleTextChange(e)}
-                           
                             value={textState}
                         />
                         <div className={styles.inputWrapper}>
@@ -156,6 +157,7 @@ function Newsfeed({ children }) {
 }
 
 const mapStateToProps = function (state) {
+    console.log(state);
     return {
         children: state.news.arrPost.map((el) => <Post post={el} />),
     };

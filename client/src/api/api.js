@@ -10,8 +10,8 @@ const AuthAPI = {
 };
 
 const NewsAPI = {
-    createPost(post) {
-        return axios.post('/feed', post);
+    getPosts() {
+        return axios.get('/feed/allposts');
     },
 };
 
