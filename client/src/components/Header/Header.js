@@ -17,19 +17,24 @@ const Header = (props) => {
             <Container maxWidth="lg">
                 <Toolbar>
                     <Typography variant="h6" className={styles.title}>
-                        <Link
-                            component={RouterLink}
-                            to="/"
-                            color="inherit"
-                            underline="none"
-                        >
-                            RSS social network
+                        <Link component={RouterLink} to="/" color="inherit" underline="none">
+                            Facebook
                         </Link>
                     </Typography>
 
-                    <Button color="inherit" component={RouterLink} to="/login">
-                        Login
-                    </Button>
+                    {isAuth ? (
+                        <div>You are logged in</div>
+                    ) : (
+                        <>
+                            <Button color="inherit" component={RouterLink} to="/login">
+                                Login
+                            </Button>
+
+                            <Button color="inherit" component={RouterLink} to="/join">
+                                Join
+                            </Button>
+                        </>
+                    )}
                 </Toolbar>
             </Container>
         </AppBar>
