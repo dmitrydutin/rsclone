@@ -1,0 +1,15 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    text-align: center;
+}
+
+.title {
+    margin: 0;
+}
+
+.subtitle {
+    margin: 0;
+}
