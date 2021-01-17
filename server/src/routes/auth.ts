@@ -6,11 +6,14 @@ router.post('/login', (req, res) => {
     const { login, password } = req.body;
 
     pool.getConnection((err, connection) => {
-        if (err) {
-            return res.status(500).json({ message: err.message, err });
-        }
+        if (err) return res.status(500).json({ message: err.message, err });
 
-        const query = 'SELECT * FROM users where login=? AND password=?';
+        const query = `
+            SELECT users.id, roles.role
+            FROM users INNER JOIN roles
+            ON users.role_id=roles.id
+            WHERE login=? AND password=?;
+        `;
 
         connection.query(query, [login, password], (error, results) => {
             connection.release();
@@ -19,7 +22,11 @@ router.post('/login', (req, res) => {
                 return res.status(500).json({ message: error.message, error });
             }
 
-            return res.json(results);
+            if (results.length === 0) {
+                return res.json({ isAuth: false, role: null });
+            }
+
+            return res.json({ isAuth: true, role: results[0].role });
         });
     });
 });

@@ -2,9 +2,9 @@
     "name": "rsclone",
     "version": "1.0.0",
     "description": "",
-    "main": "server/dist/index.js",
+    "main": "server/build/index",
     "scripts": {
-        "start": "node server/dist/index",
+        "start": "node server/build/index",
         "heroku-postbuild": "(cd client && npm i && npm run build && cd ..) && (cd server && npm i && npm run build)"
     },
     "engines": {
