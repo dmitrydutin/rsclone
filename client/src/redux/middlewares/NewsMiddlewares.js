@@ -1,7 +1,7 @@
 import url1 from '../../images/test.png';
 import url2 from '../../images/test1.jpg';
 import url3 from '../../images/test2.jpg';
-import Api from '../../api/api';
+import { NewsAPI } from '../../api/api';
 
 const UPDATE_POSTS = 'UPDATE_POSTS',
     INIT_POSTS = 'INIT_POSTS',
@@ -13,7 +13,7 @@ const myMiddleware = (store) => (next) => (action) => {
     //try {
 
     if (action.type == INIT_POSTS) {
-        Api.NewsAPI.getPosts()
+        NewsAPI.getPosts()
             .then((response) => response.data)
             .then((el) => {
                 store.dispatch({

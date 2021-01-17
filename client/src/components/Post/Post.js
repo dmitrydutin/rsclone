@@ -79,11 +79,11 @@ export default function Post({ post }) {
                     src={post.img}
                 />
             ) : null}
-            <CardContent className={classes.content}>
-                <Typography color="textSecondary">
-                    {post.text ? post.text : null}
-                </Typography>
-            </CardContent>
+            {post.text ? (
+                <CardContent className={classes.content}>
+                    <Typography color="textSecondary">{post.text}</Typography>
+                </CardContent>
+            ) : null}
             <CardActions disableSpacing className={classes.content}>
                 <IconButton className={classes.icon} aria-label="like">
                     {post.likes ? post.likes : 0}

@@ -1,8 +1,3 @@
-import url1 from '../../images/test.png';
-import url2 from '../../images/test1.jpg';
-import url3 from '../../images/test2.jpg';
-import Api from '../../api/api';
-
 const FETCH_INIT_POSTS = 'FETCH_INIT_POSTS',
     UPDATE_POSTS = 'UPDATE_POSTS';
 const initialState = {

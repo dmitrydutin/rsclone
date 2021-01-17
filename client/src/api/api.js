@@ -12,4 +12,4 @@ const NewsAPI = {
     },
 };
 
-export default { NewsAPI, AuthAPI };
+export  { NewsAPI, AuthAPI };
