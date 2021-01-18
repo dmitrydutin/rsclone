@@ -17,21 +17,19 @@ app.use('/api/auth', authRouter);
 app.use('/feed', feedRouter);
 
 app.get('*', (req, res) => {
-    res.sendFile(
-        path.join(__dirname, '..', '..', 'client', 'build', 'index.html'),
-    );
+    res.sendFile(path.join(__dirname, '..', '..', 'client', 'build', 'index.html'));
 });
 
 const httpServer = http.createServer(app);
 const io = new socket.Server(httpServer);
 
 io.on('connection', (socket) => {
-    console.log('User connected');    
-    socket.on('send-message', (message) => {        
-        io.emit('get-message', message);  
+    console.log('User connected');
+    socket.on('send-message', (message) => {      
+
+        io.emit('get-message', message);
     });
 });
-
 
 httpServer.listen(port, () => {
     console.log(`Server listening on port ${port}`);

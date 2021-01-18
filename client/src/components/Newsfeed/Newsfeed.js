@@ -2,14 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import styles from './Newsfeed.module.css';
 import { Container, Input } from '@material-ui/core';
-import { connect } from 'react-redux';
-import Api from '../../api/api.js';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import Post from '../Post/Post';
 import urlAdd from '../../images/add.svg';
 import CloseIcon from '@material-ui/icons/Close';
 import io from 'socket.io-client';
-import { useSelector, useDispatch } from 'react-redux';
 import { getToday } from '../../helper';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -21,10 +20,11 @@ const useStyles = makeStyles((theme) => ({
 function Newsfeed({ children }) {
     let socket = io();
     const dispatch = useDispatch();
-
+    const imgUrl = useSelector((state) => state.newsPic.url);
     useEffect(() => {
         socket = io();
         dispatch({ type: 'INIT_POSTS' });
+
         console.log('POSTS INITED');
         socket.on('get-message', function (data) {
             dispatch({ type: 'UPDATE_POSTS', query: data });
@@ -47,11 +47,8 @@ function Newsfeed({ children }) {
     if (imagePreviewUrl) {
         $imagePreview = (
             <div>
-                <img src={imagePreviewUrl} alt={"Image Preview"}/>
-                <button
-                    className={styles.closeButton}
-                    onClick={(e) => _handleClose(e)}
-                >
+                <img src={imagePreviewUrl} alt={'Image Preview'} />
+                <button className={styles.closeButton} onClick={(e) => _handleClose(e)}>
                     <CloseIcon />
                 </button>
             </div>
@@ -65,12 +62,11 @@ function Newsfeed({ children }) {
         setTextState(e.target.value);
     }
 
-    function _handleImageChange(e) {
+    const _handleImageChange = async (e) => {
         e.preventDefault();
 
         let reader = new FileReader();
         let file = e.target.files[0];
-
         reader.onloadend = () => {
             setState({
                 file: file,
@@ -79,7 +75,7 @@ function Newsfeed({ children }) {
         };
 
         reader.readAsDataURL(file);
-    }
+    };
 
     function _handleClose(e) {
         e.preventDefault();
@@ -92,12 +88,14 @@ function Newsfeed({ children }) {
 
     function _handleSubmit(e) {
         e.preventDefault();
+        dispatch({ type: 'UPDATE_PIC', query: state.file });
 
+        console.log(imgUrl);
         socket.emit('send-message', {
             id: 0,
             username: 'asbarn',
             text: `${textState}`,
-            img: state.imagePreviewUrl,
+            img: imgUrl,
             likes: 0,
             dislikes: 0,
             date: getToday(),
@@ -128,10 +126,7 @@ function Newsfeed({ children }) {
                                 className={styles.inputFile}
                                 multiple
                             />
-                            <label
-                                for="inputFile"
-                                className={styles.inputFileButton}
-                            >
+                            <label for="inputFile" className={styles.inputFileButton}>
                                 <img
                                     src={urlAdd}
                                     alt="Upload img"

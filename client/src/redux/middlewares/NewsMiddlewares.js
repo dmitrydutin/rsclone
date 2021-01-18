@@ -1,6 +1,3 @@
-import url1 from '../../images/test.png';
-import url2 from '../../images/test1.jpg';
-import url3 from '../../images/test2.jpg';
 import { NewsAPI } from '../../api/api';
 
 const UPDATE_POSTS = 'UPDATE_POSTS',
