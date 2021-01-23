@@ -14,15 +14,18 @@ import {
 import { red, grey } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import CommentIcon from '@material-ui/icons/Comment';
-import user from '../../images/user.svg';
+import user from './assets/images/user.svg';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: 450,
+        width: 550,
         margin: 'auto',
         marginTop: 25,
         marginBottom: 25,
-        boxShadow: '0px 0px 50px 5px #000000',
+        boxShadow: '0px 0px 20px 5px #b9b8b8',
+        [theme.breakpoints.down('xs')]: {
+            width: 350,
+        },
     },
     content: {
         borderBottom: `2px solid grey`,
@@ -64,19 +67,23 @@ export default function Post({ post }) {
             <CardHeader
                 avatar={
                     <Avatar aria-label="recipe" className={classes.avatar}>
-                        {<img src={user} alt={'U'} />}
+                        {post.avatar ? (
+                            <img src={post.avatar} alt={post.avatar} />
+                        ) : (
+                            <img src={user} alt={'U'} />
+                        )}
                     </Avatar>
                 }
-                title={post.username ? post.username : 'undefined'}
-                subheader={post.date ? post.date : 'undefined'}
+                title={post.login ? post.login : 'undefined'}
+                // subheader={post.date ? post.date : 'undefined'}
             />
 
-            {post.img ? (
+            {post.photo ? (
                 <CardMedia
                     className={classes.media}
-                    image={post.img}
+                    image={post.photo}
                     title="Post image"
-                    src={post.img}
+                    src={post.photo}
                 />
             ) : null}
             {post.text ? (
@@ -94,20 +101,12 @@ export default function Post({ post }) {
                     <CommentIcon />
                 </IconButton>
             </CardActions>
-            <Collapse
-                in={expanded}
-                timeout="auto"
-                unmountOnExit
-                className={classes.commentSection}
-            >
+            <Collapse in={expanded} timeout="auto" unmountOnExit className={classes.commentSection}>
                 <CardContent className={classes.content}>
                     <CardHeader
                         className={classes.contentHeader}
                         avatar={
-                            <Avatar
-                                aria-label="recipe"
-                                className={classes.avatar}
-                            >
+                            <Avatar aria-label="recipe" className={classes.avatar}>
                                 {<img src={user} alt={'U'} />}
                             </Avatar>
                         }
@@ -115,18 +114,15 @@ export default function Post({ post }) {
                         subheader={post.date ? post.date : 'undefined'}
                     />
                     <Typography>
-                        Heat 1/2 cup of the broth in a pot until simmering, add
-                        saffron and set aside for 10 minutes.
+                        Heat 1/2 cup of the broth in a pot until simmering, add saffron and set
+                        aside for 10 minutes.
                     </Typography>
                 </CardContent>
                 <CardContent className={classes.content}>
                     <CardHeader
                         className={classes.contentHeader}
                         avatar={
-                            <Avatar
-                                aria-label="recipe"
-                                className={classes.avatar}
-                            >
+                            <Avatar aria-label="recipe" className={classes.avatar}>
                                 {<img src={user} alt={'U'} />}
                             </Avatar>
                         }
@@ -134,26 +130,20 @@ export default function Post({ post }) {
                         subheader={post.date ? post.date : 'undefined'}
                     />
                     <Typography>
-                        Heat oil in a (14- to 16-inch) paella pan or a large,
-                        deep skillet over medium-high heat. Add chicken, shrimp
-                        and chorizo, and cook, stirring occasionally until
-                        lightly browned, 6 to 8 minutes. Transfer shrimp to a
-                        large plate and set aside, leaving chicken and chorizo
-                        in the pan. Add pimentón, bay leaves, garlic, tomatoes,
-                        onion, salt and pepper, and cook, stirring often until
-                        thickened and fragrant, about 10 minutes. Add saffron
-                        broth and remaining 4 1/2 cups chicken broth; bring to a
-                        boil.
+                        Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over
+                        medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring
+                        occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a
+                        large plate and set aside, leaving chicken and chorizo in the pan. Add
+                        pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and cook,
+                        stirring often until thickened and fragrant, about 10 minutes. Add saffron
+                        broth and remaining 4 1/2 cups chicken broth; bring to a boil.
                     </Typography>
                 </CardContent>
                 <CardContent className={classes.content}>
                     <CardHeader
                         className={classes.contentHeader}
                         avatar={
-                            <Avatar
-                                aria-label="recipe"
-                                className={classes.avatar}
-                            >
+                            <Avatar aria-label="recipe" className={classes.avatar}>
                                 {<img src={user} alt={'U'} />}
                             </Avatar>
                         }
@@ -161,14 +151,12 @@ export default function Post({ post }) {
                         subheader={post.date ? post.date : 'undefined'}
                     />
                     <Typography>
-                        Add rice and stir very gently to distribute. Top with
-                        artichokes and peppers, and cook without stirring, until
-                        most of the liquid is absorbed, 15 to 18 minutes. Reduce
-                        heat to medium-low, add reserved shrimp and mussels,
-                        tucking them down into the rice, and cook again without
-                        stirring, until mussels have opened and rice is just
-                        tender, 5 to 7 minutes more. (Discard any mussels that
-                        don’t open.)
+                        Add rice and stir very gently to distribute. Top with artichokes and
+                        peppers, and cook without stirring, until most of the liquid is absorbed, 15
+                        to 18 minutes. Reduce heat to medium-low, add reserved shrimp and mussels,
+                        tucking them down into the rice, and cook again without stirring, until
+                        mussels have opened and rice is just tender, 5 to 7 minutes more. (Discard
+                        any mussels that don’t open.)
                     </Typography>
                 </CardContent>
             </Collapse>

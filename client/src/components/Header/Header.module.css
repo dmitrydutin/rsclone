@@ -1,3 +1,41 @@
 .title {
     flex-grow: 1;
 }
+
+.iconContainer {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+}
+.night{
+    position: relative;
+    width: 30px;
+    height: 30px;
+    overflow: hidden; 
+}
+.iconContainer .iconSun {
+    position: absolute;
+    transition: all 1s ;
+    transform: translate(0px, 0px);
+    
+}
+
+.iconContainer .iconMoon {
+    position: absolute;
+    transition: all 1s ;
+    transform: translate(0px, 50px);
+    
+}
+
+.night .iconMoon {
+    position: absolute;
+    transition: all 1s ;
+    transform: translate(0, 0);
+}
+
+.night .iconSun {
+    position: absolute;
+    transition: all 1s ;
+    transform: translate(0, 50px);
+}

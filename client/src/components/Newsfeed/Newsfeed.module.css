@@ -1,7 +1,7 @@
 .newPost {
     margin: auto;
     margin-top: 25px;
-    box-shadow: 0px 0px 50px 2px #000000;
+    box-shadow: 0px 0px 10px 2px #b9b8b8;
     border-radius: 10px;
     padding: 15px;
 }
@@ -36,7 +36,7 @@ img {
     margin-top: 20px;
 }
 .submitButton {
-    padding: 12px 30px;
+    padding: 0 30px;
     margin-left: 10px;
     background: #ffffff;
     border: 2px solid rgb(180, 178, 178);
@@ -44,7 +44,15 @@ img {
     font-weight: 700;
     font-size: 10pt;
     cursor: pointer;
-    margin-top: 15px;;
+    margin-top: 15px;
+    outline: none;
+}
+.submitButton:focus {
+    outline: none;
+}
+.submitButton b {
+    display: block;
+    margin: 12px 0;
 }
 .closeButton {
     position: absolute;
@@ -56,7 +64,7 @@ img {
     outline: none;
     background-color: transparent;
 }
-.closeButton:hover{
+.closeButton:hover {
     cursor: pointer;
 }
 .centerText {
@@ -93,4 +101,10 @@ img {
 .inputFileButtonImg {
     height: 25px;
     width: 25px;
+}
+
+@media (max-width: 600px) {
+    .imgPreview {
+        width: 250px;
+    }
 }

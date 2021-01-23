@@ -4,13 +4,14 @@ import styles from './Newsfeed.module.css';
 import { Container, Input } from '@material-ui/core';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import Post from '../Post/Post';
-import urlAdd from '../../images/add.svg';
+import urlAdd from './assets/images/add.svg';
+import loader from './assets/images/loader.gif';
 import CloseIcon from '@material-ui/icons/Close';
-import io from 'socket.io-client';
-import { getToday } from '../../helper';
+import { getToday, uploadImage } from './helper.js';
 
 const useStyles = makeStyles((theme) => ({
     root: {
+        color: 'default',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -18,28 +19,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Newsfeed({ children }) {
-    let socket = io();
     const dispatch = useDispatch();
-    const imgUrl = useSelector((state) => state.newsPic.url);
+
     useEffect(() => {
-        socket = io();
         dispatch({ type: 'INIT_POSTS' });
-
         console.log('POSTS INITED');
-        socket.on('get-message', function (data) {
-            dispatch({ type: 'UPDATE_POSTS', query: data });
-        });
-        //console.log(socket);
-
-        // io.on('connection', function (socket) {
-        //     console.log('made socket connection');
-        //     socket.on('get-message', function (data) {
-        //         dispatch({ type: 'UPDATE_POSTS', query: data });
-        //         console.log(data);
-        //     });
-        // });
     }, []);
     const classes = useStyles();
+    const [postState, setPostState] = useState(<b>Post</b>);
     const [textState, setTextState] = useState('');
     const [state, setState] = useState({ file: '', imagePreviewUrl: '' });
     let { imagePreviewUrl } = state;
@@ -62,7 +49,7 @@ function Newsfeed({ children }) {
         setTextState(e.target.value);
     }
 
-    const _handleImageChange = async (e) => {
+    function _handleImageChange(e) {
         e.preventDefault();
 
         let reader = new FileReader();
@@ -75,7 +62,7 @@ function Newsfeed({ children }) {
         };
 
         reader.readAsDataURL(file);
-    };
+    }
 
     function _handleClose(e) {
         e.preventDefault();
@@ -88,24 +75,32 @@ function Newsfeed({ children }) {
 
     function _handleSubmit(e) {
         e.preventDefault();
-        dispatch({ type: 'UPDATE_PIC', query: state.file });
+        setPostState(
+            <img src={loader} alt={'Loading...'} style={{ height: '40px', width: '35px' }} />,
+        );
+        uploadImage(state.file).then((res) => {
+            console.log('res', res);
+            dispatch({
+                type: 'UPDATE_POSTS',
+                query: {
+                    id: 0,
+                    username: 'asbarn',
+                    text: `${textState}`,
+                    photo: res,
+                    likes: 0,
+                    dislikes: 0,
+                    date: getToday(),
+                },
+            });
 
-        console.log(imgUrl);
-        socket.emit('send-message', {
-            id: 0,
-            username: 'asbarn',
-            text: `${textState}`,
-            img: imgUrl,
-            likes: 0,
-            dislikes: 0,
-            date: getToday(),
+            setPostState(<b>Post</b>);
+            setTextState('');
+            setState({ file: '', imagePreviewUrl: '' });
         });
-        setTextState('');
-        setState({ file: '', imagePreviewUrl: '' });
     }
 
     return (
-        <Container className={classes.root}>
+        <Container className={classes.root} color="primary">
             <div className={styles.newPost}>
                 <form onSubmit={(e) => _handleSubmit(e)}>
                     <div className={styles.inputContainer}>
@@ -141,7 +136,7 @@ function Newsfeed({ children }) {
                         type="submit"
                         onClick={(e) => _handleSubmit(e)}
                     >
-                        Post
+                        {postState}
                     </button>
                 </form>
             </div>
