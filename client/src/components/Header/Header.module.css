@@ -8,34 +8,43 @@
     height: 30px;
     overflow: hidden;
 }
-.night{
+.night {
     position: relative;
     width: 30px;
     height: 30px;
-    overflow: hidden; 
+    overflow: hidden;
 }
 .iconContainer .iconSun {
     position: absolute;
-    transition: all 1s ;
+    transition: all 1s;
     transform: translate(0px, 0px);
-    
 }
 
 .iconContainer .iconMoon {
     position: absolute;
-    transition: all 1s ;
+    transition: all 1s;
     transform: translate(0px, 50px);
-    
 }
 
 .night .iconMoon {
     position: absolute;
-    transition: all 1s ;
+    transition: all 1s;
     transform: translate(0, 0);
 }
 
 .night .iconSun {
     position: absolute;
-    transition: all 1s ;
+    transition: all 1s;
     transform: translate(0, 50px);
+}
+
+.languageBreadcrumb {
+    color: #ffffff;
+}
+.languageBreadcrumb:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+.languageBreadcrumb:active {
+    text-decoration: underline;
 }

@@ -1,14 +1,21 @@
 import styles from './Error.module.css';
+import { connect } from 'react-redux';
 
-const Error = () => {
+const Error = ({language}) => {
     return (
         <main className={styles.main}>
             <div className={styles.mainInner}>
                 <h1 className={styles.errorNumber}>404</h1>
-                <p className={styles.errorText}>This page could not be found</p>
+                <p className={styles.errorText}>{language.notFound}</p>
             </div>
         </main>
     );
 };
 
-export default Error;
+const mapStateToProps = function (state) {    
+    return {        
+        language: state.lang.language,
+    };
+};
+
+export default connect(mapStateToProps)(Error);

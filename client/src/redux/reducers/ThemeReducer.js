@@ -12,7 +12,6 @@ const ThemeReducer = (state = initialState, action) => {
             if (state.light) return { theme: darkTheme, light: false };
             return { theme: lightTheme, light: true };
         default:
-            console.log(state)
             return state;
     }
 };

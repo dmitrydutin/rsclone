@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Newsfeed({ children }) {
+function Newsfeed({ children, language }) {
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -26,7 +26,7 @@ function Newsfeed({ children }) {
         console.log('POSTS INITED');
     }, []);
     const classes = useStyles();
-    const [postState, setPostState] = useState(<b>Post</b>);
+    const [postState, setPostState] = useState(<b>{language.post}</b>);
     const [textState, setTextState] = useState('');
     const [state, setState] = useState({ file: '', imagePreviewUrl: '' });
     let { imagePreviewUrl } = state;
@@ -93,7 +93,7 @@ function Newsfeed({ children }) {
                 },
             });
 
-            setPostState(<b>Post</b>);
+            setPostState(<b>{language.post}</b>);
             setTextState('');
             setState({ file: '', imagePreviewUrl: '' });
         });
@@ -150,6 +150,7 @@ const mapStateToProps = function (state) {
     console.log(state);
     return {
         children: state.news.arrPost.map((el) => <Post post={el} />),
+        language: state.lang.language,
     };
 };
 
