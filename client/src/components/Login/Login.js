@@ -18,8 +18,8 @@ const Login = (props) => {
     const { login } = props;
     const initialValues = { login: '', password: '' };
 
-    const onSubmit = (values, { setSubmitting }) => {
-        login(values.login, values.password, setSubmitting);
+    const onSubmit = (values, { setSubmitting, setErrors }) => {
+        login(values.login, values.password, setSubmitting, setErrors);
     };
 
     return (

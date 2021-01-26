@@ -31,7 +31,7 @@ const setUserDataAction = (isAuth, user, token) => {
     };
 };
 
-export const login = (login, password, setSubmitting) => {
+export const login = (login, password, setSubmitting, setErrors) => {
     return async (dispatch) => {
         const response = await AuthAPI.login(login, password);
         setSubmitting(false);
@@ -40,12 +40,12 @@ export const login = (login, password, setSubmitting) => {
             const { user, token } = response.data;
             dispatch(setUserDataAction(true, user, token));
         } else {
-            console.log('Auth error', response);
+            setErrors({ login: response.data.reason });
         }
     };
 };
 
-export const join = (name, surname, login, password, setSubmitting) => {
+export const join = (name, surname, login, password, setSubmitting, setErrors) => {
     return async (dispatch) => {
         const response = await AuthAPI.join(name, surname, login, password);
         setSubmitting(false);
@@ -54,7 +54,7 @@ export const join = (name, surname, login, password, setSubmitting) => {
             const { user, token } = response.data;
             dispatch(setUserDataAction(true, user, token));
         } else {
-            console.log('Auth error', response);
+            setErrors({ login: response.data.reason });
         }
     };
 };
