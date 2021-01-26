@@ -3,40 +3,41 @@ import { connect } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 
 import AppBar from '@material-ui/core/AppBar';
-import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
 const Header = (props) => {
     const { isAuth } = props;
 
     return (
-        <AppBar position="static">
-            <Container maxWidth="lg">
-                <Toolbar>
-                    <Typography variant="h6" className={styles.title}>
-                        <Link component={RouterLink} to="/" color="inherit" underline="none">
-                            Facebook
-                        </Link>
+        <AppBar>
+            <Toolbar className={styles.container}>
+                <Link component={RouterLink} to="/" color="inherit" underline="none">
+                    <Typography variant="h6" component="h1">
+                        Facebook
                     </Typography>
+                </Link>
 
-                    {isAuth ? (
-                        <div>You are logged in</div>
-                    ) : (
-                        <>
-                            <Button color="inherit" component={RouterLink} to="/login">
-                                Login
-                            </Button>
+                {isAuth ? (
+                    <IconButton color="inherit">
+                        <AccountCircle />
+                    </IconButton>
+                ) : (
+                    <div>
+                        <Button color="inherit" component={RouterLink} to="/login">
+                            Login
+                        </Button>
 
-                            <Button color="inherit" component={RouterLink} to="/join">
-                                Join
-                            </Button>
-                        </>
-                    )}
-                </Toolbar>
-            </Container>
+                        <Button color="inherit" component={RouterLink} to="/join">
+                            Join
+                        </Button>
+                    </div>
+                )}
+            </Toolbar>
         </AppBar>
     );
 };
