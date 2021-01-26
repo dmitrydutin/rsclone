@@ -1,4 +1,9 @@
-import React from 'react';
+import { useEffect } from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { withLogoutRedirect } from '../../../hoc/withAuthRedirect';
+import { getDialogs, getMessages } from '../../../redux/reducers/ChatReducer';
+
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
@@ -9,17 +14,26 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Fab from '@material-ui/core/Fab';
 import SendIcon from '@material-ui/icons/Send';
-import Messages from '../last-messages.json'
+import messages from '../last-messages.json'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-// import Typography from '@material-ui/core/Typography';
 import Navbar from './Navbar/Navbar'
 import styles from './Chat.module.css'
 import clip from './assets/images/clip.png'
-import Upload from '../../Upload/Upload';
 import smile from './assets/images/smile.svg'
 
 
+
 const Chat = (props) => {
+    const { token, getMessages, getDialogs } = props;
+
+    useEffect(() => {
+        getDialogs(token, 1);
+    }, []);
+
+    const onClickDialog = () => {
+        getMessages(token, 1);
+    };
+
 
     return (
         <div>
@@ -30,15 +44,13 @@ const Chat = (props) => {
                     </Grid>
                     <Divider />
                     <List className={styles.list}>
-                        {Messages.map(({ id, name, message, avatar }) => (
-                            <React.Fragment key={id}>
-                                <ListItem button>
-                                    <ListItemAvatar>
-                                        <Avatar alt={name} src={avatar} />
-                                    </ListItemAvatar>
-                                    <ListItemText primary={name} secondary={message} />
-                                </ListItem>
-                            </React.Fragment>
+                        {messages.map(({ id, name, message, avatar }) => (
+                            <ListItem key={id} button onClick={onClickDialog}>
+                                <ListItemAvatar>
+                                    <Avatar alt={name} src={avatar} />
+                                </ListItemAvatar>
+                                <ListItemText primary={name} secondary={message} />
+                            </ListItem>
                         ))}
                     </List>
                     <Divider />
@@ -50,42 +62,41 @@ const Chat = (props) => {
                     <List className={styles.messageArea}>
                         <ListItem className={styles.listItemFriend}>
                             <ListItemAvatar>
-                                <Avatar className={styles.avatar} alt={Messages[0].name} src={Messages[0].avatar} />
+                                <Avatar className={styles.avatar} alt={messages[0].name} src={messages[0].avatar} />
                             </ListItemAvatar>
-                            <ListItemText className={styles.listItemText} primary={Messages[0].name} secondary={Messages[0].message}>
+                            <ListItemText className={styles.listItemText} primary={messages[0].name} secondary={messages[0].message}>
                             </ListItemText>
                         </ListItem>
                         <ListItem className={styles.listItemSelf}>
-                            <ListItemText className={styles.listItemText} primary={Messages[1].name} secondary={Messages[1].message}>
+                            <ListItemText className={styles.listItemText} primary={messages[1].name} secondary={messages[1].message}>
                             </ListItemText>
                         </ListItem>
                         <ListItem className={styles.listItemFriend}>
                             <ListItemAvatar>
-                                <Avatar className={styles.avatar} alt={Messages[0].name} src={Messages[0].avatar} />
+                                <Avatar className={styles.avatar} alt={messages[0].name} src={messages[0].avatar} />
                             </ListItemAvatar>
-                            <ListItemText className={styles.listItemText} primary={Messages[0].name} secondary={Messages[2].message}>
+                            <ListItemText className={styles.listItemText} primary={messages[0].name} secondary={messages[2].message}>
                             </ListItemText>
                         </ListItem>
                         <ListItem className={styles.listItemSelf}>
-                            <ListItemText className={styles.listItemText} primary={Messages[1].name} secondary={Messages[3].message}>
+                            <ListItemText className={styles.listItemText} primary={messages[1].name} secondary={messages[3].message}>
                             </ListItemText>
                         </ListItem>
                         <ListItem className={styles.listItemFriend}>
                             <ListItemAvatar>
-                                <Avatar className={styles.avatar} alt={Messages[0].name} src={Messages[0].avatar} />
+                                <Avatar className={styles.avatar} alt={messages[0].name} src={messages[0].avatar} />
                             </ListItemAvatar>
-                            <ListItemText className={styles.listItemText} primary={Messages[0].name} secondary={Messages[4].message}>
+                            <ListItemText className={styles.listItemText} primary={messages[0].name} secondary={messages[4].message}>
                             </ListItemText>
                         </ListItem>
                         <ListItem className={styles.listItemSelf}>
-                            <ListItemText className={styles.listItemText} primary={Messages[1].name} secondary={Messages[5].message}>
+                            <ListItemText className={styles.listItemText} primary={messages[1].name} secondary={messages[5].message}>
                             </ListItemText>
                         </ListItem>
                     </List>
                     <Grid container className={styles.sendMessageContainer}>
                         <Grid item xs={1} align="left" className={styles.gridClip}>
                             <img className={styles.clip} src={clip} alt='clip'></img>
-                            {/* <Upload></Upload> */}
                         </Grid>
                         <Grid item xs={9}>
                             <TextField label="Type Something" fullWidth />
@@ -93,7 +104,7 @@ const Chat = (props) => {
                         <Grid item xs={1} align="right">
                             <img className={styles.clip} src={smile} alt='smile'></img>
                         </Grid>
-                        <Grid item xs={1} align="right" style={{flexBasis: 'unset'}}>
+                        <Grid item xs={1} align="right" style={{ flexBasis: 'unset' }}>
                             <Fab color="primary" aria-label="add" className={styles.sendIcon}><SendIcon /></Fab>
                         </Grid>
                     </Grid>
@@ -103,4 +114,8 @@ const Chat = (props) => {
     );
 }
 
-export default Chat;
+const mapStateToProps = (state) => ({
+    token: state.auth.token,
+})
+
+export default compose(connect(mapStateToProps, { getMessages, getDialogs }), withLogoutRedirect)(Chat);

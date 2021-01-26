@@ -8,7 +8,6 @@ import Header from './components/Header/Header';
 import Login from './components/Login/Login';
 import Join from './components/Join/Join';
 import Error from './components/Error/Error';
-import Upload from './components/Upload/Upload';
 import Chat from './components/Dialogs/Chat/Chat';
 
 const App = (props) => {
@@ -29,6 +28,7 @@ const App = (props) => {
                     <Switch>
                         <Route path="/login" exact component={Login} />
                         <Route path="/join" exact component={Join} />
+                        <Route path="/chat" exact component={Chat} />
                         <Route component={Error} />
                     </Switch>
                 </>
