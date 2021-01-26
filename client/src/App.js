@@ -5,6 +5,7 @@ import Header from './components/Header/Header';
 import Login from './components/Login/Login';
 import Error from './components/Error/Error';
 import Upload from './components/Upload/Upload';
+import Chat from './components/Dialogs/Chat/Chat';
 
 const App = () => {
     return (
@@ -13,11 +14,12 @@ const App = () => {
             <Header />
 
             <Switch>
-                <Route path="/login" exact component={Login} />
-                <Route component={Error} />
+            <Chat />
+                {/* <Route path="/login" exact component={Login} />
+                <Route component={Error} /> */}
             </Switch>
 
-            <Upload />
+            {/* <Upload /> */}
         </>
     );
 };
