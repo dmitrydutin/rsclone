@@ -19,4 +19,12 @@ router.post(
     }),
 );
 
+router.get(
+    '/test',
+    auth,
+    asyncHandler(async (req, res) => {
+        res.json({ list: 'list' });
+    }),
+);
+
 export default router;

@@ -20,8 +20,8 @@ const Join = (props) => {
     const { join } = props;
     const initialValues = { name: '', surname: '', login: '', password: '' };
 
-    const onSubmit = (values, { setSubmitting }) => {
-        join(values.name, values.surname, values.login, values.password, setSubmitting);
+    const onSubmit = (values, { setSubmitting, setErrors }) => {
+        join(values.name, values.surname, values.login, values.password, setSubmitting, setErrors);
     };
 
     return (
