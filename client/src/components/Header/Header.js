@@ -53,26 +53,20 @@ const Header = (props) => {
                 </Link>
 
                 {isAuth ? (
-                    <div>{language.loggedIn}</div>
+                    <IconButton color="inherit">
+                        <AccountCircle />
+                    </IconButton>
                 ) : (
                     <>
-                        <Button
-                            color="inherit"
-                            className={styles.button}
-                            component={RouterLink}
-                            to="/login"
-                        >
-                            {language.login}
-                        </Button>
+                        <div>
+                            <Button color="inherit" component={RouterLink} to="/login">
+                                Login
+                            </Button>
 
-                        <Button
-                            color="inherit"
-                            className={styles.button}
-                            component={RouterLink}
-                            to="/join"
-                        >
-                            {language.join}
-                        </Button>
+                            <Button color="inherit" component={RouterLink} to="/join">
+                                Join
+                            </Button>
+                        </div>
                     </>
                 )}
                 <FormControlLabel
@@ -101,22 +95,6 @@ const Header = (props) => {
                     {currentLanguage}
                 </Button>
             </Toolbar>
-
-            {isAuth ? (
-                <IconButton color="inherit">
-                    <AccountCircle />
-                </IconButton>
-            ) : (
-                <div>
-                    <Button color="inherit" component={RouterLink} to="/login">
-                        Login
-                    </Button>
-
-                    <Button color="inherit" component={RouterLink} to="/join">
-                        Join
-                    </Button>
-                </div>
-            )}
         </AppBar>
     );
 };

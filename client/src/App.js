@@ -30,7 +30,7 @@ const App = () => {
                 </Switch>
             </>
         </ThemeProvider>            
-        </>
+        
 
     );
 };
