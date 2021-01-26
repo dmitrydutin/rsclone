@@ -1,6 +1,5 @@
 import { Switch, Route } from 'react-router-dom';
 
-
 import { useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
@@ -12,10 +11,8 @@ import Error from './components/Error/Error';
 import Newsfeed from './components/Newsfeed/Newsfeed';
 import { ThemeProvider } from '@material-ui/core/styles';
 
-
 const App = () => {
     const currentTheme = useSelector((state) => state.theme.theme);
-
 
     return (
         <ThemeProvider theme={currentTheme}>
@@ -25,13 +22,12 @@ const App = () => {
 
                 <Switch>
                     <Route path="/login" exact component={Login} />
-                    <Route path="/feed" component={Newsfeed} />
+                    <Route path="/join" exact component={Join} />
+                    <Route path="/feed" exact component={Newsfeed} />
                     <Route component={Error} />
                 </Switch>
             </>
-        </ThemeProvider>            
-        
-
+        </ThemeProvider>
     );
 };
 

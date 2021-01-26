@@ -1,5 +1,7 @@
 import { NewsAPI } from '../../api/api';
-const INIT_POSTS = 'INIT_POSTS',FETCH_INIT_POSTS = 'FETCH_INIT_POSTS',
+const INIT_POSTS = 'INIT_POSTS',
+    FETCH_INIT_POSTS = 'FETCH_INIT_POSTS',
+    FETCH_UPDATE_POSTS = 'FETCH_UPDATE_POSTS',
     UPDATE_POSTS = 'UPDATE_POSTS';
 const initialState = {
     arrPost: [],
@@ -7,7 +9,7 @@ const initialState = {
 
 const NewsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case UPDATE_POSTS:
+        case FETCH_UPDATE_POSTS:
             return { ...state, arrPost: [action.query, ...state.arrPost] };
         case FETCH_INIT_POSTS:
             return {
@@ -19,17 +21,34 @@ const NewsReducer = (state = initialState, action) => {
 };
 
 const newsMiddleware = (store) => (next) => (action) => {
-    if (action.type == INIT_POSTS) {
-        NewsAPI.getPosts()
-            .then((response) => response.data)
-            .then((el) => {
-                store.dispatch({
-                    type: 'FETCH_INIT_POSTS',
-                    query: el,
+    switch (action.type) {
+        case INIT_POSTS:
+            console.log(action.token);
+            NewsAPI.getPosts(action.token)
+                .then((response) => {
+                    console.log(response.data);
+                    return response.data;
+                })
+                .then((el) => {
+                    console.log('POSTS INITED');
+                    store.dispatch({
+                        type: 'FETCH_INIT_POSTS',
+                        query: el,
+                    });
                 });
-                console.log('INIT_POSTS');
+            break;
+        case UPDATE_POSTS:
+            NewsAPI.sendPost(action.token, action.query).then(() => {
+                store.dispatch({
+                    type: 'FETCH_UPDATE_POSTS',
+                    query: action.query,
+                });
             });
-    }    
+            break;
+        default:
+            break;
+    }
+
     next(action);
 };
 

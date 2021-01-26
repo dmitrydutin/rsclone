@@ -11,19 +11,18 @@ import { getToday, uploadImage } from './helper.js';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        color: 'default',
+        marginTop: 70,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
     },
 }));
 
-function Newsfeed({ children, language }) {
+function Newsfeed({ children, language, user, token }) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch({ type: 'INIT_POSTS' });
-        console.log('POSTS INITED');
+        dispatch({ type: 'INIT_POSTS', token: token });
     }, []);
     const classes = useStyles();
     const [postState, setPostState] = useState(<b>{language.post}</b>);
@@ -79,18 +78,16 @@ function Newsfeed({ children, language }) {
             <img src={loader} alt={'Loading...'} style={{ height: '40px', width: '35px' }} />,
         );
         uploadImage(state.file).then((res) => {
-            console.log('res', res);
+            console.log(user);
             dispatch({
                 type: 'UPDATE_POSTS',
                 query: {
-                    id: 0,
-                    username: 'asbarn',
+                    login: user.login,
                     text: `${textState}`,
                     photo: res,
                     likes: 0,
-                    dislikes: 0,
-                    date: getToday(),
                 },
+                token: token,
             });
 
             setPostState(<b>{language.post}</b>);
@@ -147,10 +144,11 @@ function Newsfeed({ children, language }) {
 }
 
 const mapStateToProps = function (state) {
-    console.log(state);
     return {
         children: state.news.arrPost.map((el) => <Post post={el} />),
         language: state.lang.language,
+        user: state.auth.user,
+        token: state.auth.token,
     };
 };
 

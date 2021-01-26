@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
 const store = createStore(
     rootReducer,
     loadFromLocalStorage(),
-    composeWithDevTools(applyMiddleware(thunkMiddleware)),
+    composeWithDevTools(applyMiddleware(thunkMiddleware,newsMiddleware)),
 );
 
 store.subscribe(() => {

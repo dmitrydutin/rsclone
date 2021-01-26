@@ -1,8 +1,5 @@
 import axiosLib from 'axios';
 
-
-
-
 const axios = axiosLib.create({
     validateStatus: (status) => {
         return status >= 200 && status < 600;
@@ -23,7 +20,6 @@ const cloudinary = {
                 'Content-Type': 'multipart/form-data',
             },
         });
-
     },
 };
 
@@ -40,8 +36,13 @@ const AuthAPI = {
 };
 
 const NewsAPI = {
-    getPosts() {
-        return axios.get('/feed/allposts');
+    sendPost(token,post) {
+        console.log(token, post)
+        return axios.post('/api/feed', post, { headers: getAuthHeaders(token) });
+    },
+    getPosts(token) {
+        console.log(token)
+        return axios.get('/api/feed/allposts',{}, { headers: getAuthHeaders(token) });
     },
 };
 

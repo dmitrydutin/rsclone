@@ -16,4 +16,9 @@ const Error = ({ language }) => {
     );
 };
 
-export default compose(withLogoutRedirect)(Error);
+const mapStateToProps = function (state) {
+    return {
+        language: state.lang.language,
+    };
+};
+export default compose(connect(mapStateToProps), withLogoutRedirect)(Error);

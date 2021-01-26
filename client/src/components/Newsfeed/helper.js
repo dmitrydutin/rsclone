@@ -8,9 +8,12 @@ function getToday() {
 }
 
 const uploadImage = async (file) => {
-    const response = await cloudinary.uploadImage(file);
-    const imageURL = response.data.secure_url;
-    return imageURL;
+    if (file) {
+        const response = await cloudinary.uploadImage(file);
+        const imageURL = response.data.secure_url;
+        return imageURL;
+    }
+    return '';
 };
 
 export { getToday, uploadImage };

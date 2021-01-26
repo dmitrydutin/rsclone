@@ -53,9 +53,14 @@ const Header = (props) => {
                 </Link>
 
                 {isAuth ? (
-                    <IconButton color="inherit">
-                        <AccountCircle />
-                    </IconButton>
+                    <>
+                        <IconButton color="inherit">
+                            <AccountCircle />
+                        </IconButton>
+                        <IconButton color="inherit" component={RouterLink} to="/feed">
+                            Feed
+                        </IconButton>
+                    </>
                 ) : (
                     <>
                         <div>

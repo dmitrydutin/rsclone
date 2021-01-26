@@ -31,7 +31,7 @@ router.post(
         const passwordHash = getPasswordHash(password);
 
         const user = await Users.findOne({
-            attributes: ['id', 'name', 'surname', 'quote', 'avatar', 'city', 'createdAt'],
+            attributes: ['id', 'name', 'surname', 'quote', 'avatar', 'city', 'createdAt', 'login'],
             include: [
                 {
                     model: Roles,
@@ -50,6 +50,7 @@ router.post(
                 avatar: user.avatar,
                 city: user.city,
                 createdAt: user.createdAt,
+                login: user.login,
             };
             const token = generateToken();
 
