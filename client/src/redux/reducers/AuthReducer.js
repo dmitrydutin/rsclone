@@ -37,10 +37,12 @@ export const login = (login, password, setSubmitting, setErrors) => {
         setSubmitting(false);
 
         if (response.status === 200) {
-            const { user, token } = response.data;
-            dispatch(setUserDataAction(true, user, token));
-        } else {
-            setErrors({ login: response.data.reason });
+            if (response.data.status === 200) {
+                const { user, token } = response.data;
+                dispatch(setUserDataAction(true, user, token));
+            } else {
+                setErrors({ login: response.data.reason });
+            }
         }
     };
 };
@@ -51,10 +53,35 @@ export const join = (name, surname, login, password, setSubmitting, setErrors) =
         setSubmitting(false);
 
         if (response.status === 200) {
-            const { user, token } = response.data;
+            if (response.data.status === 200) {
+                const { user, token } = response.data;
+                dispatch(setUserDataAction(true, user, token));
+            } else {
+                setErrors({ login: response.data.reason });
+            }
+        }
+    };
+};
+
+export const getAuthUserData = (token) => {
+    return async (dispatch) => {
+        const response = await AuthAPI.me(token);
+
+        if (response.status === 200 && response.data.status === 200) {
+            const { user } = response.data;
             dispatch(setUserDataAction(true, user, token));
-        } else {
-            setErrors({ login: response.data.reason });
+        }
+
+        return response;
+    };
+};
+
+export const logout = (token) => {
+    return async (dispatch) => {
+        const response = await AuthAPI.logout(token);
+
+        if (response.status === 200 && response.data.status === 200) {
+            dispatch(setUserDataAction(false, {}, null));
         }
     };
 };

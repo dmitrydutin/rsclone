@@ -3,9 +3,11 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
 import { loadFromLocalStorage, saveToLocalStorage } from './helpers/localStorage';
 
+import { AppReducer } from './reducers/AppReducer';
 import { AuthReducer } from './reducers/AuthReducer';
 
 const rootReducer = combineReducers({
+    app: AppReducer,
     auth: AuthReducer,
 });
 
