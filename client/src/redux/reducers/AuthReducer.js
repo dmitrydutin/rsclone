@@ -31,30 +31,57 @@ const setUserDataAction = (isAuth, user, token) => {
     };
 };
 
-export const login = (login, password, setSubmitting) => {
+export const login = (login, password, setSubmitting, setErrors) => {
     return async (dispatch) => {
         const response = await AuthAPI.login(login, password);
         setSubmitting(false);
 
         if (response.status === 200) {
-            const { user, token } = response.data;
-            dispatch(setUserDataAction(true, user, token));
-        } else {
-            console.log('Auth error', response);
+            if (response.data.status === 200) {
+                const { user, token } = response.data;
+                dispatch(setUserDataAction(true, user, token));
+            } else {
+                setErrors({ login: response.data.reason });
+            }
         }
     };
 };
 
-export const join = (name, surname, login, password, setSubmitting) => {
+export const join = (name, surname, login, password, setSubmitting, setErrors) => {
     return async (dispatch) => {
         const response = await AuthAPI.join(name, surname, login, password);
         setSubmitting(false);
 
         if (response.status === 200) {
-            const { user, token } = response.data;
+            if (response.data.status === 200) {
+                const { user, token } = response.data;
+                dispatch(setUserDataAction(true, user, token));
+            } else {
+                setErrors({ login: response.data.reason });
+            }
+        }
+    };
+};
+
+export const getAuthUserData = (token) => {
+    return async (dispatch) => {
+        const response = await AuthAPI.me(token);
+
+        if (response.status === 200 && response.data.status === 200) {
+            const { user } = response.data;
             dispatch(setUserDataAction(true, user, token));
-        } else {
-            console.log('Auth error', response);
+        }
+
+        return response;
+    };
+};
+
+export const logout = (token) => {
+    return async (dispatch) => {
+        const response = await AuthAPI.logout(token);
+
+        if (response.status === 200 && response.data.status === 200) {
+            dispatch(setUserDataAction(false, {}, null));
         }
     };
 };

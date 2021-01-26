@@ -30,8 +30,11 @@ const AuthAPI = {
     join(name, surname, login, password) {
         return axios.post('/api/auth/join', { name, surname, login, password });
     },
-    testSession(token) {
-        return axios.post('/api/example/', {}, { headers: getAuthHeaders(token) });
+    me(token) {
+        return axios.post('/api/auth/me', {}, { headers: getAuthHeaders(token) });
+    },
+    logout(token) {
+        return axios.post('/api/auth/logout', {}, { headers: getAuthHeaders(token) });
     },
 };
 

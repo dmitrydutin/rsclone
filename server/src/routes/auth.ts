@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import md5 from 'md5';
 import path from 'path';
 import dotenv from 'dotenv';
+import { auth } from '../middleware/auth';
 import asyncHandler from 'express-async-handler';
 import createError from 'http-errors';
 import { Router } from 'express';
@@ -60,16 +61,16 @@ router.post(
                 expiresAt: new Date(Date.now() + 3600 * 1000).toISOString(),
             });
 
-            return res.status(200).json({
+            return res.json({
+                status: 200,
                 user: data,
                 token,
             });
         }
 
-        const reason = 'The login or password you entered is incorrect';
-
-        return res.status(403).json({
-            reason,
+        return res.json({
+            status: 403,
+            reason: 'The login or password you entered is incorrect',
         });
     }),
 );
@@ -119,16 +120,49 @@ router.post(
                 expiresAt: new Date(Date.now() + 3600 * 1000).toISOString(),
             });
 
-            return res.status(200).json({
+            return res.json({
+                status: 200,
                 user: data,
                 token,
             });
         }
 
-        const reason = 'Login entered already in use';
+        return res.json({
+            status: 403,
+            reason: 'Login entered already in use',
+        });
+    }),
+);
 
-        return res.status(403).json({
-            reason,
+router.post(
+    '/me',
+    auth,
+    asyncHandler(async (req, res) => {
+        const user = await Users.findByPk(req.app.get('userId'));
+
+        if (!user) {
+            throw createError(403, 'User not found');
+        }
+
+        return res.json({
+            status: 200,
+            user,
+        });
+    }),
+);
+
+router.post(
+    '/logout',
+    auth,
+    asyncHandler(async (req, res) => {
+        await Tokens.destroy({
+            where: {
+                userId: req.app.get('userId'),
+            },
+        });
+
+        return res.json({
+            status: 200,
         });
     }),
 );

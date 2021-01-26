@@ -3,6 +3,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
 import { loadFromLocalStorage, saveToLocalStorage } from './helpers/localStorage';
 
+import { AppReducer } from './reducers/AppReducer';
 import { AuthReducer } from './reducers/AuthReducer';
 import { LangReducer } from './reducers/LangReducer';
 import { NewsReducer, newsMiddleware } from './reducers/NewsReducer';
@@ -10,6 +11,7 @@ import { PicReducer } from './reducers/PicReducer';
 import { ThemeReducer } from './reducers/ThemeReducer';
 
 const rootReducer = combineReducers({
+    app: AppReducer,
     auth: AuthReducer,
 
     news: NewsReducer,
