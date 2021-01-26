@@ -7,16 +7,16 @@ const SET_ENGLISH = 'SET_ENGLISH',
     SET_RUSSIAN = 'SET_RUSSIAN';
 const initialState = {
     language: englishLanguage,
-    status: 'en',
+    status: 'ENGLISH',
 };
 const LangReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_RUSSIAN:
-            return { language: russianLanguage, status: 'ru' };
+            return { language: russianLanguage, status: 'РУССКИЙ' };
         case SET_BELARUSSIAN:
-            return { language: belarussianLanguage, status: 'by' };
+            return { language: belarussianLanguage, status: 'БЕЛАРУСКАЯ' };
         case SET_ENGLISH:
-            return { language: englishLanguage, status: 'en' };
+            return { language: englishLanguage, status: 'ENGLISH' };
         default:
             return state;
     }

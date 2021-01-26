@@ -1,7 +1,5 @@
 import express from 'express';
 import path from 'path';
-import http from 'http';
-import * as socket from 'socket.io';
 
 import authRouter from './routes/auth';
 import feedRouter from './routes/feed';

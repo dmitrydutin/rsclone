@@ -30,9 +30,9 @@ function Newsfeed({ children, language }) {
     const [textState, setTextState] = useState('');
     const [state, setState] = useState({ file: '', imagePreviewUrl: '' });
     let { imagePreviewUrl } = state;
-    let $imagePreview = null;
+    let imagePreviewDiv = null;
     if (imagePreviewUrl) {
-        $imagePreview = (
+        imagePreviewDiv = (
             <div>
                 <img src={imagePreviewUrl} alt={'Image Preview'} />
                 <button className={styles.closeButton} onClick={(e) => _handleClose(e)}>
@@ -41,7 +41,7 @@ function Newsfeed({ children, language }) {
             </div>
         );
     } else {
-        $imagePreview = <div></div>;
+        imagePreviewDiv = <div></div>;
     }
 
     function _handleTextChange(e) {
@@ -70,7 +70,7 @@ function Newsfeed({ children, language }) {
             file: '',
             imagePreviewUrl: '',
         });
-        $imagePreview = <div></div>;
+        imagePreviewDiv = <div></div>;
     }
 
     function _handleSubmit(e) {
@@ -130,7 +130,7 @@ function Newsfeed({ children, language }) {
                             </label>
                         </div>
                     </div>
-                    <div className={styles.imgPreview}>{$imagePreview}</div>
+                    <div className={styles.imgPreview}>{imagePreviewDiv}</div>
                     <button
                         className={styles.submitButton}
                         type="submit"

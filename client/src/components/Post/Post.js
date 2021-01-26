@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import styles from './Post.module.css';
 import {
     Card,
     CardHeader,
@@ -10,20 +11,24 @@ import {
     IconButton,
     Typography,
     Collapse,
+    InputBase,
+    Paper,
 } from '@material-ui/core';
-import { red, grey } from '@material-ui/core/colors';
+import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import CommentIcon from '@material-ui/icons/Comment';
 import user from './assets/images/user.svg';
+import SendIcon from '@material-ui/icons/Send';
+import loader from './assets/images/loader.gif';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: 550,
+        width: 650,
         margin: 'auto',
         marginTop: 25,
         marginBottom: 25,
         boxShadow: '0px 0px 20px 5px #b9b8b8',
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('700')]: {
             width: 350,
         },
     },
@@ -54,14 +59,51 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         font: 50,
     },
+    commentSection: {
+        padding: '15px 0',
+    },
+    paper: {
+        padding: '2px 4px',
+        display: 'flex',
+        alignItems: 'center',
+        width: 600,
+        boxShadow: 'none',
+    },
+    input: {
+        border: '2px solid rgb(180, 178, 178)',
+        borderRadius: '5px',
+        marginLeft: theme.spacing(1),
+        flex: 1,
+    },
+    iconButton: {
+        padding: 10,
+    },
 }));
 
 export default function Post({ post }) {
     const classes = useStyles();
-    const [expanded, setExpanded] = React.useState(false);
+    const [expanded, setExpanded] = useState(true);
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+
+    const [postState, setPostState] = useState(<SendIcon />);
+    const [textState, setTextState] = useState('');
+    function _handleTextChange(e) {
+        e.preventDefault();
+        setTextState(e.target.value);
+    }
+
+    function _handleSubmit(e) {
+        e.preventDefault();
+        setPostState(
+            <img src={loader} alt={'Loading...'} style={{ height: '40px', width: '35px' }} />,
+        );
+
+        setPostState(<SendIcon />);
+        setTextState('');
+    }
+
     return (
         <Card className={classes.root}>
             <CardHeader
@@ -102,63 +144,44 @@ export default function Post({ post }) {
                 </IconButton>
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit className={classes.commentSection}>
-                <CardContent className={classes.content}>
-                    <CardHeader
-                        className={classes.contentHeader}
-                        avatar={
-                            <Avatar aria-label="recipe" className={classes.avatar}>
-                                {<img src={user} alt={'U'} />}
-                            </Avatar>
-                        }
-                        title={post.username ? post.username : 'undefined'}
-                        subheader={post.date ? post.date : 'undefined'}
-                    />
-                    <Typography>
-                        Heat 1/2 cup of the broth in a pot until simmering, add saffron and set
-                        aside for 10 minutes.
-                    </Typography>
-                </CardContent>
-                <CardContent className={classes.content}>
-                    <CardHeader
-                        className={classes.contentHeader}
-                        avatar={
-                            <Avatar aria-label="recipe" className={classes.avatar}>
-                                {<img src={user} alt={'U'} />}
-                            </Avatar>
-                        }
-                        title={post.username ? post.username : 'undefined'}
-                        subheader={post.date ? post.date : 'undefined'}
-                    />
-                    <Typography>
-                        Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over
-                        medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring
-                        occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a
-                        large plate and set aside, leaving chicken and chorizo in the pan. Add
-                        pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and cook,
-                        stirring often until thickened and fragrant, about 10 minutes. Add saffron
-                        broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-                    </Typography>
-                </CardContent>
-                <CardContent className={classes.content}>
-                    <CardHeader
-                        className={classes.contentHeader}
-                        avatar={
-                            <Avatar aria-label="recipe" className={classes.avatar}>
-                                {<img src={user} alt={'U'} />}
-                            </Avatar>
-                        }
-                        title={post.username ? post.username : 'undefined'}
-                        subheader={post.date ? post.date : 'undefined'}
-                    />
-                    <Typography>
-                        Add rice and stir very gently to distribute. Top with artichokes and
-                        peppers, and cook without stirring, until most of the liquid is absorbed, 15
-                        to 18 minutes. Reduce heat to medium-low, add reserved shrimp and mussels,
-                        tucking them down into the rice, and cook again without stirring, until
-                        mussels have opened and rice is just tender, 5 to 7 minutes more. (Discard
-                        any mussels that don’t open.)
-                    </Typography>
-                </CardContent>
+                {post.comment?.map((el) => {
+                    return (
+                        <CardContent className={classes.content}>
+                            <CardHeader
+                                className={classes.contentHeader}
+                                avatar={
+                                    <Avatar aria-label="recipe" className={classes.avatar}>
+                                        {<img src={user} alt={'U'} />}
+                                    </Avatar>
+                                }
+                                title={post.comment.username ? post.comment.username : 'undefined'}
+                                subheader={post.comment ? post.comment : 'undefined'}
+                            />
+                            <Typography>{post.comment?.text}</Typography>
+                        </CardContent>
+                    );
+                })}
+                <form onSubmit={(e) => _handleSubmit(e)}>
+                    <div className={styles.inputContainer}>
+                        <Paper component="form" className={classes.paper}>
+                            <InputBase
+                                className={classes.input}
+                                multiline={true}
+                                onChange={(e) => _handleTextChange(e)}
+                                value={textState}
+                            />
+                            <IconButton
+                                type="submit"
+                                className={classes.iconButton}
+                                aria-label="search"
+                                onClick={(e) => _handleSubmit(e)}
+                                disabled={textState ? false : true}
+                            >
+                                {postState}
+                            </IconButton>
+                        </Paper>
+                    </div>
+                </form>
             </Collapse>
         </Card>
     );

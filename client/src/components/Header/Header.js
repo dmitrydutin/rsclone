@@ -9,11 +9,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
-import { FormControlLabel, Switch as SwitchComponent, Breadcrumbs } from '@material-ui/core';
+import { FormControlLabel, Switch as SwitchComponent } from '@material-ui/core';
 import NightsIcon from '@material-ui/icons/NightsStay';
 import SunIcon from '@material-ui/icons/Brightness5';
-import sunImg from './assets/images/sun.png';
-import moonImg from './assets/images/moon.png';
+import TranslateIcon from '@material-ui/icons/Translate';
 
 const Header = (props) => {
     const { isAuth, language } = props;
@@ -24,21 +23,23 @@ const Header = (props) => {
     };
     const currentThemeCheck = useSelector((state) => state.theme.light);
 
-    function handleClickBreadCrumbsEng(event) {
+    const currentLanguage = useSelector((state) => state.lang.status);
+    function handleClickLanguage(event) {
         event.preventDefault();
-        dispatch({ type: 'SET_ENGLISH' });
+        switch (currentLanguage) {
+            case 'ENGLISH':
+                dispatch({ type: 'SET_RUSSIAN' });
+                break;
+            case 'РУССКИЙ':
+                dispatch({ type: 'SET_BELARUSSIAN' });
+                break;
+            case 'БЕЛАРУСКАЯ':
+                dispatch({ type: 'SET_ENGLISH' });
+                break;
+            default:
+                break;
+        }
     }
-
-    function handleClickBreadCrumbsRus(event) {
-        event.preventDefault();
-        dispatch({ type: 'SET_RUSSIAN' });
-    }
-
-    function handleClickBreadCrumbsBy(event) {
-        event.preventDefault();
-        dispatch({ type: 'SET_BELARUSSIAN' });
-    }
-
     return (
         <AppBar position="static">
             <Container maxWidth="lg">
@@ -53,18 +54,33 @@ const Header = (props) => {
                         <div>{language.loggedIn}</div>
                     ) : (
                         <>
-                            <Button color="inherit" component={RouterLink} to="/login">
+                            <Button
+                                color="inherit"
+                                className={styles.button}
+                                component={RouterLink}
+                                to="/login"
+                            >
                                 {language.login}
                             </Button>
 
-                            <Button color="inherit" component={RouterLink} to="/join">
-                            {language.join}
+                            <Button
+                                color="inherit"
+                                className={styles.button}
+                                component={RouterLink}
+                                to="/join"
+                            >
+                                {language.join}
                             </Button>
                         </>
                     )}
                     <FormControlLabel
+                        className={styles.languageContainer}
                         control={
-                            <SwitchComponent checked={currentThemeCheck} onChange={toggleChecked} />
+                            <SwitchComponent
+                                checked={currentThemeCheck}
+                                onChange={toggleChecked}
+                                className={styles.languageSwitch}
+                            />
                         }
                         label={
                             <div
@@ -75,26 +91,15 @@ const Header = (props) => {
                             </div>
                         }
                     />
-                    <Breadcrumbs color="white">
-                        <Typography
-                            className={styles.languageBreadcrumb}
-                            onClick={handleClickBreadCrumbsEng}
-                        >
-                            ENG
-                        </Typography>
-                        <Typography
-                            className={styles.languageBreadcrumb}
-                            onClick={handleClickBreadCrumbsRus}
-                        >
-                            RUS
-                        </Typography>
-                        <Typography
-                            className={styles.languageBreadcrumb}
-                            onClick={handleClickBreadCrumbsBy}
-                        >
-                            BY
-                        </Typography>
-                    </Breadcrumbs>
+                    <Button
+                        variant="contained"
+                        color="default"
+                        startIcon={<TranslateIcon />}
+                        onClick={handleClickLanguage}
+                        className={styles.button}
+                    >
+                        {currentLanguage}
+                    </Button>
                 </Toolbar>
             </Container>
         </AppBar>
