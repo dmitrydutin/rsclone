@@ -18,6 +18,14 @@
     margin-bottom: 26px;
 }
 
+.fieldGroup {
+    display: flex;
+}
+
+.fieldGroup .field:first-child {
+    margin-right: 16px;
+}
+
 .field {
-    margin-bottom: 16px!important;
+    margin-bottom: 16px !important;
 }

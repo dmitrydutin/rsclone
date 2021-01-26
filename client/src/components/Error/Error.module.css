@@ -1,5 +1,5 @@
 .main {
-    height: calc(100vh - 64px);
+    height: 100vh;
     min-height: 500px;
 
     display: flex;
@@ -8,7 +8,6 @@
 }
 
 .mainInner {
-    margin-top: -64px;
     display: flex;
     align-items: center;
 }

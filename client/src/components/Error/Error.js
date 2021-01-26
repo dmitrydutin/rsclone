@@ -1,4 +1,6 @@
 import styles from './Error.module.css';
+import { compose } from 'redux';
+import { withLogoutRedirect } from '../../hoc/withAuthRedirect';
 
 const Error = () => {
     return (
@@ -11,4 +13,4 @@ const Error = () => {
     );
 };
 
-export default Error;
+export default compose(withLogoutRedirect)(Error);

@@ -1,7 +1,7 @@
-import styles from './Login.module.css';
+import styles from './Join.module.css';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { login } from '../../redux/reducers/AuthReducer';
+import { join } from '../../redux/reducers/AuthReducer';
 import { withLoginRedirect } from '../../hoc/withAuthRedirect';
 import Container from '@material-ui/core/Container';
 import { Formik, Field, Form } from 'formik';
@@ -9,17 +9,19 @@ import { TextField } from 'formik-material-ui';
 import Button from '@material-ui/core/Button';
 import * as Yup from 'yup';
 
-const LoginSchema = Yup.object().shape({
+const JoinSchema = Yup.object().shape({
+    name: Yup.string().min(5, 'Too Short!').max(30, 'Too Long!').required('Required'),
+    surname: Yup.string().min(5, 'Too Short!').max(30, 'Too Long!').required('Required'),
     login: Yup.string().min(5, 'Too Short!').max(30, 'Too Long!').required('Required'),
     password: Yup.string().min(5, 'Too Short!').max(30, 'Too Long!').required('Required'),
 });
 
-const Login = (props) => {
-    const { login } = props;
-    const initialValues = { login: '', password: '' };
+const Join = (props) => {
+    const { join } = props;
+    const initialValues = { name: '', surname: '', login: '', password: '' };
 
     const onSubmit = (values, { setSubmitting }) => {
-        login(values.login, values.password, setSubmitting);
+        join(values.name, values.surname, values.login, values.password, setSubmitting);
     };
 
     return (
@@ -28,11 +30,29 @@ const Login = (props) => {
                 <Formik
                     initialValues={initialValues}
                     onSubmit={onSubmit}
-                    validationSchema={LoginSchema}
+                    validationSchema={JoinSchema}
                 >
                     {({ submitForm, isSubmitting }) => (
                         <Form className={styles.form} autoComplete="off">
-                            <h1 className={styles.title}>Login</h1>
+                            <h1 className={styles.title}>Join</h1>
+
+                            <div className={styles.fieldGroup}>
+                                <Field
+                                    component={TextField}
+                                    name="name"
+                                    label="Name"
+                                    variant="outlined"
+                                    className={styles.field}
+                                />
+
+                                <Field
+                                    component={TextField}
+                                    name="surname"
+                                    label="Surname"
+                                    variant="outlined"
+                                    className={styles.field}
+                                />
+                            </div>
 
                             <Field
                                 component={TextField}
@@ -57,7 +77,7 @@ const Login = (props) => {
                                 disabled={isSubmitting}
                                 onClick={submitForm}
                             >
-                                Login
+                                Join
                             </Button>
                         </Form>
                     )}
@@ -67,4 +87,4 @@ const Login = (props) => {
     );
 };
 
-export default compose(connect(null, { login }), withLoginRedirect)(Login);
+export default compose(connect(null, { join }), withLoginRedirect)(Join);
