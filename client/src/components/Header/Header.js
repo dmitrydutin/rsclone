@@ -4,15 +4,18 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import AppBar from '@material-ui/core/AppBar';
-import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
+
 import { FormControlLabel, Switch as SwitchComponent } from '@material-ui/core';
 import NightsIcon from '@material-ui/icons/NightsStay';
 import SunIcon from '@material-ui/icons/Brightness5';
 import TranslateIcon from '@material-ui/icons/Translate';
+
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
 const Header = (props) => {
     const { isAuth, language } = props;
@@ -41,67 +44,79 @@ const Header = (props) => {
         }
     }
     return (
-        <AppBar position="static">
-            <Container maxWidth="lg">
-                <Toolbar>
-                    <Typography variant="h6" className={styles.title}>
-                        <Link component={RouterLink} to="/" color="inherit" underline="none">
-                            Facebook
-                        </Link>
+        <AppBar>
+            <Toolbar className={styles.container}>
+                <Link component={RouterLink} to="/" color="inherit" underline="none">
+                    <Typography variant="h6" component="h1">
+                        Facebook
                     </Typography>
+                </Link>
 
-                    {isAuth ? (
-                        <div>{language.loggedIn}</div>
-                    ) : (
-                        <>
-                            <Button
-                                color="inherit"
-                                className={styles.button}
-                                component={RouterLink}
-                                to="/login"
-                            >
-                                {language.login}
-                            </Button>
+                {isAuth ? (
+                    <div>{language.loggedIn}</div>
+                ) : (
+                    <>
+                        <Button
+                            color="inherit"
+                            className={styles.button}
+                            component={RouterLink}
+                            to="/login"
+                        >
+                            {language.login}
+                        </Button>
 
-                            <Button
-                                color="inherit"
-                                className={styles.button}
-                                component={RouterLink}
-                                to="/join"
-                            >
-                                {language.join}
-                            </Button>
-                        </>
-                    )}
-                    <FormControlLabel
-                        className={styles.languageContainer}
-                        control={
-                            <SwitchComponent
-                                checked={currentThemeCheck}
-                                onChange={toggleChecked}
-                                className={styles.languageSwitch}
-                            />
-                        }
-                        label={
-                            <div
-                                className={currentThemeCheck ? styles.iconContainer : styles.night}
-                            >
-                                <NightsIcon className={styles.iconMoon} />
-                                <SunIcon className={styles.iconSun} />
-                            </div>
-                        }
-                    />
-                    <Button
-                        variant="contained"
-                        color="default"
-                        startIcon={<TranslateIcon />}
-                        onClick={handleClickLanguage}
-                        className={styles.button}
-                    >
-                        {currentLanguage}
+                        <Button
+                            color="inherit"
+                            className={styles.button}
+                            component={RouterLink}
+                            to="/join"
+                        >
+                            {language.join}
+                        </Button>
+                    </>
+                )}
+                <FormControlLabel
+                    className={styles.languageContainer}
+                    control={
+                        <SwitchComponent
+                            checked={currentThemeCheck}
+                            onChange={toggleChecked}
+                            className={styles.languageSwitch}
+                        />
+                    }
+                    label={
+                        <div className={currentThemeCheck ? styles.iconContainer : styles.night}>
+                            <NightsIcon className={styles.iconMoon} />
+                            <SunIcon className={styles.iconSun} />
+                        </div>
+                    }
+                />
+                <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<TranslateIcon />}
+                    onClick={handleClickLanguage}
+                    className={styles.button}
+                >
+                    {currentLanguage}
+                </Button>
+            </Toolbar>
+
+            {isAuth ? (
+                <IconButton color="inherit">
+                    <AccountCircle />
+                </IconButton>
+            ) : (
+                <div>
+                    <Button color="inherit" component={RouterLink} to="/login">
+                        Login
                     </Button>
-                </Toolbar>
-            </Container>
+
+                    <Button color="inherit" component={RouterLink} to="/join">
+                        Join
+                    </Button>
+                </div>
+            )}
         </AppBar>
     );
 };

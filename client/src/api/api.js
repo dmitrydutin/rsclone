@@ -1,9 +1,16 @@
-import axios from 'axios';
+import axiosLib from 'axios';
 
-const AuthAPI = {
-    login(login, password) {
-        return axios.post('/api/auth/login', { login, password });
+
+
+
+const axios = axiosLib.create({
+    validateStatus: (status) => {
+        return status >= 200 && status < 600;
     },
+});
+
+const getAuthHeaders = (token) => {
+    return token ? { Authorization: token } : {};
 };
 const cloudinary = {
     uploadImage(image) {
@@ -16,6 +23,19 @@ const cloudinary = {
                 'Content-Type': 'multipart/form-data',
             },
         });
+
+    },
+};
+
+const AuthAPI = {
+    login(login, password) {
+        return axios.post('/api/auth/login', { login, password });
+    },
+    join(name, surname, login, password) {
+        return axios.post('/api/auth/join', { name, surname, login, password });
+    },
+    testSession(token) {
+        return axios.post('/api/example/', {}, { headers: getAuthHeaders(token) });
     },
 };
 

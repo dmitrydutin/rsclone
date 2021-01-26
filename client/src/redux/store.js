@@ -1,6 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
+import { loadFromLocalStorage, saveToLocalStorage } from './helpers/localStorage';
 
 import { AuthReducer } from './reducers/AuthReducer';
 import { LangReducer } from './reducers/LangReducer';
@@ -10,13 +11,25 @@ import { ThemeReducer } from './reducers/ThemeReducer';
 
 const rootReducer = combineReducers({
     auth: AuthReducer,
+
     news: NewsReducer,
     newsPic: PicReducer,
     theme: ThemeReducer,
     lang: LangReducer,
 });
 
-export default createStore(
+const store = createStore(
     rootReducer,
-    composeWithDevTools(applyMiddleware(thunkMiddleware, newsMiddleware)),
+    loadFromLocalStorage(),
+    composeWithDevTools(applyMiddleware(thunkMiddleware)),
 );
+
+store.subscribe(() => {
+    saveToLocalStorage({
+        auth: {
+            token: store.getState().auth.token,
+        },
+    });
+});
+
+export default store;

@@ -1,10 +1,11 @@
 import { AuthAPI } from '../../api/api.js';
 
-const SET_USER_DATA = 'SET_USER_DATA';
+const SET_USER_DATA = '/auth/SET_USER_DATA';
 
 const initialState = {
     isAuth: false,
-    role: null,
+    user: {},
+    token: null,
 };
 
 export const AuthReducer = (state = initialState, action) => {
@@ -12,17 +13,21 @@ export const AuthReducer = (state = initialState, action) => {
         case SET_USER_DATA:
             return {
                 ...state,
-                ...action.payload,
+                isAuth: action.isAuth,
+                user: { ...action.user },
+                token: action.token,
             };
         default:
             return state;
     }
 };
 
-const setUserDataAction = (isAuth, role) => {
+const setUserDataAction = (isAuth, user, token) => {
     return {
         type: SET_USER_DATA,
-        payload: { isAuth, role },
+        isAuth,
+        user,
+        token,
     };
 };
 
@@ -32,8 +37,24 @@ export const login = (login, password, setSubmitting) => {
         setSubmitting(false);
 
         if (response.status === 200) {
-            const { isAuth, role } = response.data;
-            dispatch(setUserDataAction(isAuth, role));
+            const { user, token } = response.data;
+            dispatch(setUserDataAction(true, user, token));
+        } else {
+            console.log('Auth error', response);
+        }
+    };
+};
+
+export const join = (name, surname, login, password, setSubmitting) => {
+    return async (dispatch) => {
+        const response = await AuthAPI.join(name, surname, login, password);
+        setSubmitting(false);
+
+        if (response.status === 200) {
+            const { user, token } = response.data;
+            dispatch(setUserDataAction(true, user, token));
+        } else {
+            console.log('Auth error', response);
         }
     };
 };

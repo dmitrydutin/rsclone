@@ -1,7 +1,11 @@
 import styles from './Error.module.css';
+
 import { connect } from 'react-redux';
 
-const Error = ({language}) => {
+import { compose } from 'redux';
+import { withLogoutRedirect } from '../../hoc/withAuthRedirect';
+
+const Error = ({ language }) => {
     return (
         <main className={styles.main}>
             <div className={styles.mainInner}>
@@ -12,10 +16,4 @@ const Error = ({language}) => {
     );
 };
 
-const mapStateToProps = function (state) {    
-    return {        
-        language: state.lang.language,
-    };
-};
-
-export default connect(mapStateToProps)(Error);
+export default compose(withLogoutRedirect)(Error);
