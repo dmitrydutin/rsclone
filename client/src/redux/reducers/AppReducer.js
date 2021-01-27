@@ -1,8 +1,8 @@
 import { getAuthUserData } from './AuthReducer';
 
 const SET_INITIALIZED_SUCCESS = '/app/SET_INITIALIZED_SUCCESS';
-const CHANGE_THEME = '/app/CHANGE_THEME',
-    CHANGE_LANGUAGE = '/app/CHANGE_LANGUAGE';
+const CHANGE_THEME = '/app/CHANGE_THEME';
+const CHANGE_LANGUAGE = '/app/CHANGE_LANGUAGE';
 
 const initialState = {
     initialized: false,
@@ -28,7 +28,7 @@ export const AppReducer = (state = initialState, action) => {
                 language: action.language,
             };
         default:
-            return { ...state, language: 'ENGLISH' }; // из initialState язык при инициализации не прогружается, я без понятия почему
+            return state;
     }
 };
 

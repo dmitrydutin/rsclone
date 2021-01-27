@@ -19,10 +19,18 @@ router.get(
                 {
                     model: Comments,
                     attributes: ['text', 'userId', 'postId'],
+                    include: [
+                        {
+                            model: Users,
+                            attributes: ['avatar', 'login'],
+                        },
+                    ],
                 },
             ],
+            order: [['id', 'DESC']],
         });
-        return res.json({ list: ress.reverse() });
+
+        return res.json({ list: ress });
     }),
 );
 

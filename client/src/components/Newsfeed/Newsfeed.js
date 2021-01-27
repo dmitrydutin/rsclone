@@ -8,8 +8,8 @@ import urlAdd from './assets/images/add.svg';
 import loader from './assets/images/loader.gif';
 import CloseIcon from '@material-ui/icons/Close';
 import { getToday, uploadImage } from './helper.js';
+import SendIcon from '@material-ui/icons/Send';
 
-import belarussian from '../../languages/belarussian';
 import russian from '../../languages/russian';
 import english from '../../languages/english';
 
@@ -29,15 +29,16 @@ function Newsfeed({ children, language, user, token }) {
     useEffect(() => {
         dispatch({ type: 'INIT_POSTS', token: token });
     }, []);
-    const currentLanguage =
-        language === 'ENGLISH' ? english : language === 'РУССКИЙ' ? russian : belarussian;
+
+    const currentLanguage = language === 'ENGLISH' ? english : russian;
     const classes = useStyles();
-    const [postState, setPostState] = useState(<b>{currentLanguage.post}</b>);
+    const [postState, setPostState] = useState(<b>Post</b>);
     const [textState, setTextState] = useState('');
     const [state, setState] = useState({ file: '', imagePreviewUrl: '' });
 
     let { imagePreviewUrl } = state;
     let imagePreviewDiv = null;
+    
     if (imagePreviewUrl) {
         imagePreviewDiv = (
             <div>
@@ -98,7 +99,7 @@ function Newsfeed({ children, language, user, token }) {
                 token: token,
             });
 
-            setPostState(<b>{currentLanguage.post}</b>);
+            setPostState(<b>Post</b>);
             setTextState('');
             setState({ file: '', imagePreviewUrl: '' });
         });

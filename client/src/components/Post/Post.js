@@ -160,11 +160,14 @@ function Post(props) {
                                 className={classes.contentHeader}
                                 avatar={
                                     <Avatar aria-label="recipe" className={classes.avatar}>
-                                        {<img src={userAvatar} alt={'U'} />}
+                                        {post.user.avatar ? (
+                                            <img src={el.user.avatar} alt={el.user.avatar} />
+                                        ) : (
+                                            <img src={userAvatar} alt={'U'} />
+                                        )}
                                     </Avatar>
                                 }
-                                title={el.login ? el.login : 'undefined'}
-                                // subheader={el.comment ? el.comment : 'undefined'}
+                                title={el.user.login ? el.user.login : 'undefined'}
                             />
                             <Typography>{el.text}</Typography>
                         </CardContent>

@@ -19,14 +19,12 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import { setTheme } from '../../redux/reducers/AppReducer';
 import { setLanguage } from '../../redux/reducers/AppReducer';
-import belarussian from '../../languages/belarussian';
 import russian from '../../languages/russian';
 import english from '../../languages/english';
 
 const Header = (props) => {
     const { isAuth, language, setTheme, setLanguage, theme } = props;
-    const currentLanguage =
-        language === 'ENGLISH' ? english : language === 'РУССКИЙ' ? russian : belarussian;
+    const currentLanguage = language === 'ENGLISH' ? english : russian;
 
     const changeTheme = () => {
         const selectedTheme = theme === 'dark' ? 'light' : 'dark';
@@ -34,20 +32,8 @@ const Header = (props) => {
     };
 
     const changeLanguage = () => {
-        switch (language) {
-            case 'ENGLISH':
-                setLanguage('РУССКИЙ');
-                break;
-            case 'РУССКИЙ':
-                setLanguage('БЕЛАРУСКАЯ');
-                break;
-            case 'БЕЛАРУСКАЯ':
-                setLanguage('ENGLISH');
-                break;
-            default:
-                setLanguage('ENGLISH');
-                break;
-        }
+        const selectedLanguage = language === 'ENGLISH' ? 'РУССКИЙ' : 'ENGLISH';
+        setLanguage(selectedLanguage);
     };
 
     return (

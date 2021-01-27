@@ -1,10 +1,11 @@
 import { NewsAPI } from '../../api/api';
-const INIT_POSTS = 'INIT_POSTS',
-    FETCH_INIT_POSTS = 'FETCH_INIT_POSTS',
-    FETCH_UPDATE_POSTS = 'FETCH_UPDATE_POSTS',
-    UPDATE_POSTS = 'UPDATE_POSTS',
-    ADD_COMMENTS = 'ADD_COMMENTS',
-    FETCH_ADD_COMMENTS = 'FETCH_ADD_COMMENTS';
+
+const INIT_POSTS = 'INIT_POSTS';
+const FETCH_INIT_POSTS = 'FETCH_INIT_POSTS';
+const FETCH_UPDATE_POSTS = 'FETCH_UPDATE_POSTS';
+const UPDATE_POSTS = 'UPDATE_POSTS';
+const ADD_COMMENTS = 'ADD_COMMENTS';
+const FETCH_ADD_COMMENTS = 'FETCH_ADD_COMMENTS';
 const initialState = {
     arrPost: [],
 };
@@ -19,7 +20,8 @@ const NewsReducer = (state = initialState, action) => {
             };
         case FETCH_ADD_COMMENTS:
             state.arrPost[action.index].comments.push(action.query);
-            return state;
+            return {...state,
+            };
         default:
             return state;
     }
@@ -72,5 +74,4 @@ const newsMiddleware = (store) => (next) => (action) => {
     next(action);
 };
 
-export { newsMiddleware };
-export { NewsReducer };
+export {NewsReducer, newsMiddleware };
