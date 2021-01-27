@@ -1,31 +1,20 @@
-.main {
-    height: 100vh;
-    min-height: 500px;
+.inner {
+    height: calc(100vh - 70px);
+    margin: 0 auto;
+    max-width: 516px;
+    min-height: 650px;
 
     display: flex;
     align-items: center;
-    justify-content: center;
 }
 
-.form {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
+.subtitle {
+    margin-bottom: 30px !important;
+    font-weight: 400 !important;
 }
 
-.title {
-    margin: 0;
-    margin-bottom: 26px;
-}
-
-.fieldGroup {
-    display: flex;
-}
-
-.fieldGroup .field:first-child {
-    margin-right: 16px;
-}
-
-.field {
-    margin-bottom: 16px !important;
+@media (max-width: 960px) {
+    .subtitle {
+        margin-bottom: 24px !important;
+    }
 }

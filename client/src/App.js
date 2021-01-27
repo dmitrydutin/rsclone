@@ -8,19 +8,20 @@ import Header from './components/Header/Header';
 import Login from './components/Login/Login';
 import Join from './components/Join/Join';
 import Error from './components/Error/Error';
+import Footer from './components/Footer/Footer';
 
 const App = (props) => {
-    const { token } = props;
+    const { token, initialized, initializeApp } = props;
 
     useEffect(() => {
-        props.initializeApp(token);
+        initializeApp(token);
     }, []);
 
     return (
         <>
             <CssBaseline />
 
-            {props.initialized ? (
+            {initialized ? (
                 <>
                     <Header />
 
@@ -29,6 +30,8 @@ const App = (props) => {
                         <Route path="/join" exact component={Join} />
                         <Route component={Error} />
                     </Switch>
+
+                    <Footer />
                 </>
             ) : (
                 <LinearProgress />
