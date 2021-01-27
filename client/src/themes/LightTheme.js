@@ -5,7 +5,7 @@ let lightTheme = createMuiTheme({
     palette: {
         main: blue[500],
         background: {
-            default: '#fffff',
+            default: '#fafafa',
         },
     },
 });

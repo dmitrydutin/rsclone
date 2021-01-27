@@ -1,9 +1,13 @@
 import { getAuthUserData } from './AuthReducer';
 
 const SET_INITIALIZED_SUCCESS = '/app/SET_INITIALIZED_SUCCESS';
+const CHANGE_THEME = '/app/CHANGE_THEME',
+    CHANGE_LANGUAGE = '/app/CHANGE_LANGUAGE';
 
 const initialState = {
     initialized: false,
+    theme: 'light',
+    language: 'ENGLISH',
 };
 
 export const AppReducer = (state = initialState, action) => {
@@ -13,13 +17,33 @@ export const AppReducer = (state = initialState, action) => {
                 ...state,
                 initialized: true,
             };
+        case CHANGE_THEME:
+            return {
+                ...state,
+                theme: action.theme,
+            };
+        case CHANGE_LANGUAGE:
+            return {
+                ...state,
+                language: action.language,
+            };
         default:
-            return state;
+            return { ...state, language: 'ENGLISH' }; // из initialState язык при инициализации не прогружается, я без понятия почему
     }
 };
 
 const initializedSuccess = () => ({
     type: SET_INITIALIZED_SUCCESS,
+});
+
+const setThemeAction = (theme) => ({
+    type: CHANGE_THEME,
+    theme,
+});
+
+const setLanguageAction = (language) => ({
+    type: CHANGE_LANGUAGE,
+    language,
 });
 
 export const initializeApp = (token) => {
@@ -29,5 +53,17 @@ export const initializeApp = (token) => {
         promise.then(() => {
             dispatch(initializedSuccess());
         });
+    };
+};
+
+export const setTheme = (theme) => {
+    return (dispatch) => {
+        dispatch(setThemeAction(theme));
+    };
+};
+
+export const setLanguage = (language) => {
+    return (dispatch) => {
+        dispatch(setLanguageAction(language));
     };
 };

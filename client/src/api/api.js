@@ -39,13 +39,14 @@ const AuthAPI = {
 };
 
 const NewsAPI = {
-    sendPost(token,post) {
-        console.log(token, post)
-        return axios.post('/api/feed', post, { headers: getAuthHeaders(token) });
+    sendPost(token, post) {
+        return axios.post('/api/auth/feed', post, { headers: getAuthHeaders(token) });
+    },
+    sendComment(token, comment) {
+        return axios.post('/api/auth/feed/comment', comment, { headers: getAuthHeaders(token) });
     },
     getPosts(token) {
-        console.log(token)
-        return axios.get('/api/feed/allposts',{}, { headers: getAuthHeaders(token) });
+        return axios.get('/api/auth/feed/allposts', { headers: getAuthHeaders(token) });
     },
 };
 

@@ -10,17 +10,19 @@ import Header from './components/Header/Header';
 import Login from './components/Login/Login';
 import Join from './components/Join/Join';
 import Error from './components/Error/Error';
-
 import Newsfeed from './components/Newsfeed/Newsfeed';
 import { ThemeProvider } from '@material-ui/core/styles';
+import darkTheme from './themes/DarkTheme';
+import lightTheme from './themes/LightTheme';
 
 const App = (props) => {
-    const currentTheme = useSelector((state) => state.theme.theme);
-    const { token } = props;
+    const { token, theme } = props;
+    const currentTheme = theme === 'light' ? lightTheme : darkTheme;
 
     useEffect(() => {
         props.initializeApp(token);
     }, []);
+
     return (
         <ThemeProvider theme={currentTheme}>
             <>
@@ -47,6 +49,7 @@ const App = (props) => {
 const mapStateToProps = (state) => ({
     initialized: state.app.initialized,
     token: state.auth.token,
+    theme: state.app.theme,
 });
 
 export default connect(mapStateToProps, { initializeApp })(App);

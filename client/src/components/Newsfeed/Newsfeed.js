@@ -9,9 +9,14 @@ import loader from './assets/images/loader.gif';
 import CloseIcon from '@material-ui/icons/Close';
 import { getToday, uploadImage } from './helper.js';
 
+import belarussian from '../../languages/belarussian';
+import russian from '../../languages/russian';
+import english from '../../languages/english';
+
 const useStyles = makeStyles((theme) => ({
     root: {
-        marginTop: 70,
+        maxWidth: '100%',
+        paddingTop: 70,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -24,10 +29,13 @@ function Newsfeed({ children, language, user, token }) {
     useEffect(() => {
         dispatch({ type: 'INIT_POSTS', token: token });
     }, []);
+    const currentLanguage =
+        language === 'ENGLISH' ? english : language === 'РУССКИЙ' ? russian : belarussian;
     const classes = useStyles();
-    const [postState, setPostState] = useState(<b>{language.post}</b>);
+    const [postState, setPostState] = useState(<b>{currentLanguage.post}</b>);
     const [textState, setTextState] = useState('');
     const [state, setState] = useState({ file: '', imagePreviewUrl: '' });
+
     let { imagePreviewUrl } = state;
     let imagePreviewDiv = null;
     if (imagePreviewUrl) {
@@ -78,7 +86,6 @@ function Newsfeed({ children, language, user, token }) {
             <img src={loader} alt={'Loading...'} style={{ height: '40px', width: '35px' }} />,
         );
         uploadImage(state.file).then((res) => {
-            console.log(user);
             dispatch({
                 type: 'UPDATE_POSTS',
                 query: {
@@ -86,18 +93,19 @@ function Newsfeed({ children, language, user, token }) {
                     text: `${textState}`,
                     photo: res,
                     likes: 0,
+                    user: { login: user.login, avatar: user.avatar },
                 },
                 token: token,
             });
 
-            setPostState(<b>{language.post}</b>);
+            setPostState(<b>{currentLanguage.post}</b>);
             setTextState('');
             setState({ file: '', imagePreviewUrl: '' });
         });
     }
 
     return (
-        <Container className={classes.root} color="primary">
+        <Container className={classes.root}>
             <div className={styles.newPost}>
                 <form onSubmit={(e) => _handleSubmit(e)}>
                     <div className={styles.inputContainer}>
@@ -146,7 +154,7 @@ function Newsfeed({ children, language, user, token }) {
 const mapStateToProps = function (state) {
     return {
         children: state.news.arrPost.map((el) => <Post post={el} />),
-        language: state.lang.language,
+        language: state.app.language,
         user: state.auth.user,
         token: state.auth.token,
     };

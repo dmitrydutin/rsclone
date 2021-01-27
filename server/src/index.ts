@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, '..', '..', 'client', 'build')));
 
 app.use('/api/auth', authRouter);
 
-app.use('/api/feed', feedRouter);
+app.use('/api/auth/feed', feedRouter);
 
 app.use('/api/example', exampleRouter);
 

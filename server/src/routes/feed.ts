@@ -1,4 +1,4 @@
-import { Users, Posts } from '../database/main';
+import { Users, Posts, Comments } from '../database/main';
 import { auth } from '../middleware/auth';
 import asyncHandler from 'express-async-handler';
 import createError from 'http-errors';
@@ -9,18 +9,20 @@ router.get(
     '/allposts',
     auth,
     asyncHandler(async (req, res) => {
-        const list = await Posts.findAll();
-
-        list.forEach(async (post) => {
-            const userId = await Users.findAll({
-                where: {
-                    userId: post.userId,
+        const ress = await Posts.findAll({
+            attributes: ['id', 'userId', 'text', 'photo', 'likes'],
+            include: [
+                {
+                    model: Users,
+                    attributes: ['avatar', 'login'],
                 },
-            });
-            post.login = userId[0].login;
-            console.log(post);
+                {
+                    model: Comments,
+                    attributes: ['text', 'userId', 'postId'],
+                },
+            ],
         });
-        return res.json({ list });
+        return res.json({ list: ress.reverse() });
     }),
 );
 
@@ -29,19 +31,42 @@ router.post(
     auth,
     asyncHandler(async (req, res) => {
         const { login, text, photo, likes } = req.body;
-        const userId = await Users.findAll({
+        const userId = await Users.findOne({
             where: {
                 login: login,
             },
         });
-        // const ress=userId[0].id
-        //  return res.json({ress});
         const newPost = await Posts.create({
-            userId: userId[0].id,
+            userId: userId.id,
             text: text,
             photo: photo,
             likes: likes,
         });
+        return res.json({ status: 200 });
+    }),
+);
+
+router.post(
+    '/comment',
+    auth,
+    asyncHandler(async (req, res) => {
+        const { login, text, postId } = req.body;
+        const user = await Users.findOne({
+            where: {
+                login: login,
+            },
+        });
+        const post = await Posts.findOne({
+            where: {
+                id: postId,
+            },
+        });
+        const newComment = await Comments.create({
+            userId: user.id,
+            postId: post.id,
+            text: text,
+        });
+        return res.json({ newComment });
     }),
 );
 
