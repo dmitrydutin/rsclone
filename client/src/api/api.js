@@ -10,7 +10,7 @@ const getAuthHeaders = (token) => {
     return token ? { Authorization: token } : {};
 };
 
-export const cloudinary = {
+const cloudinary = {
     uploadImage(image) {
         const data = new FormData();
         data.append('file', image);
@@ -24,7 +24,7 @@ export const cloudinary = {
     },
 };
 
-export const AuthAPI = {
+const AuthAPI = {
     login(login, password) {
         return axios.post('/api/auth/login', { login, password });
     },
@@ -38,3 +38,23 @@ export const AuthAPI = {
         return axios.post('/api/auth/logout', {}, { headers: getAuthHeaders(token) });
     },
 };
+
+const NewsAPI = {
+    sendPost(token, post) {
+        return axios.post('/api/feed/posts', post, { headers: getAuthHeaders(token) });
+    },
+    sendComment(token, comment) {
+        return axios.post('/api/feed/comments', comment, { headers: getAuthHeaders(token) });
+    },
+    getPosts(token) {
+        return axios.get('/api/feed/posts', { headers: getAuthHeaders(token) });
+    },
+    getComments(token, postId) {
+        return axios.get('/api/feed/comments', {
+            params: { postId },
+            headers: getAuthHeaders(token),
+        });
+    },
+};
+
+export { cloudinary, AuthAPI, NewsAPI };

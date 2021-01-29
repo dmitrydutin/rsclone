@@ -7,3 +7,29 @@
     align-items: center;
     justify-content: space-between;
 }
+
+.languageContainer {
+    margin: 10px 10px !important;
+}
+
+.languageSwitch {
+    display: none !important;
+}
+
+.button {
+    background-color: transparent !important;
+    border: 1px solid #e0e0e0 !important;
+    font-size: 1em !important;
+}
+.button:hover {
+    background-color: #e0e0e0 !important;
+}
+@media (max-width: 600px) {
+    .title {
+        font-size: 1rem !important;
+    }
+
+    .button {
+        font-size: 0.7em !important;
+    }
+}

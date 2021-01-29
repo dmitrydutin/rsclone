@@ -10,6 +10,7 @@ const Upload = () => {
     return (
         <main>
             <input
+                accept="image/x-png,image/gif,image/jpeg"
                 type="file"
                 placeholder="Upload an image"
                 onChange={uploadImage}
