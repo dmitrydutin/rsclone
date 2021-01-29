@@ -3,26 +3,35 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { login } from '../../redux/reducers/AuthReducer';
 import { withLoginRedirect } from '../../hoc/withAuthRedirect';
+import { getLanguage } from '../../languages/index';
+
+import { Formik, Field, Form } from 'formik';
+import * as Yup from 'yup';
 import { Link as RouterLink } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import { Formik, Field, Form } from 'formik';
 import { TextField } from 'formik-material-ui';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
-import * as Yup from 'yup';
 
-const LoginSchema = Yup.object().shape({
-    login: Yup.string().min(5, 'Too Short!').max(30, 'Too Long!').required('Required'),
-    password: Yup.string().min(5, 'Too Short!').max(30, 'Too Long!').required('Required'),
-});
-
-const Login = ({ login }) => {
+const Login = ({ language, login }) => {
+    const translate = getLanguage(language);
     const initialValues = { login: '', password: '' };
 
+    const LoginSchema = Yup.object().shape({
+        login: Yup.string()
+            .min(5, translate['login.yup.short'])
+            .max(30, translate['login.yup.long'])
+            .required(translate['login.yup.required']),
+        password: Yup.string()
+            .min(5, translate['login.yup.short'])
+            .max(30, translate['login.yup.long'])
+            .required(translate['login.yup.required']),
+    });
+
     const onSubmit = (values, { setSubmitting, setErrors }) => {
-        login(values.login, values.password, setSubmitting, setErrors);
+        login(values.login, values.password, setSubmitting, setErrors, translate);
     };
 
     return (
@@ -44,7 +53,7 @@ const Login = ({ login }) => {
                                             align="center"
                                             color="textPrimary"
                                         >
-                                            Sign in
+                                            {translate['login.signIn']}
                                         </Typography>
                                     </Grid>
 
@@ -56,7 +65,7 @@ const Login = ({ login }) => {
                                             color="textSecondary"
                                             className={styles.subtitle}
                                         >
-                                            Don’t have an account?
+                                            {translate['login.haveAccount']}
                                             <Link
                                                 component={RouterLink}
                                                 to="/join"
@@ -64,7 +73,7 @@ const Login = ({ login }) => {
                                                 underline="none"
                                                 className={styles.link}
                                             >
-                                                Sign up.
+                                                {translate['login.signUp']}
                                             </Link>
                                         </Typography>
                                     </Grid>
@@ -73,7 +82,7 @@ const Login = ({ login }) => {
                                         <Field
                                             component={TextField}
                                             name="login"
-                                            label="Login *"
+                                            label={translate['login.form.login']}
                                             variant="outlined"
                                             fullWidth={true}
                                         />
@@ -84,7 +93,7 @@ const Login = ({ login }) => {
                                             component={TextField}
                                             name="password"
                                             type="password"
-                                            label="Password *"
+                                            label={translate['login.form.password']}
                                             variant="outlined"
                                             fullWidth={true}
                                         />
@@ -96,7 +105,7 @@ const Login = ({ login }) => {
                                             component="i"
                                             color="textSecondary"
                                         >
-                                            Fields that are marked with * sign are required.
+                                            {translate['login.form.requiredFields']}
                                         </Typography>
                                     </Grid>
 
@@ -109,7 +118,7 @@ const Login = ({ login }) => {
                                             fullWidth={true}
                                             size="large"
                                         >
-                                            Send
+                                            {translate['login.form.send']}
                                         </Button>
                                     </Grid>
                                 </Grid>
@@ -122,4 +131,8 @@ const Login = ({ login }) => {
     );
 };
 
-export default compose(connect(null, { login }), withLoginRedirect)(Login);
+const mapStateToProps = (state) => ({
+    language: state.app.language,
+});
+
+export default compose(connect(mapStateToProps, { login }), withLoginRedirect)(Login);

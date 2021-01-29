@@ -7,7 +7,7 @@ import Divider from '@material-ui/core/Divider';
 import { getLanguage } from '../../languages/index';
 
 const Error = ({ language }) => {
-    const currentLanguage = getLanguage(language);
+    const translate = getLanguage(language);
 
     return (
         <main className={styles.main}>
@@ -29,7 +29,7 @@ const Error = ({ language }) => {
                     color="textPrimary"
                     className={styles.errorText}
                 >
-                    {currentLanguage['Error.notFound']}
+                    {translate['error.notFound']}
                 </Typography>
             </div>
         </main>
