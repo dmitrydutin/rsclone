@@ -1,77 +1,154 @@
 import { NewsAPI } from '../../api/api';
 
-const INIT_POSTS = 'INIT_POSTS';
-const FETCH_INIT_POSTS = 'FETCH_INIT_POSTS';
-const FETCH_UPDATE_POSTS = 'FETCH_UPDATE_POSTS';
-const UPDATE_POSTS = 'UPDATE_POSTS';
-const ADD_COMMENTS = 'ADD_COMMENTS';
-const FETCH_ADD_COMMENTS = 'FETCH_ADD_COMMENTS';
+const SET_POSTS = '/news/SET_POSTS';
+const SET_POST = '/news/SET_POST';
+const SET_COMMENTS = '/news/SET_COMMENTS';
+const SET_COMMENT = '/news/SET_COMMENT';
+const SET_LIKE = '/news/SET_LIKE';
+const GET_LIKE = '/news/GET_LIKE';
+
 const initialState = {
-    arrPost: [],
+    posts: [],
 };
 
-const NewsReducer = (state = initialState, action) => {
+export const NewsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case FETCH_UPDATE_POSTS:
-            return { ...state, arrPost: [action.query, ...state.arrPost] };
-        case FETCH_INIT_POSTS:
+        case SET_POSTS:
             return {
-                arrPost: action.query,
+                ...state,
+                posts: [...action.posts],
             };
-        case FETCH_ADD_COMMENTS:
-            state.arrPost[action.index].comments.push(action.query);
-            return {...state,
+        case SET_POST:
+            return {
+                ...state,
+                posts: [action.post, ...state.posts],
             };
+        case SET_COMMENTS:
+            return {
+                ...state,
+                posts: state.posts.map((post, index) => {
+                    if (index === action.index) {
+                        post.comments = [...action.comments].reverse();
+                    }
+                    return post;
+                }),
+            };
+        case SET_COMMENT:
+            return {
+                ...state,
+                posts: state.posts.map((post, index) => {
+                    if (index === action.index) {
+                        if (!post.comments) {
+                            post.comments = [];
+                        }
+                        post.comments.push(action.comment);
+                    }
+                    return post;
+                }),
+            };
+            
         default:
             return state;
     }
 };
 
-const newsMiddleware = (store) => (next) => (action) => {
-    switch (action.type) {
-        case INIT_POSTS:
-            NewsAPI.getPosts(action.token)
-                .then((response) => {
-                    return response.data;
-                })
-                .then((el) => {
-                    // el.list.forEach((element) => {
-                    //     element.comment = [];
-                    // });
-                    store.dispatch({
-                        type: 'FETCH_INIT_POSTS',
-                        query: el.list,
-                    });
-                });
-            break;
-        case UPDATE_POSTS:
-            NewsAPI.sendPost(action.token, action.query).then(() => {
-                const newPost = { ...action.query, comments: [] };
-                store.dispatch({
-                    type: 'FETCH_UPDATE_POSTS',
-                    query: newPost,
-                });
-            });
-            break;
-        case ADD_COMMENTS:
-            const index = store.getState().news.arrPost.findIndex((el) => {
-                return el.id === action.post.id;
-            });
-            console.log(action.query);
-            const res = NewsAPI.sendComment(action.token, action.query);
-            console.log(res);
-            store.dispatch({
-                type: 'FETCH_ADD_COMMENTS',
-                query: action.query,
-                index,
-            });
+const setPostsAction = (posts) => ({
+    type: SET_POSTS,
+    posts,
+});
 
-            break;
-        default:
-            break;
-    }
+const setPostAction = (post) => ({
+    type: SET_POST,
+    post,
+});
 
-    next(action);
+const setCommentsAction = (comments, index) => ({
+    type: SET_COMMENTS,
+    comments,
+    index,
+});
+
+const setCommentAction = (userId, index) => ({
+    type: SET_COMMENT,
+    userId,
+    index,
+});
+
+const setLikeAction = (userId, index) => ({
+    type: SET_COMMENTS,
+    userId,    
+    index,
+});
+
+const getLikeAction = (comment, index) => ({
+    type: SET_COMMENT,
+    comment,
+    index,
+});
+
+export const getPosts = (token) => {
+    return async (dispatch) => {
+        const response = await NewsAPI.getPosts(token);
+
+        if (response.status === 200 && response.data.status === 200) {
+            const { posts } = response.data;
+            dispatch(setPostsAction(posts));
+        }
+    };
 };
 
-export {NewsReducer, newsMiddleware };
+export const setPost = ({ token, query }) => {
+    return async (dispatch) => {
+        const response = await NewsAPI.sendPost(token, query);
+
+        if (response.status === 200 && response.data.status === 200) {
+            const { post } = response.data;
+
+            console.log({
+                ...post,
+                user: query.user,
+            });
+
+            dispatch(
+                setPostAction({
+                    ...post,
+                    user: query.user,
+                }),
+            );
+        }
+    };
+};
+
+export const setComment = ({ posts, post, token, query }) => {
+    return async (dispatch) => {
+        const index = posts.findIndex((el) => {
+            return el.id === post.id;
+        });
+
+        const response = await NewsAPI.sendComment(token, query);
+
+        console.log({
+            query,
+            response: response.data,
+        });
+
+        if (response.status === 200 && response.data.status === 200) {
+            dispatch(setCommentAction(query, index));
+        }
+    };
+};
+
+export const getComments = ({ posts, postId, token }) => {
+    return async (dispatch) => {
+        const index = posts.findIndex((el) => {
+            return el.id === postId;
+        });
+
+        const response = await NewsAPI.getComments(token, postId);
+
+        if (response.status === 200 && response.data.status === 200) {
+            const { comments } = response.data;
+            dispatch(setCommentsAction(comments, index));
+        }
+    };
+};

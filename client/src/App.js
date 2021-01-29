@@ -10,14 +10,14 @@ import Header from './components/Header/Header';
 import Login from './components/Login/Login';
 import Join from './components/Join/Join';
 import Error from './components/Error/Error';
+import Post from './components/Post/Post';
 import Newsfeed from './components/Newsfeed/Newsfeed';
 import { ThemeProvider } from '@material-ui/core/styles';
-import darkTheme from './themes/DarkTheme';
-import lightTheme from './themes/LightTheme';
+import { getTheme } from './themes/index';
 
 const App = (props) => {
     const { token, theme } = props;
-    const currentTheme = theme === 'light' ? lightTheme : darkTheme;
+    const currentTheme = getTheme(theme);
 
     useEffect(() => {
         props.initializeApp(token);

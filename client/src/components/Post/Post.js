@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { connect, useSelector, useDispatch } from 'react-redux';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import styles from './Post.module.css';
+import { Formik } from 'formik';
 import {
     Card,
     CardHeader,
@@ -19,8 +21,11 @@ import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import CommentIcon from '@material-ui/icons/Comment';
 import userAvatar from './assets/images/user.svg';
+import { withLoginRedirect } from '../../hoc/withAuthRedirect';
 import SendIcon from '@material-ui/icons/Send';
 import loader from './assets/images/loader.gif';
+
+import { setComment, getComments } from '../../redux/reducers/NewsReducer';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -79,54 +84,68 @@ const useStyles = makeStyles((theme) => ({
     iconButton: {
         padding: 10,
     },
+    liked: {
+        font: 50,
+        color: '#FF0000',
+    },
 }));
 
-function Post(props) {
-    const { post, user, token } = props;
-    const dispatch = useDispatch();
+const Post = (props) => {
+    const { posts, post, user, token, setComment, getComments } = props;
+
     const classes = useStyles();
-    const [expanded, setExpanded] = useState(true);
+
+    const [expanded, setExpanded] = useState(false);
+    const [liked, setLiked] = useState(false);
+    const [postState, setPostState] = useState(<SendIcon />);
+    const [textState, setTextState] = useState('');
+
     const handleExpandClick = () => {
+        getComments({ posts, postId: post.id, token });
         setExpanded(!expanded);
     };
 
-    const [postState, setPostState] = useState(<SendIcon />);
-    const [textState, setTextState] = useState('');
-    function _handleTextChange(e) {
+    const handleLikeClick = () => {
+        setLiked(!liked);
+    };
+
+    const handleTextChange = (e) => {
         e.preventDefault();
         setTextState(e.target.value);
-    }
+    };
 
-    function _handleSubmit(e) {
+    const handleSubmit = (e) => {
         e.preventDefault();
         setPostState(
             <img src={loader} alt={'Loading...'} style={{ height: '40px', width: '35px' }} />,
         );
-        dispatch({
-            type: 'ADD_COMMENTS',
+        setComment({
+            posts,
             post,
             token,
-            query: { postId: post.id, text: textState, login: user.login, avatar: user.avatar },
+            query: {
+                postId: post.id,
+                text: textState,
+                user: { login: user.login, avatar: user.avatar },
+            },
         });
-
         setPostState(<SendIcon />);
         setTextState('');
-    }
+    };
 
     return (
         <Card className={classes.root}>
             <CardHeader
                 avatar={
                     <Avatar aria-label="recipe" className={classes.avatar}>
-                        {post.user.avatar ? (
-                            <img src={post.user.avatar} alt={post.user.avatar} />
+                        {post.user?.avatar ? (
+                            <img src={post.user.avatar} alt="Avatar" />
                         ) : (
-                            <img src={userAvatar} alt={'U'} />
+                            <img src={userAvatar} alt="Avatar" />
                         )}
                     </Avatar>
                 }
-                title={post.user.login ? post.user.login : 'undefined'}
-                // subheader={post.date ? post.date : 'undefined'}
+                title={post.user.login}
             />
 
             {post.photo ? (
@@ -137,23 +156,31 @@ function Post(props) {
                     src={post.photo}
                 />
             ) : null}
+
             {post.text ? (
                 <CardContent className={classes.content}>
                     <Typography color="textSecondary">{post.text}</Typography>
                 </CardContent>
             ) : null}
+
             <CardActions disableSpacing className={classes.content}>
-                <IconButton className={classes.icon} aria-label="like">
-                    {post.likes ? post.likes : 0}
+                <IconButton
+                    className={liked ? classes.liked : classes.icon}
+                    aria-label="like"
+                    onClick={handleLikeClick}
+                >
                     <FavoriteIcon />
+                    {post.likesCount}
                 </IconButton>
 
                 <IconButton aria-label="comment" onClick={handleExpandClick}>
                     <CommentIcon />
+                    <Typography>{post.commentsCount}</Typography>
                 </IconButton>
             </CardActions>
+
             <Collapse in={expanded} timeout="auto" unmountOnExit className={classes.commentSection}>
-                {post.comments?.map((el) => {
+                {post.comments?.map((comment) => {
                     return (
                         <CardContent className={classes.content}>
                             <CardHeader
@@ -161,32 +188,33 @@ function Post(props) {
                                 avatar={
                                     <Avatar aria-label="recipe" className={classes.avatar}>
                                         {post.user.avatar ? (
-                                            <img src={el.user.avatar} alt={el.user.avatar} />
+                                            <img src={comment.user.avatar} alt="Avatar" />
                                         ) : (
-                                            <img src={userAvatar} alt={'U'} />
+                                            <img src={userAvatar} alt="Avatar" />
                                         )}
                                     </Avatar>
                                 }
-                                title={el.user.login ? el.user.login : 'undefined'}
+                                title={comment.user.login ? comment.user.login : 'undefined'}
                             />
-                            <Typography>{el.text}</Typography>
+                            <Typography>{comment.text}</Typography>
                         </CardContent>
                     );
                 })}
-                <form onSubmit={(e) => _handleSubmit(e)}>
+
+                <form onSubmit={(e) => handleSubmit(e)}>
                     <div className={styles.inputContainer}>
                         <Paper component="form" className={classes.paper}>
                             <InputBase
                                 className={classes.input}
                                 multiline={true}
-                                onChange={(e) => _handleTextChange(e)}
+                                onChange={(e) => handleTextChange(e)}
                                 value={textState}
                             />
                             <IconButton
                                 type="submit"
                                 className={classes.iconButton}
                                 aria-label="search"
-                                onClick={(e) => _handleSubmit(e)}
+                                onClick={(e) => handleSubmit(e)}
                                 disabled={textState ? false : true}
                             >
                                 {postState}
@@ -197,13 +225,15 @@ function Post(props) {
             </Collapse>
         </Card>
     );
-}
-
-const mapStateToProps = function (state) {
-    return {
-        user: state.auth.user,
-        token: state.auth.token,
-    };
 };
 
-export default connect(mapStateToProps)(Post);
+const mapStateToProps = (state) => ({
+    user: state.auth.user,
+    token: state.auth.token,
+    posts: state.news.posts,
+});
+
+export default compose(
+    connect(mapStateToProps, { setComment, getComments }),
+    //withLoginRedirect
+)(Post);

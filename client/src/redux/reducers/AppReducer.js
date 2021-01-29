@@ -7,7 +7,7 @@ const CHANGE_LANGUAGE = '/app/CHANGE_LANGUAGE';
 const initialState = {
     initialized: false,
     theme: 'light',
-    language: 'ENGLISH',
+    language: 'english',
 };
 
 export const AppReducer = (state = initialState, action) => {

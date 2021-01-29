@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { compose } from 'redux';
+import { withLoginRedirect } from '../../hoc/withAuthRedirect';
 import { makeStyles } from '@material-ui/core/styles';
 import styles from './Newsfeed.module.css';
 import { Container, Input } from '@material-ui/core';
-import { connect, useSelector, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import Post from '../Post/Post';
-import urlAdd from './assets/images/add.svg';
 import loader from './assets/images/loader.gif';
 import CloseIcon from '@material-ui/icons/Close';
-import { getToday, uploadImage } from './helper.js';
-import SendIcon from '@material-ui/icons/Send';
-
+import { uploadImage } from './helper.js';
+import { getPosts, setPost } from '../../redux/reducers/NewsReducer';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import russian from '../../languages/russian';
 import english from '../../languages/english';
 
@@ -23,11 +25,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Newsfeed({ children, language, user, token }) {
-    const dispatch = useDispatch();
-
+function Newsfeed({ children, language, user, token, getPosts, setPost }) {
     useEffect(() => {
-        dispatch({ type: 'INIT_POSTS', token: token });
+        getPosts(token);
     }, []);
 
     const currentLanguage = language === 'ENGLISH' ? english : russian;
@@ -38,12 +38,12 @@ function Newsfeed({ children, language, user, token }) {
 
     let { imagePreviewUrl } = state;
     let imagePreviewDiv = null;
-    
+
     if (imagePreviewUrl) {
         imagePreviewDiv = (
             <div>
                 <img src={imagePreviewUrl} alt={'Image Preview'} />
-                <button className={styles.closeButton} onClick={(e) => _handleClose(e)}>
+                <button className={styles.closeButton} onClick={(e) => handleClose(e)}>
                     <CloseIcon />
                 </button>
             </div>
@@ -52,16 +52,14 @@ function Newsfeed({ children, language, user, token }) {
         imagePreviewDiv = <div></div>;
     }
 
-    function _handleTextChange(e) {
-        e.preventDefault();
+    function handleTextChange(e) {
         setTextState(e.target.value);
     }
 
-    function _handleImageChange(e) {
-        e.preventDefault();
-
+    function handleImageChange(e) {
         let reader = new FileReader();
         let file = e.target.files[0];
+
         reader.onloadend = () => {
             setState({
                 file: file,
@@ -72,8 +70,7 @@ function Newsfeed({ children, language, user, token }) {
         reader.readAsDataURL(file);
     }
 
-    function _handleClose(e) {
-        e.preventDefault();
+    function handleClose(e) {
         setState({
             file: '',
             imagePreviewUrl: '',
@@ -81,24 +78,19 @@ function Newsfeed({ children, language, user, token }) {
         imagePreviewDiv = <div></div>;
     }
 
-    function _handleSubmit(e) {
+    function handleSubmit(e) {
         e.preventDefault();
-        setPostState(
-            <img src={loader} alt={'Loading...'} style={{ height: '40px', width: '35px' }} />,
-        );
+        setPostState(<CircularProgress style={{ height: '40px', width: '35px' }} />);
         uploadImage(state.file).then((res) => {
-            dispatch({
-                type: 'UPDATE_POSTS',
+            setPost({
                 query: {
                     login: user.login,
                     text: `${textState}`,
                     photo: res,
-                    likes: 0,
                     user: { login: user.login, avatar: user.avatar },
                 },
                 token: token,
             });
-
             setPostState(<b>Post</b>);
             setTextState('');
             setState({ file: '', imagePreviewUrl: '' });
@@ -108,13 +100,13 @@ function Newsfeed({ children, language, user, token }) {
     return (
         <Container className={classes.root}>
             <div className={styles.newPost}>
-                <form onSubmit={(e) => _handleSubmit(e)}>
+                <form onSubmit={(e) => handleSubmit(e)}>
                     <div className={styles.inputContainer}>
                         <Input
                             placeholder="What's new?"
                             className={styles.input}
                             multiline={true}
-                            onChange={(e) => _handleTextChange(e)}
+                            onChange={(e) => handleTextChange(e)}
                             value={textState}
                         />
                         <div className={styles.inputWrapper}>
@@ -122,17 +114,13 @@ function Newsfeed({ children, language, user, token }) {
                                 name="file"
                                 type="file"
                                 id="inputFile"
-                                onChange={(e) => _handleImageChange(e)}
+                                onChange={(e) => handleImageChange(e)}
                                 accept="image/x-png,image/gif,image/jpeg"
                                 className={styles.inputFile}
                                 multiple
                             />
                             <label for="inputFile" className={styles.inputFileButton}>
-                                <img
-                                    src={urlAdd}
-                                    alt="Upload img"
-                                    className={styles.inputFileButtonImg}
-                                />
+                                <GetAppIcon className={styles.inputFileButtonImg} />
                             </label>
                         </div>
                     </div>
@@ -140,7 +128,7 @@ function Newsfeed({ children, language, user, token }) {
                     <button
                         className={styles.submitButton}
                         type="submit"
-                        onClick={(e) => _handleSubmit(e)}
+                        onClick={(e) => handleSubmit(e)}
                     >
                         {postState}
                     </button>
@@ -154,11 +142,12 @@ function Newsfeed({ children, language, user, token }) {
 
 const mapStateToProps = function (state) {
     return {
-        children: state.news.arrPost.map((el) => <Post post={el} />),
+        children: state.news.posts.map((el) => <Post post={el} />),
         language: state.app.language,
         user: state.auth.user,
         token: state.auth.token,
     };
 };
 
-export default connect(mapStateToProps)(Newsfeed);
+export default connect(mapStateToProps,{getPosts,setPost})(Newsfeed);
+//export default compose(connect(mapStateToProps,{getPosts,setPost}),withLoginRedirect)(Newsfeed);

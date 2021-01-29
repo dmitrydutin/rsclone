@@ -5,20 +5,18 @@ import { loadFromLocalStorage, saveToLocalStorage } from './helpers/localStorage
 
 import { AppReducer } from './reducers/AppReducer';
 import { AuthReducer } from './reducers/AuthReducer';
-import { NewsReducer, newsMiddleware } from './reducers/NewsReducer';
-import { PicReducer } from './reducers/PicReducer';
+import { NewsReducer } from './reducers/NewsReducer';
 
 const rootReducer = combineReducers({
     app: AppReducer,
     auth: AuthReducer,
-    news: NewsReducer,
-    newsPic: PicReducer,
+    news: NewsReducer,    
 });
 
 const store = createStore(
     rootReducer,
     loadFromLocalStorage(),
-    composeWithDevTools(applyMiddleware(thunkMiddleware, newsMiddleware)),
+    composeWithDevTools(applyMiddleware(thunkMiddleware)),
 );
 
 store.subscribe(() => {

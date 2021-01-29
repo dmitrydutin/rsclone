@@ -9,6 +9,7 @@ const axios = axiosLib.create({
 const getAuthHeaders = (token) => {
     return token ? { Authorization: token } : {};
 };
+
 const cloudinary = {
     uploadImage(image) {
         const data = new FormData();
@@ -40,14 +41,20 @@ const AuthAPI = {
 
 const NewsAPI = {
     sendPost(token, post) {
-        return axios.post('/api/auth/feed', post, { headers: getAuthHeaders(token) });
+        return axios.post('/api/feed/posts', post, { headers: getAuthHeaders(token) });
     },
     sendComment(token, comment) {
-        return axios.post('/api/auth/feed/comment', comment, { headers: getAuthHeaders(token) });
+        return axios.post('/api/feed/comments', comment, { headers: getAuthHeaders(token) });
     },
     getPosts(token) {
-        return axios.get('/api/auth/feed/allposts', { headers: getAuthHeaders(token) });
+        return axios.get('/api/feed/posts', { headers: getAuthHeaders(token) });
+    },
+    getComments(token, postId) {
+        return axios.get('/api/feed/comments', {
+            params: { postId },
+            headers: getAuthHeaders(token),
+        });
     },
 };
 
-export { NewsAPI, AuthAPI, cloudinary };
+export { cloudinary, AuthAPI, NewsAPI };

@@ -1,7 +1,6 @@
 import styles from './Header.module.css';
 import { connect } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -19,20 +18,20 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import { setTheme } from '../../redux/reducers/AppReducer';
 import { setLanguage } from '../../redux/reducers/AppReducer';
-import russian from '../../languages/russian';
-import english from '../../languages/english';
+import { getLanguage, toggleLanguage } from '../../languages/index';
+import { toggleTheme } from '../../themes/index';
 
 const Header = (props) => {
     const { isAuth, language, setTheme, setLanguage, theme } = props;
-    const currentLanguage = language === 'ENGLISH' ? english : russian;
+    const currentLanguage = getLanguage(language);
 
     const changeTheme = () => {
-        const selectedTheme = theme === 'dark' ? 'light' : 'dark';
+        const selectedTheme = toggleTheme(theme);
         setTheme(selectedTheme);
     };
 
     const changeLanguage = () => {
-        const selectedLanguage = language === 'ENGLISH' ? 'РУССКИЙ' : 'ENGLISH';
+        const selectedLanguage = toggleLanguage(language);
         setLanguage(selectedLanguage);
     };
 
@@ -55,15 +54,16 @@ const Header = (props) => {
                     <>
                         <div>
                             <Button color="inherit" component={RouterLink} to="/login">
-                                Login
+                                {currentLanguage['Header.login']}
                             </Button>
 
                             <Button color="inherit" component={RouterLink} to="/join">
-                                Join
+                                {currentLanguage['Header.join']}
                             </Button>
                         </div>
                     </>
                 )}
+
                 <FormControlLabel
                     className={styles.languageContainer}
                     control={
@@ -83,6 +83,7 @@ const Header = (props) => {
                         </div>
                     }
                 />
+                
                 <Button
                     variant="contained"
                     color="inherit"

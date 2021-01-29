@@ -10,12 +10,7 @@ export default (sequelize, DataTypes) => {
         },
         photo: {
             type: DataTypes.TEXT,
-        },
-        likes: {
-            type: DataTypes.INTEGER(11),
-            allowNull: false,
-            defaultValue: 0,
-        },
+        },       
     });
 
     Posts.associate = (models) => {
