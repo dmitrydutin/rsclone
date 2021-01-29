@@ -1,15 +1,32 @@
 import styles from './Error.module.css';
 import { compose } from 'redux';
 import { withLogoutRedirect } from '../../hoc/withAuthRedirect';
+import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 
 const Error = () => {
     return (
         <main className={styles.main}>
             <div className={styles.mainInner}>
-                <h1 className={styles.errorNumber}>404</h1>
+                <Typography
+                    variant="h5"
+                    component="h1"
+                    color="textPrimary"
+                    className={styles.errorNumber}
+                >
+                    404
+                </Typography>
+
                 <Divider orientation="vertical" flexItem />
-                <p className={styles.errorText}>This page could not be found</p>
+
+                <Typography
+                    variant="body2"
+                    component="p"
+                    color="textPrimary"
+                    className={styles.errorText}
+                >
+                    This page could not be found
+                </Typography>
             </div>
         </main>
     );

@@ -1,5 +1,5 @@
 .inner {
-    height: calc(100vh - 70px);
+    height: 100vh;
     margin: 0 auto;
     max-width: 516px;
     min-height: 510px;
@@ -9,7 +9,7 @@
 }
 
 .subtitle {
-    margin-bottom: 30px !important;
+    margin-bottom: 26px !important;
     font-weight: 400 !important;
 }
 

@@ -12,19 +12,9 @@
 }
 
 .errorNumber {
-    margin: 0;
     padding-right: 23px;
-
-    font-size: 24px;
-    font-weight: 500;
-
-    border-right: 1px solid #b2b2b2;
 }
 
 .errorText {
-    margin: 0;
-    margin-left: 23px;
-
-    font-size: 14px;
-    font-weight: normal;
+    margin-left: 23px !important;
 }

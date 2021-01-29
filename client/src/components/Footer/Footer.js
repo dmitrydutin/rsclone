@@ -11,9 +11,12 @@ const useStyles = makeStyles({
     listItem: {
         width: 'auto',
         borderRadius: '0.29rem',
+        transition: 'all .2s ease-in-out',
         '&:hover': {
-            color: '#3c44b1',
             background: 'rgba(60, 68, 177, 0.05)',
+            '&>div>span': {
+                color: '#3c44b1',
+            },
         },
         '&.Mui-selected': {
             color: '#3c44b1',
@@ -45,7 +48,10 @@ const Footer = () => {
                             rel="noopener noreferrer"
                             className={classes.listItem}
                         >
-                            <ListItemText primary="Dutin D." color="error" />
+                            <ListItemText
+                                primary="Dutin D."
+                                primaryTypographyProps={{ color: 'textSecondary' }}
+                            />
                         </ListItem>
 
                         <ListItem
@@ -56,7 +62,10 @@ const Footer = () => {
                             rel="noopener noreferrer"
                             className={classes.listItem}
                         >
-                            <ListItemText primary="Rynkov M." color="error" />
+                            <ListItemText
+                                primary="Rynkov M."
+                                primaryTypographyProps={{ color: 'textSecondary' }}
+                            />
                         </ListItem>
 
                         <ListItem
@@ -67,7 +76,10 @@ const Footer = () => {
                             rel="noopener noreferrer"
                             className={classes.listItem}
                         >
-                            <ListItemText primary="Kabernyk Y." color="error" />
+                            <ListItemText
+                                primary="Kabernyk Y."
+                                primaryTypographyProps={{ color: 'textSecondary' }}
+                            />
                         </ListItem>
                     </List>
 

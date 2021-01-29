@@ -22,14 +22,12 @@ export const AuthReducer = (state = initialState, action) => {
     }
 };
 
-const setUserDataAction = (isAuth, user, token) => {
-    return {
-        type: SET_USER_DATA,
-        isAuth,
-        user,
-        token,
-    };
-};
+const setUserDataAction = (isAuth, user, token) => ({
+    type: SET_USER_DATA,
+    isAuth,
+    user,
+    token,
+});
 
 export const login = (login, password, setSubmitting, setErrors) => {
     return async (dispatch) => {

@@ -104,7 +104,11 @@ const Join = (props) => {
                                     </Grid>
 
                                     <Grid item xs={12}>
-                                        <Typography variant="body2" component="i">
+                                        <Typography
+                                            variant="body2"
+                                            component="i"
+                                            color="textSecondary"
+                                        >
                                             Fields that are marked with * sign are required.
                                         </Typography>
                                     </Grid>

@@ -60,8 +60,8 @@ const Login = (props) => {
                                             Don’t have an account?
                                             <Link
                                                 component={RouterLink}
-                                                variant="h6"
                                                 to="/join"
+                                                variant="h6"
                                                 underline="none"
                                                 className={styles.link}
                                             >
@@ -92,7 +92,11 @@ const Login = (props) => {
                                     </Grid>
 
                                     <Grid item xs={12}>
-                                        <Typography variant="body2" component="i">
+                                        <Typography
+                                            variant="body2"
+                                            component="i"
+                                            color="textSecondary"
+                                        >
                                             Fields that are marked with * sign are required.
                                         </Typography>
                                     </Grid>
