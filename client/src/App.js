@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 import { initializeApp } from './redux/reducers/AppReducer';
 import { getTheme } from './themes/index';
 
@@ -22,7 +23,7 @@ const App = ({ token, theme, initialized, initializeApp }) => {
     }, []);
 
     return (
-        <ThemeProvider theme={currentTheme}>
+        <ThemeProvider theme={createMuiTheme(currentTheme)}>
             <>
                 <CssBaseline />
                 {initialized ? (
@@ -30,6 +31,7 @@ const App = ({ token, theme, initialized, initializeApp }) => {
                         <Header />
 
                         <Switch>
+                            <Redirect exact from="/" to="/feed" />
                             <Route path="/login" exact component={Login} />
                             <Route path="/join" exact component={Join} />
                             <Route path="/feed" exact component={NewsFeed} />
