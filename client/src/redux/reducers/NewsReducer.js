@@ -5,7 +5,6 @@ const SET_POST = '/news/SET_POST';
 const SET_COMMENTS = '/news/SET_COMMENTS';
 const SET_COMMENT = '/news/SET_COMMENT';
 const SET_LIKE = '/news/SET_LIKE';
-const GET_LIKE = '/news/GET_LIKE';
 
 const initialState = {
     posts: [],
@@ -46,7 +45,29 @@ export const NewsReducer = (state = initialState, action) => {
                     return post;
                 }),
             };
-            
+        case SET_LIKE:
+            return {
+                ...state,
+                posts: state.posts.map((post, index) => {
+                    if (index === action.index) {
+                        if (action.like === 1) {
+                            post.likes.splice(
+                                post.likes.findIndex(
+                                    (item) =>
+                                        item.userId === action.userId &&
+                                        item.postId === action.postId,
+                                ),
+                                1,
+                            );
+                            post.likesCount--;
+                        } else {
+                            post.likes.push(action.like);
+                            post.likesCount++;
+                        }
+                    }
+                    return post;
+                }),
+            };
         default:
             return state;
     }
@@ -68,21 +89,17 @@ const setCommentsAction = (comments, index) => ({
     index,
 });
 
-const setCommentAction = (userId, index) => ({
-    type: SET_COMMENT,
-    userId,
-    index,
-});
-
-const setLikeAction = (userId, index) => ({
-    type: SET_COMMENTS,
-    userId,    
-    index,
-});
-
-const getLikeAction = (comment, index) => ({
+const setCommentAction = (comment, index) => ({
     type: SET_COMMENT,
     comment,
+    index,
+});
+
+const setLikeAction = (like, userId, postId, index) => ({
+    type: SET_LIKE,
+    like,
+    userId,
+    postId,
     index,
 });
 
@@ -97,29 +114,26 @@ export const getPosts = (token) => {
     };
 };
 
-export const setPost = ({ token, query }) => {
+export const setPost = ({ token, query, setSubmitting }) => {
     return async (dispatch) => {
+        console.log(token, query, setSubmitting);
         const response = await NewsAPI.sendPost(token, query);
-
+        setSubmitting(false);
         if (response.status === 200 && response.data.status === 200) {
             const { post } = response.data;
-
-            console.log({
-                ...post,
-                user: query.user,
-            });
-
             dispatch(
                 setPostAction({
                     ...post,
                     user: query.user,
+                    likes: [],
+                    commentsCount: 0,
                 }),
             );
         }
     };
 };
 
-export const setComment = ({ posts, post, token, query }) => {
+export const setComment = ({ posts, post, token, query, setSubmitting }) => {
     return async (dispatch) => {
         const index = posts.findIndex((el) => {
             return el.id === post.id;
@@ -127,10 +141,7 @@ export const setComment = ({ posts, post, token, query }) => {
 
         const response = await NewsAPI.sendComment(token, query);
 
-        console.log({
-            query,
-            response: response.data,
-        });
+        setSubmitting(false);
 
         if (response.status === 200 && response.data.status === 200) {
             dispatch(setCommentAction(query, index));
@@ -149,6 +160,22 @@ export const getComments = ({ posts, postId, token }) => {
         if (response.status === 200 && response.data.status === 200) {
             const { comments } = response.data;
             dispatch(setCommentsAction(comments, index));
+        }
+    };
+};
+
+export const setLike = ({ posts, postId, userId, token }) => {
+    return async (dispatch) => {
+        const index = posts.findIndex((el) => {
+            return el.id === postId;
+        });
+
+        const response = await NewsAPI.setLike(token, { postId });
+
+        if (response.status === 200 && response.data.status === 200) {
+            const { like } = response.data;
+
+            dispatch(setLikeAction(like, userId, postId, index));
         }
     };
 };

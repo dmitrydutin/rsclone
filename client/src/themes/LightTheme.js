@@ -6,6 +6,7 @@ let lightTheme = createMuiTheme({
         main: blue[500],
         background: {
             default: '#fafafa',
+            secondary: '#edeef0',
         },
     },
 });

@@ -55,6 +55,9 @@ const NewsAPI = {
             headers: getAuthHeaders(token),
         });
     },
+    setLike(token, like) {
+        return axios.post('/api/feed/likes', like, { headers: getAuthHeaders(token) });
+    },
 };
 
 export { cloudinary, AuthAPI, NewsAPI };

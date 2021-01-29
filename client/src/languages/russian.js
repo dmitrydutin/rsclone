@@ -5,7 +5,8 @@ const language = {
     'Error.notFound': 'Страница не найдена',
     
     'Newsfeed.post': 'Опубликовать',
-    
+    'Newsfeed.placeholder': `Что у Вас нового?`,
+
     'greeting': 'Здравствуйте',
     'loggedIn':'Вы вошли в систему',
 };

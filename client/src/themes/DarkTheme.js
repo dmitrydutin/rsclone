@@ -7,6 +7,7 @@ let darkTheme = createMuiTheme({
         main: `#212121`,
         background: {
             default: '#222222',
+            secondary: '#222222',
         },
         text: {
             primary: '#ffffff',

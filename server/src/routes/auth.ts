@@ -44,6 +44,7 @@ router.post(
 
         if (user) {
             const data = {
+                id: user.id,
                 role: user.role.role,
                 name: user.name,
                 surname: user.surname,

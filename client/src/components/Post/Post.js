@@ -3,7 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import styles from './Post.module.css';
-import { Formik } from 'formik';
+import { Formik, Field } from 'formik';
+import { TextField } from 'formik-material-ui';
 import {
     Card,
     CardHeader,
@@ -14,18 +15,19 @@ import {
     IconButton,
     Typography,
     Collapse,
-    InputBase,
     Paper,
 } from '@material-ui/core';
-import { red } from '@material-ui/core/colors';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import CommentIcon from '@material-ui/icons/Comment';
 import userAvatar from './assets/images/user.svg';
-import { withLoginRedirect } from '../../hoc/withAuthRedirect';
 import SendIcon from '@material-ui/icons/Send';
-import loader from './assets/images/loader.gif';
+import { setComment, getComments, setLike } from '../../redux/reducers/NewsReducer';
+import * as Yup from 'yup';
 
-import { setComment, getComments } from '../../redux/reducers/NewsReducer';
+const CommentSchema = Yup.object().shape({
+    text: Yup.string().min(1, 'Too Short!'),
+});
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,7 +41,8 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     content: {
-        borderBottom: `2px solid grey`,
+        borderBottom: `4px solid`,
+        borderColor: `${theme.palette.background.secondary} !important`,
     },
     contentHeader: {
         padding: `10px 0px`,
@@ -59,9 +62,6 @@ const useStyles = makeStyles((theme) => ({
     expandOpen: {
         transform: 'rotate(180deg)',
     },
-    avatar: {
-        backgroundColor: red[250],
-    },
     icon: {
         font: 50,
     },
@@ -76,8 +76,9 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: 'none',
     },
     input: {
-        border: '2px solid rgb(180, 178, 178)',
+        border: '4px solid',
         borderRadius: '5px',
+        borderColor: `${theme.palette.background.secondary} !important`,
         marginLeft: theme.spacing(1),
         flex: 1,
     },
@@ -88,49 +89,65 @@ const useStyles = makeStyles((theme) => ({
         font: 50,
         color: '#FF0000',
     },
+    text: {
+        fontSize: '1.5rem',
+    },
 }));
 
 const Post = (props) => {
-    const { posts, post, user, token, setComment, getComments } = props;
+    const { posts, post, user, token, setComment, getComments, setLike } = props;
 
     const classes = useStyles();
 
+    const initialValues = { text: '' };
     const [expanded, setExpanded] = useState(false);
-    const [liked, setLiked] = useState(false);
+    const [liked, setLiked] = useState(() => {
+        console.log(post, user);
+        if (
+            post.likes.find((el) => {
+                return el.postId === post.id && el.userId === user.id;
+            })
+        ) {
+            return true;
+        }
+        return false;
+    });
     const [postState, setPostState] = useState(<SendIcon />);
-    const [textState, setTextState] = useState('');
 
     const handleExpandClick = () => {
         getComments({ posts, postId: post.id, token });
         setExpanded(!expanded);
     };
 
-    const handleLikeClick = () => {
-        setLiked(!liked);
+    const handleLikeClick = async () => {
+        await setLike({ posts, postId: post.id, userId: user.id, token });
+        setLiked(() => {
+            if (
+                post.likes.find((el) => {
+                    return el.postId === post.id && el.userId === user.id;
+                })
+            ) {
+                return true;
+            }
+            return false;
+        });
     };
 
-    const handleTextChange = (e) => {
-        e.preventDefault();
-        setTextState(e.target.value);
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setPostState(
-            <img src={loader} alt={'Loading...'} style={{ height: '40px', width: '35px' }} />,
-        );
-        setComment({
+    const handleSubmit = async (values, { setSubmitting }) => {
+        setPostState(<CircularProgress style={{ height: '40px', width: '35px' }} />);
+        await setComment({
             posts,
             post,
             token,
             query: {
                 postId: post.id,
-                text: textState,
+                text: values.text,
                 user: { login: user.login, avatar: user.avatar },
             },
+            setSubmitting,
         });
+        values.text = '';
         setPostState(<SendIcon />);
-        setTextState('');
     };
 
     return (
@@ -170,12 +187,12 @@ const Post = (props) => {
                     onClick={handleLikeClick}
                 >
                     <FavoriteIcon />
-                    {post.likesCount}
+                    <Typography className={classes.text}>{post.likes.length} </Typography>
                 </IconButton>
 
                 <IconButton aria-label="comment" onClick={handleExpandClick}>
                     <CommentIcon />
-                    <Typography>{post.commentsCount}</Typography>
+                    <Typography className={classes.text}>{post.commentsCount}</Typography>
                 </IconButton>
             </CardActions>
 
@@ -186,7 +203,7 @@ const Post = (props) => {
                             <CardHeader
                                 className={classes.contentHeader}
                                 avatar={
-                                    <Avatar aria-label="recipe" className={classes.avatar}>
+                                    <Avatar aria-label="recipe">
                                         {post.user.avatar ? (
                                             <img src={comment.user.avatar} alt="Avatar" />
                                         ) : (
@@ -201,27 +218,36 @@ const Post = (props) => {
                     );
                 })}
 
-                <form onSubmit={(e) => handleSubmit(e)}>
-                    <div className={styles.inputContainer}>
-                        <Paper component="form" className={classes.paper}>
-                            <InputBase
-                                className={classes.input}
-                                multiline={true}
-                                onChange={(e) => handleTextChange(e)}
-                                value={textState}
-                            />
-                            <IconButton
-                                type="submit"
-                                className={classes.iconButton}
-                                aria-label="search"
-                                onClick={(e) => handleSubmit(e)}
-                                disabled={textState ? false : true}
-                            >
-                                {postState}
-                            </IconButton>
-                        </Paper>
-                    </div>
-                </form>
+                <Formik
+                    initialValues={initialValues}
+                    onSubmit={handleSubmit}
+                    validationSchema={CommentSchema}
+                >
+                    {({ submitForm, isSubmitting }) => (
+                        <form>
+                            <div className={styles.inputContainer}>
+                                <Paper component="form" className={classes.paper}>
+                                    <Field
+                                        className={classes.input}
+                                        multiline={true}
+                                        component={TextField}
+                                        name="text"
+                                        fullWidth={true}
+                                    />
+                                    <IconButton
+                                        type="submit"
+                                        className={classes.iconButton}
+                                        aria-label="search"
+                                        onClick={submitForm}
+                                        disabled={isSubmitting}
+                                    >
+                                        {postState}
+                                    </IconButton>
+                                </Paper>
+                            </div>
+                        </form>
+                    )}
+                </Formik>
             </Collapse>
         </Card>
     );
@@ -234,6 +260,6 @@ const mapStateToProps = (state) => ({
 });
 
 export default compose(
-    connect(mapStateToProps, { setComment, getComments }),
+    connect(mapStateToProps, { setComment, getComments, setLike }),
     //withLoginRedirect
 )(Post);

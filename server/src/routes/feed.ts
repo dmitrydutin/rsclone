@@ -6,27 +6,6 @@ import createError from 'http-errors';
 import { request, Router } from 'express';
 const router = Router();
 
-// const posts = await Posts.findAll({
-//     attributes: ['id', 'userId', 'text', 'photo', 'likes'],
-//     include: [
-//         {
-//             model: Users,
-//             attributes: ['avatar', 'login'],
-//         },
-//         {
-//             model: Comments,
-//             attributes: ['text', 'userId', 'postId'],
-//             include: [
-//                 {
-//                     model: Users,
-//                     attributes: ['avatar', 'login'],
-//                 },
-//             ],
-//         },
-//     ],
-//     order: [['id', 'DESC']],
-// });
-
 router.get(
     '/posts',
     auth,
@@ -37,8 +16,9 @@ router.get(
                 'userId',
                 'text',
                 'photo',
+
+                // [Sequelize.fn('COUNT', Sequelize.col('likes.id')), 'likesCount'], // возвращает то же значение что и комментКаунт
                 [Sequelize.fn('COUNT', Sequelize.col('comments.id')), 'commentsCount'],
-                [Sequelize.fn('COUNT', Sequelize.col('likes.id')), 'likesCount'],
             ],
             include: [
                 {
@@ -47,7 +27,7 @@ router.get(
                 },
                 {
                     model: Likes,
-                    attributes: ['postId', 'userId'],
+                    attributes: ['userId', 'postId'],
                 },
                 {
                     model: Comments,
@@ -144,6 +124,48 @@ router.post(
         return res.json({
             status: 200,
             comment: newComment,
+        });
+    }),
+);
+
+router.post(
+    '/likes',
+    auth,
+    asyncHandler(async (req, res) => {
+        const { postId } = req.body;
+
+        if (!postId) {
+            throw createError(400, 'Not all parameters passed');
+        }
+
+        const like = await Likes.findOne({
+            where: {
+                postId,
+                userId: req.app.get('userId'),
+            },
+        });
+        if (like) {
+            const newLike = await Likes.destroy({
+                where: {
+                    postId,
+                    userId: req.app.get('userId'),
+                },
+            });
+            return res.json({
+                status: 200,
+                like: newLike,
+                message: 'Like removed',
+            });
+        }
+
+        const newLike = await Likes.create({
+            userId: req.app.get('userId'),
+            postId,
+        });
+        return res.json({
+            status: 200,
+            like: newLike,
+            message: 'Like created',
         });
     }),
 );
