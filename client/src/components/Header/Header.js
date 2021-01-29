@@ -1,98 +1,92 @@
-import styles from './Header.module.css';
+import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
+import { toggleTheme, toggleLanguage } from '../../redux/reducers/AppReducer';
+import { getLanguage } from '../../languages/index';
 
+import Container from '@material-ui/core/Container';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
-
-import { FormControlLabel, Switch as SwitchComponent } from '@material-ui/core';
-import NightsIcon from '@material-ui/icons/Brightness4';
-import SunIcon from '@material-ui/icons/Brightness7';
-import TranslateIcon from '@material-ui/icons/Translate';
-
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import IconButton from '@material-ui/core/IconButton';
+import TranslateIcon from '@material-ui/icons/Translate';
+import Brightness7Icon from '@material-ui/icons/Brightness7';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
 
-import { setTheme } from '../../redux/reducers/AppReducer';
-import { setLanguage } from '../../redux/reducers/AppReducer';
-import { getLanguage, toggleLanguage } from '../../languages/index';
-import { toggleTheme } from '../../themes/index';
+const useStyles = makeStyles((theme) => ({
+    header: {
+        backgroundColor: theme.palette.header.background,
+        borderBottom: `1px solid ${theme.palette.header.border}`,
+        color: theme.palette.header.contrastText,
+    },
+    companyName: {
+        marginRight: 'auto',
+    },
+}));
 
-const Header = ({ isAuth, language, setTheme, setLanguage, theme }) => {
-    const currentLanguage = getLanguage(language);
+const Header = ({ isAuth, language, toggleTheme, toggleLanguage, theme }) => {
+    const classes = useStyles();
+    const translate = getLanguage(language);
 
     const changeTheme = () => {
-        const selectedTheme = toggleTheme(theme);
-        setTheme(selectedTheme);
+        toggleTheme(theme);
     };
 
     const changeLanguage = () => {
-        const selectedLanguage = toggleLanguage(language);
-        setLanguage(selectedLanguage);
+        toggleLanguage(language);
     };
 
     return (
-        <AppBar>
-            <Toolbar className={styles.container}>
-                <Link component={RouterLink} to="/" color="inherit" underline="none">
-                    <IconButton color="inherit" variant="h6" component={RouterLink} to="/feed">
-                        Facebook
-                    </IconButton>
-                </Link>
+        <AppBar className={classes.header} elevation={0}>
+            <Container>
+                <Toolbar disableGutters>
+                    <Link
+                        component={RouterLink}
+                        to="/feed"
+                        color="inherit"
+                        underline="none"
+                        className={classes.companyName}
+                    >
+                        <Typography variant="h6" component="h1">
+                            {translate['header.companyName']}
+                        </Typography>
+                    </Link>
 
-                {isAuth ? (
-                    <>
-                        <IconButton color="inherit">
-                            <AccountCircle />
-                        </IconButton>
-                    </>
-                ) : (
-                    <>
+                    <Button
+                        color="inherit"
+                        size="large"
+                        startIcon={<TranslateIcon />}
+                        onClick={changeLanguage}
+                    >
+                        {translate['header.language']}
+                    </Button>
+
+                    <IconButton color="inherit" onClick={changeTheme}>
+                        {theme === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
+                    </IconButton>
+
+                    {isAuth ? (
+                        <>
+                            <IconButton color="inherit">
+                                <AccountCircle />
+                            </IconButton>
+                        </>
+                    ) : (
                         <div>
                             <Button color="inherit" component={RouterLink} to="/login">
-                                {currentLanguage['Header.login']}
+                                {translate['header.login']}
                             </Button>
 
                             <Button color="inherit" component={RouterLink} to="/join">
-                                {currentLanguage['Header.join']}
+                                {translate['header.join']}
                             </Button>
                         </div>
-                    </>
-                )}
-
-                <FormControlLabel
-                    className={styles.languageContainer}
-                    control={
-                        <SwitchComponent
-                            checked={theme === 'light'}
-                            onChange={changeTheme}
-                            className={styles.languageSwitch}
-                        />
-                    }
-                    label={
-                        <div>
-                            {theme === 'light' ? (
-                                <SunIcon className={styles.iconSun} />
-                            ) : (
-                                <NightsIcon className={styles.iconMoon} />
-                            )}
-                        </div>
-                    }
-                />
-
-                <Button
-                    variant="contained"
-                    color="inherit"
-                    startIcon={<TranslateIcon />}
-                    onClick={changeLanguage}
-                    className={styles.button}
-                >
-                    {language}
-                </Button>
-            </Toolbar>
+                    )}
+                </Toolbar>
+            </Container>
         </AppBar>
     );
 };
@@ -103,4 +97,4 @@ const mapStateToProps = (state) => ({
     theme: state.app.theme,
 });
 
-export default connect(mapStateToProps, { setTheme, setLanguage })(Header);
+export default connect(mapStateToProps, { toggleTheme, toggleLanguage })(Header);

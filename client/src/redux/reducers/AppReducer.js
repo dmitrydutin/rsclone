@@ -56,14 +56,16 @@ export const initializeApp = (token) => {
     };
 };
 
-export const setTheme = (theme) => {
+export const toggleTheme = (theme) => {
     return (dispatch) => {
-        dispatch(setThemeAction(theme));
+        const toggledTheme = theme === 'light' ? 'dark' : 'light';
+        dispatch(setThemeAction(toggledTheme));
     };
 };
 
-export const setLanguage = (language) => {
+export const toggleLanguage = (language) => {
     return (dispatch) => {
-        dispatch(setLanguageAction(language));
+        const toggledLanguage = language === 'english' ? 'russian' : 'english';
+        dispatch(setLanguageAction(toggledLanguage));
     };
 };

@@ -3,26 +3,49 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { join } from '../../redux/reducers/AuthReducer';
 import { withLoginRedirect } from '../../hoc/withAuthRedirect';
+import { getLanguage } from '../../languages/index';
+
+import { Formik, Field, Form } from 'formik';
+import * as Yup from 'yup';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import { Formik, Field, Form } from 'formik';
 import { TextField } from 'formik-material-ui';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import * as Yup from 'yup';
 
-const JoinSchema = Yup.object().shape({
-    name: Yup.string().min(5, 'Too Short!').max(30, 'Too Long!').required('Required'),
-    surname: Yup.string().min(5, 'Too Short!').max(30, 'Too Long!').required('Required'),
-    login: Yup.string().min(5, 'Too Short!').max(30, 'Too Long!').required('Required'),
-    password: Yup.string().min(5, 'Too Short!').max(30, 'Too Long!').required('Required'),
-});
-
-const Join = ({ join }) => {
+const Join = ({ language, join }) => {
+    const translate = getLanguage(language);
     const initialValues = { name: '', surname: '', login: '', password: '' };
 
+    const JoinSchema = Yup.object().shape({
+        name: Yup.string()
+            .min(5, translate['join.yup.short'])
+            .max(30, translate['join.yup.long'])
+            .required(translate['join.yup.required']),
+        surname: Yup.string()
+            .min(5, translate['join.yup.short'])
+            .max(30, translate['join.yup.long'])
+            .required(translate['join.yup.required']),
+        login: Yup.string()
+            .min(5, translate['join.yup.short'])
+            .max(30, translate['join.yup.long'])
+            .required(translate['join.yup.required']),
+        password: Yup.string()
+            .min(5, translate['join.yup.short'])
+            .max(30, translate['join.yup.long'])
+            .required(translate['join.yup.required']),
+    });
+
     const onSubmit = (values, { setSubmitting, setErrors }) => {
-        join(values.name, values.surname, values.login, values.password, setSubmitting, setErrors);
+        join(
+            values.name,
+            values.surname,
+            values.login,
+            values.password,
+            setSubmitting,
+            setErrors,
+            translate,
+        );
     };
 
     return (
@@ -44,7 +67,7 @@ const Join = ({ join }) => {
                                             align="center"
                                             color="textPrimary"
                                         >
-                                            Sign up
+                                            {translate['join.signUp']}
                                         </Typography>
                                     </Grid>
 
@@ -56,8 +79,7 @@ const Join = ({ join }) => {
                                             color="textSecondary"
                                             className={styles.subtitle}
                                         >
-                                            Register to send messages, photos and videos to your
-                                            friends.
+                                            {translate['join.reasonForRegistration']}
                                         </Typography>
                                     </Grid>
 
@@ -65,7 +87,7 @@ const Join = ({ join }) => {
                                         <Field
                                             component={TextField}
                                             name="name"
-                                            label="First name *"
+                                            label={translate['join.form.name']}
                                             variant="outlined"
                                             fullWidth={true}
                                         />
@@ -75,7 +97,7 @@ const Join = ({ join }) => {
                                         <Field
                                             component={TextField}
                                             name="surname"
-                                            label="Last name *"
+                                            label={translate['join.form.surname']}
                                             variant="outlined"
                                             fullWidth={true}
                                         />
@@ -85,7 +107,7 @@ const Join = ({ join }) => {
                                         <Field
                                             component={TextField}
                                             name="login"
-                                            label="Login *"
+                                            label={translate['join.form.login']}
                                             variant="outlined"
                                             fullWidth={true}
                                         />
@@ -96,7 +118,7 @@ const Join = ({ join }) => {
                                             component={TextField}
                                             name="password"
                                             type="password"
-                                            label="Password *"
+                                            label={translate['join.form.password']}
                                             variant="outlined"
                                             fullWidth={true}
                                         />
@@ -108,7 +130,7 @@ const Join = ({ join }) => {
                                             component="i"
                                             color="textSecondary"
                                         >
-                                            Fields that are marked with * sign are required.
+                                            {translate['join.form.requiredFields']}
                                         </Typography>
                                     </Grid>
 
@@ -121,7 +143,7 @@ const Join = ({ join }) => {
                                             fullWidth={true}
                                             size="large"
                                         >
-                                            Send
+                                            {translate['join.form.send']}
                                         </Button>
                                     </Grid>
                                 </Grid>
@@ -134,4 +156,8 @@ const Join = ({ join }) => {
     );
 };
 
-export default compose(connect(null, { join }), withLoginRedirect)(Join);
+const mapStateToProps = (state) => ({
+    language: state.app.language,
+});
+
+export default compose(connect(mapStateToProps, { join }), withLoginRedirect)(Join);
