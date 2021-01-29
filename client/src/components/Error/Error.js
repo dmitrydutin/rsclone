@@ -1,10 +1,14 @@
 import styles from './Error.module.css';
+import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withLogoutRedirect } from '../../hoc/withAuthRedirect';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import { getLanguage } from '../../languages/index';
 
-const Error = () => {
+const Error = ({ language }) => {
+    const currentLanguage = getLanguage(language);
+
     return (
         <main className={styles.main}>
             <div className={styles.mainInner}>
@@ -25,11 +29,15 @@ const Error = () => {
                     color="textPrimary"
                     className={styles.errorText}
                 >
-                    This page could not be found
+                    {currentLanguage['Error.notFound']}
                 </Typography>
             </div>
         </main>
     );
 };
 
-export default compose(withLogoutRedirect)(Error);
+const mapStateToProps = (state) => ({
+    language: state.app.language,
+});
+
+export default compose(connect(mapStateToProps), withLogoutRedirect)(Error);

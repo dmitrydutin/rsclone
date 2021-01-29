@@ -1,48 +1,55 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { initializeApp } from './redux/reducers/AppReducer';
 import { Switch, Route } from 'react-router-dom';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { initializeApp } from './redux/reducers/AppReducer';
+import { getTheme } from './themes/index';
+
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { LinearProgress } from '@material-ui/core';
 import Header from './components/Header/Header';
 import Login from './components/Login/Login';
 import Join from './components/Join/Join';
+import NewsFeed from './components/NewsFeed/NewsFeed';
 import Error from './components/Error/Error';
 import Footer from './components/Footer/Footer';
 
-const App = (props) => {
-    const { token, initialized, initializeApp } = props;
+const App = ({ token, theme, initialized, initializeApp }) => {
+    const currentTheme = getTheme(theme);
 
     useEffect(() => {
         initializeApp(token);
     }, []);
 
     return (
-        <>
-            <CssBaseline />
+        <ThemeProvider theme={currentTheme}>
+            <>
+                <CssBaseline />
+                {initialized ? (
+                    <>
+                        <Header />
 
-            {initialized ? (
-                <>
-                    <Header />
+                        <Switch>
+                            <Route path="/login" exact component={Login} />
+                            <Route path="/join" exact component={Join} />
+                            <Route path="/feed" exact component={NewsFeed} />
+                            <Route component={Error} />
+                        </Switch>
 
-                    <Switch>
-                        <Route path="/login" exact component={Login} />
-                        <Route path="/join" exact component={Join} />
-                        <Route component={Error} />
-                    </Switch>
-
-                    <Footer />
-                </>
-            ) : (
-                <LinearProgress />
-            )}
-        </>
+                        <Footer />
+                    </>
+                ) : (
+                    <LinearProgress />
+                )}
+            </>
+        </ThemeProvider>
     );
 };
 
 const mapStateToProps = (state) => ({
     initialized: state.app.initialized,
     token: state.auth.token,
+    theme: state.app.theme,
 });
 
 export default connect(mapStateToProps, { initializeApp })(App);

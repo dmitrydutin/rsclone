@@ -18,8 +18,7 @@ const JoinSchema = Yup.object().shape({
     password: Yup.string().min(5, 'Too Short!').max(30, 'Too Long!').required('Required'),
 });
 
-const Join = (props) => {
-    const { join } = props;
+const Join = ({ join }) => {
     const initialValues = { name: '', surname: '', login: '', password: '' };
 
     const onSubmit = (values, { setSubmitting, setErrors }) => {

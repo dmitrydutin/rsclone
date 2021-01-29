@@ -18,8 +18,7 @@ const LoginSchema = Yup.object().shape({
     password: Yup.string().min(5, 'Too Short!').max(30, 'Too Long!').required('Required'),
 });
 
-const Login = (props) => {
-    const { login } = props;
+const Login = ({ login }) => {
     const initialValues = { login: '', password: '' };
 
     const onSubmit = (values, { setSubmitting, setErrors }) => {
