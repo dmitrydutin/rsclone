@@ -21,8 +21,7 @@ import { setLanguage } from '../../redux/reducers/AppReducer';
 import { getLanguage, toggleLanguage } from '../../languages/index';
 import { toggleTheme } from '../../themes/index';
 
-const Header = (props) => {
-    const { isAuth, language, setTheme, setLanguage, theme } = props;
+const Header = ({ isAuth, language, setTheme, setLanguage, theme }) => {
     const currentLanguage = getLanguage(language);
 
     const changeTheme = () => {
@@ -83,7 +82,7 @@ const Header = (props) => {
                         </div>
                     }
                 />
-                
+
                 <Button
                     variant="contained"
                     color="inherit"

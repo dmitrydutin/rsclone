@@ -1,7 +1,6 @@
 .main {
-    height: 100vh;
+    height: calc(100vh - 70px);
     min-height: 500px;
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -13,19 +12,9 @@
 }
 
 .errorNumber {
-    margin: 0;
     padding-right: 23px;
-
-    border-right: 1px solid #b2b2b2;
-
-    font-size: 24px;
-    font-weight: 500;
 }
 
 .errorText {
-    margin: 0;
-    margin-left: 23px;
-
-    font-size: 14px;
-    font-weight: normal;
+    margin-left: 23px !important;
 }

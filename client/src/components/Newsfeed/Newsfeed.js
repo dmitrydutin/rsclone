@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { compose } from 'redux';
 import { withLoginRedirect } from '../../hoc/withAuthRedirect';
 import { makeStyles } from '@material-ui/core/styles';
-import styles from './Newsfeed.module.css';
+import styles from './NewsFeed.module.css';
 import { Container, Input } from '@material-ui/core';
 import { connect } from 'react-redux';
 import Post from '../Post/Post';

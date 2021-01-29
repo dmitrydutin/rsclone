@@ -1,42 +1,42 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { initializeApp } from './redux/reducers/AppReducer';
 import { Switch, Route } from 'react-router-dom';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { initializeApp } from './redux/reducers/AppReducer';
+import { getTheme } from './themes/index';
 
-import { useSelector } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { LinearProgress } from '@material-ui/core';
 import Header from './components/Header/Header';
 import Login from './components/Login/Login';
 import Join from './components/Join/Join';
+import NewsFeed from './components/NewsFeed/NewsFeed';
 import Error from './components/Error/Error';
-import Post from './components/Post/Post';
-import Newsfeed from './components/Newsfeed/Newsfeed';
-import { ThemeProvider } from '@material-ui/core/styles';
-import { getTheme } from './themes/index';
+import Footer from './components/Footer/Footer';
 
-const App = (props) => {
-    const { token, theme } = props;
+const App = ({ token, theme, initialized, initializeApp }) => {
     const currentTheme = getTheme(theme);
 
     useEffect(() => {
-        props.initializeApp(token);
+        initializeApp(token);
     }, []);
 
     return (
         <ThemeProvider theme={currentTheme}>
             <>
                 <CssBaseline />
-                {props.initialized ? (
+                {initialized ? (
                     <>
                         <Header />
 
                         <Switch>
                             <Route path="/login" exact component={Login} />
                             <Route path="/join" exact component={Join} />
-                            <Route path="/feed" exact component={Newsfeed} />
+                            <Route path="/feed" exact component={NewsFeed} />
                             <Route component={Error} />
                         </Switch>
+
+                        <Footer />
                     </>
                 ) : (
                     <LinearProgress />

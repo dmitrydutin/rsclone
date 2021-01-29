@@ -10,7 +10,7 @@ import { NewsReducer } from './reducers/NewsReducer';
 const rootReducer = combineReducers({
     app: AppReducer,
     auth: AuthReducer,
-    news: NewsReducer,    
+    news: NewsReducer,
 });
 
 const store = createStore(
