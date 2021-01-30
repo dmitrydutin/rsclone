@@ -14,6 +14,12 @@ const lightTheme = {
             border: '#E0E0E0',
             contrastText: '#2d3748',
         },
+        newsfeed:{
+            contrastText: '#000000',
+        },
+        post:{
+            default:'#F4F5FD'
+        },
         footer: {
             background: '#FEFEFF',
             border: '#E0E0E0',

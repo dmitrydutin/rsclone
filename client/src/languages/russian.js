@@ -39,6 +39,7 @@ const language = {
     'Newsfeed.post': 'Опубликовать',
     'Newsfeed.placeholder': `Что у Вас нового?`,   
 
+    'Post.placeholder': `Оставьте комментарий...`,
 
     greeting: 'Здравствуйте',
     loggedIn: 'Вы вошли в систему',

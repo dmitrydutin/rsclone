@@ -16,8 +16,6 @@ router.get(
                 'userId',
                 'text',
                 'photo',
-
-                // [Sequelize.fn('COUNT', Sequelize.col('likes.id')), 'likesCount'], // возвращает то же значение что и комментКаунт
                 [Sequelize.fn('COUNT', Sequelize.col('comments.id')), 'commentsCount'],
             ],
             include: [

@@ -116,7 +116,7 @@ export const getPosts = (token) => {
 
 export const setPost = ({ token, query, setSubmitting }) => {
     return async (dispatch) => {
-        console.log(token, query, setSubmitting);
+        
         const response = await NewsAPI.sendPost(token, query);
         setSubmitting(false);
         if (response.status === 200 && response.data.status === 200) {

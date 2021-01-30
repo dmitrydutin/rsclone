@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { compose } from 'redux';
-import { withLoginRedirect } from '../../hoc/withAuthRedirect';
+import { withLogoutRedirect } from '../../hoc/withAuthRedirect';
 import { makeStyles } from '@material-ui/core/styles';
 import styles from './NewsFeed.module.css';
 import { Container, Avatar } from '@material-ui/core';
@@ -37,9 +37,9 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
         getPosts(token);
     }, []);
 
-    const currentLanguage = language === 'english' ? english : russian;
+    const translate = language === 'english' ? english : russian;
     const classes = useStyles();
-    const [postState, setPostState] = useState(currentLanguage['Newsfeed.post']);
+    const [postState, setPostState] = useState(translate['Newsfeed.post']);
     const [state, setState] = useState({ file: '', imagePreviewUrl: '' });
     const initialValues = { text: '' };
 
@@ -94,14 +94,13 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
                 token: token,
                 setSubmitting,
             });
-            setPostState(currentLanguage['Newsfeed.post']);
+            setPostState(translate['Newsfeed.post']);
             setState({ file: '', imagePreviewUrl: '' });
         });
     };
 
-    useEffect(() => {
-        console.log(language);
-        setPostState(currentLanguage['Newsfeed.post']);
+    useEffect(() => {        
+        setPostState(translate['Newsfeed.post']);
     }, [language, setPostState]);
 
     return (
@@ -123,7 +122,7 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
                                     )}
                                 </Avatar>
                                 <Field
-                                    placeholder={currentLanguage['Newsfeed.placeholder']}
+                                    placeholder={translate['Newsfeed.placeholder']}
                                     className={styles.input}
                                     multiline={true}
                                     name="text"
@@ -139,7 +138,7 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
                                         className={styles.inputFile}
                                         multiple
                                     />
-                                    <label for="inputFile" className={styles.inputFileButton}>
+                                    <label htmlFor="inputFile" className={styles.inputFileButton}>
                                         <GetAppIcon className={styles.inputFileButtonImg} />
                                     </label>
                                 </div>
@@ -172,5 +171,5 @@ const mapStateToProps = function (state) {
     };
 };
 
-export default connect(mapStateToProps, { getPosts, setPost })(Newsfeed);
-//export default compose(connect(mapStateToProps,{getPosts,setPost}),withLoginRedirect)(Newsfeed);
+//export default connect(mapStateToProps, { getPosts, setPost })(Newsfeed);
+export default compose(connect(mapStateToProps,{getPosts,setPost}),withLogoutRedirect)(Newsfeed);

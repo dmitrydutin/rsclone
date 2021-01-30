@@ -39,6 +39,8 @@ const language = {
     'Newsfeed.post': 'Post',
     'Newsfeed.placeholder': `What's new?`,
 
+    'Post.placeholder': `Leave a comment...`,
+
     greeting: 'Hello',
     loggedIn: 'You are logged in',
 };

@@ -19,11 +19,14 @@ import {
 } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteIconBorder from '@material-ui/icons/FavoriteBorder';
 import CommentIcon from '@material-ui/icons/Comment';
 import userAvatar from './assets/images/user.svg';
 import SendIcon from '@material-ui/icons/Send';
 import { setComment, getComments, setLike } from '../../redux/reducers/NewsReducer';
 import * as Yup from 'yup';
+import russian from '../../languages/russian';
+import english from '../../languages/english';
 
 const CommentSchema = Yup.object().shape({
     text: Yup.string().min(1, 'Too Short!'),
@@ -35,14 +38,19 @@ const useStyles = makeStyles((theme) => ({
         margin: 'auto',
         marginTop: 10,
         marginBottom: 10,
-        boxShadow: '0px 0px 10px 3px #b9b8b8',
+        padding: '0px 20px 20px',
         [theme.breakpoints.down('700')]: {
             width: 350,
         },
+        backgroundColor: `${theme.palette.post.default} !important`,
     },
     content: {
         borderBottom: `4px solid`,
         borderColor: `${theme.palette.background.secondary} !important`,
+    },
+    header: {
+        fontSize: 17,
+        fontWeight: 450,
     },
     contentHeader: {
         padding: `10px 0px`,
@@ -74,13 +82,18 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         width: 700,
         boxShadow: 'none',
+        backgroundColor: `${theme.palette.post.default} !important`,
+    },
+    avatar: {
+        backgroundColor: `#5181b8!important`,
     },
     input: {
-        border: '4px solid',
+        border: '2px solid',
         borderRadius: '5px',
         borderColor: `${theme.palette.background.secondary} !important`,
         marginLeft: theme.spacing(1),
         flex: 1,
+        padding: '5px 15px ',
     },
     iconButton: {
         padding: 10,
@@ -90,19 +103,24 @@ const useStyles = makeStyles((theme) => ({
         color: '#FF0000',
     },
     text: {
+        color: `${theme.palette.newsfeed.contrastText} !important`,
+        fontSize: '1rem',
+    },
+    icon: {
+        color: `${theme.palette.newsfeed.contrastText} !important`,
         fontSize: '1.5rem',
     },
 }));
 
 const Post = (props) => {
-    const { posts, post, user, token, setComment, getComments, setLike } = props;
+    const { posts, post, user, token, language, setComment, getComments, setLike } = props;
 
     const classes = useStyles();
 
+    const translate = language === 'english' ? english : russian;
     const initialValues = { text: '' };
     const [expanded, setExpanded] = useState(false);
     const [liked, setLiked] = useState(() => {
-        console.log(post, user);
         if (
             post.likes.find((el) => {
                 return el.postId === post.id && el.userId === user.id;
@@ -153,6 +171,9 @@ const Post = (props) => {
     return (
         <Card className={classes.root}>
             <CardHeader
+                classes={{
+                    title: classes.header,
+                }}
                 avatar={
                     <Avatar aria-label="recipe" className={classes.avatar}>
                         {post.user?.avatar ? (
@@ -176,7 +197,7 @@ const Post = (props) => {
 
             {post.text ? (
                 <CardContent className={classes.content}>
-                    <Typography color="textSecondary">{post.text}</Typography>
+                    <Typography className={classes.text}>{post.text}</Typography>
                 </CardContent>
             ) : null}
 
@@ -186,13 +207,14 @@ const Post = (props) => {
                     aria-label="like"
                     onClick={handleLikeClick}
                 >
-                    <FavoriteIcon />
-                    <Typography className={classes.text}>{post.likes.length} </Typography>
+                    {liked ? <FavoriteIcon /> : <FavoriteIconBorder />}
+
+                    <Typography className={classes.icon}>{post.likes.length} </Typography>
                 </IconButton>
 
                 <IconButton aria-label="comment" onClick={handleExpandClick}>
                     <CommentIcon />
-                    <Typography className={classes.text}>{post.commentsCount}</Typography>
+                    <Typography className={classes.icon}>{post.commentsCount}</Typography>
                 </IconButton>
             </CardActions>
 
@@ -201,9 +223,12 @@ const Post = (props) => {
                     return (
                         <CardContent className={classes.content}>
                             <CardHeader
+                                classes={{
+                                    title: classes.header,
+                                }}
                                 className={classes.contentHeader}
                                 avatar={
-                                    <Avatar aria-label="recipe">
+                                    <Avatar aria-label="recipe" className={classes.avatar}>
                                         {post.user.avatar ? (
                                             <img src={comment.user.avatar} alt="Avatar" />
                                         ) : (
@@ -212,8 +237,8 @@ const Post = (props) => {
                                     </Avatar>
                                 }
                                 title={comment.user.login ? comment.user.login : 'undefined'}
+                                subheader={<Typography>{comment.text}</Typography>}
                             />
-                            <Typography>{comment.text}</Typography>
                         </CardContent>
                     );
                 })}
@@ -233,6 +258,7 @@ const Post = (props) => {
                                         component={TextField}
                                         name="text"
                                         fullWidth={true}
+                                        placeholder={translate['Post.placeholder']}
                                     />
                                     <IconButton
                                         type="submit"
@@ -257,6 +283,7 @@ const mapStateToProps = (state) => ({
     user: state.auth.user,
     token: state.auth.token,
     posts: state.news.posts,
+    language: state.app.language,
 });
 
 export default compose(
