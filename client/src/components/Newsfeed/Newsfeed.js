@@ -18,10 +18,6 @@ import userAvatar from './assets/images/user.svg';
 import { TextField } from 'formik-material-ui';
 import * as Yup from 'yup';
 
-const PostSchema = Yup.object().shape({
-    text: Yup.string().min(1, 'Too Short!'),
-});
-
 const useStyles = makeStyles((theme) => ({
     root: {
         maxWidth: '100%',
@@ -42,6 +38,9 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
     const [postState, setPostState] = useState(translate['Newsfeed.post']);
     const [state, setState] = useState({ file: '', imagePreviewUrl: '' });
     const initialValues = { text: '' };
+    const PostSchema = Yup.object().shape({
+        text: Yup.string().required(translate['Newsfeed.required']),
+    });
 
     let { imagePreviewUrl } = state;
     let imagePreviewDiv = null;
@@ -99,7 +98,7 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
         });
     };
 
-    useEffect(() => {        
+    useEffect(() => {
         setPostState(translate['Newsfeed.post']);
     }, [language, setPostState]);
 
@@ -126,7 +125,7 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
                                     className={styles.input}
                                     multiline={true}
                                     name="text"
-                                    component={TextField }
+                                    component={TextField}
                                 />
                                 <div className={styles.inputWrapper}>
                                     <input
@@ -171,5 +170,7 @@ const mapStateToProps = function (state) {
     };
 };
 
-//export default connect(mapStateToProps, { getPosts, setPost })(Newsfeed);
-export default compose(connect(mapStateToProps,{getPosts,setPost}),withLogoutRedirect)(Newsfeed);
+export default compose(
+    connect(mapStateToProps, { getPosts, setPost }),
+    withLogoutRedirect,
+)(Newsfeed);

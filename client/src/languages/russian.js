@@ -38,6 +38,7 @@ const language = {
 
     'Newsfeed.post': 'Опубликовать',
     'Newsfeed.placeholder': `Что у Вас нового?`,   
+    'Newsfeed.required': `Напишите что-нибудь...`,   
 
     'Post.placeholder': `Оставьте комментарий...`,
 

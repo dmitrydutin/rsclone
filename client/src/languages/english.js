@@ -38,6 +38,7 @@ const language = {
 
     'Newsfeed.post': 'Post',
     'Newsfeed.placeholder': `What's new?`,
+    'Newsfeed.required': `Write something...`,   
 
     'Post.placeholder': `Leave a comment...`,
 
