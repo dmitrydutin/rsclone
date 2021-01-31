@@ -28,7 +28,7 @@ export const NewsReducer = (state = initialState, action) => {
                 posts: state.posts.map((post, index) => {
                     if (index === action.index) {
                         post.comments = [...action.comments].reverse();
-                        post.commentsCount=action.comments.length;
+                        post.commentsCount = action.comments.length;
                     }
                     return post;
                 }),
@@ -109,6 +109,7 @@ export const getPosts = (token) => {
 
         if (response.status === 200 && response.data.status === 200) {
             const { posts } = response.data;
+
             dispatch(setPostsAction(posts));
         }
     };
@@ -118,12 +119,13 @@ export const setPost = ({ token, query, setSubmitting }) => {
     return async (dispatch) => {
         const response = await NewsAPI.sendPost(token, query);
         setSubmitting(false);
+        console.log(response);
         if (response.status === 200 && response.data.status === 200) {
             const { post } = response.data;
+            console.log(post);
             dispatch(
                 setPostAction({
                     ...post,
-                    user: query.user,
                     likes: [],
                     commentsCount: 0,
                 }),
@@ -139,11 +141,20 @@ export const setComment = ({ posts, post, token, query, setSubmitting }) => {
         });
 
         const response = await NewsAPI.sendComment(token, query);
-
+        console.log(response);
         setSubmitting(false);
 
         if (response.status === 200 && response.data.status === 200) {
-            dispatch(setCommentAction(query, index));
+            const { comment } = response.data;
+            console.log(comment);
+            dispatch(
+                setCommentAction(
+                    {
+                        ...comment,
+                    },
+                    index,
+                ),
+            );
         }
     };
 };

@@ -16,6 +16,7 @@ router.get(
                 'userId',
                 'text',
                 'photo',
+                'createdAt',
                 [Sequelize.fn('COUNT', Sequelize.col('comments.id')), 'commentsCount'],
             ],
             include: [
@@ -59,9 +60,22 @@ router.post(
             photo: photo,
         });
 
+        const user = await Users.findOne({
+            attributes: ['login', 'avatar'],
+            where: {
+                id: newPost.userId,
+            },
+        });
+
         return res.json({
             status: 200,
-            post: newPost,
+            post: {
+                ...newPost.dataValues,
+                user: {
+                    login: user.login,
+                    avatar: user.avatar,
+                },
+            },
         });
     }),
 );
@@ -77,7 +91,7 @@ router.get(
         }
 
         const comments = await Comments.findAll({
-            attributes: ['text', 'userId'],
+            attributes: ['text', 'userId', 'createdAt'],
             where: { postId },
             order: [['id', 'DESC']],
             include: [
@@ -119,9 +133,22 @@ router.post(
             text: text,
         });
 
+        const user = await Users.findOne({
+            attributes: ['login', 'avatar'],
+            where: {
+                id: newComment.userId,
+            },
+        });
+
         return res.json({
             status: 200,
-            comment: newComment,
+            comment: {
+                ...newComment.dataValues,
+                user: {
+                    login: user.login,
+                    avatar: user.avatar,
+                },
+            },
         });
     }),
 );

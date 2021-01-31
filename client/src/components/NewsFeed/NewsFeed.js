@@ -6,6 +6,7 @@ import styles from './NewsFeed.module.css';
 import { Container, Avatar } from '@material-ui/core';
 import { connect } from 'react-redux';
 import Post from '../Post/Post';
+import AttachFileIcon from '@material-ui/icons/AttachFile';
 import CloseIcon from '@material-ui/icons/Close';
 import { uploadImage } from './helper.js';
 import { getPosts, setPost } from '../../redux/reducers/NewsReducer';
@@ -26,6 +27,14 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'center',
     },
+
+    newPost: {
+        margin: '25px auto',
+        // boxShadow: '0px 0px 10px 2px #b9b8b8',
+        borderRadius: '10px',
+        padding: '15px',
+        backgroundColor: `${theme.palette.post.default} !important`,
+    },
 }));
 
 function Newsfeed({ children, language, user, token, getPosts, setPost }) {
@@ -36,26 +45,26 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
     const translate = language === 'english' ? english : russian;
     const classes = useStyles();
     const [postState, setPostState] = useState(translate['newsfeed.post']);
-    const [state, setState] = useState({ file: '', imagePreviewUrl: '' });
+    const [state, setState] = useState({ file: '', previewUrl: '' });
     const initialValues = { text: '' };
     const PostSchema = Yup.object().shape({
         text: Yup.string().required(translate['newsfeed.required']),
     });
 
-    let { imagePreviewUrl } = state;
-    let imagePreviewDiv = null;
+    let { previewUrl } = state;
+    let preview = null;
 
-    if (imagePreviewUrl) {
-        imagePreviewDiv = (
+    if (previewUrl) {
+        preview = (
             <div>
-                <img src={imagePreviewUrl} alt={'Image Preview'} />
+                <img src={previewUrl} alt={'Image Preview'} />
                 <button className={styles.closeButton} onClick={(e) => handleClose(e)}>
                     <CloseIcon />
                 </button>
             </div>
         );
     } else {
-        imagePreviewDiv = <div></div>;
+        preview = <div></div>;
     }
 
     const handleImageChange = (e) => {
@@ -65,7 +74,7 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
         reader.onloadend = () => {
             setState({
                 file: file,
-                imagePreviewUrl: reader.result,
+                previewUrl: reader.result,
             });
         };
 
@@ -75,9 +84,9 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
     const handleClose = (e) => {
         setState({
             file: '',
-            imagePreviewUrl: '',
+            previewUrl: '',
         });
-        imagePreviewDiv = <div></div>;
+        preview = <div></div>;
     };
 
     const handleSubmit = (values, { setSubmitting }) => {
@@ -95,7 +104,7 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
             });
             values.text = '';
             setPostState(translate['newsfeed.post']);
-            setState({ file: '', imagePreviewUrl: '' });
+            setState({ file: '', previewUrl: '' });
         });
     };
 
@@ -105,7 +114,7 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
 
     return (
         <Container className={classes.root}>
-            <div className={styles.newPost}>
+            <div className={classes.newPost}>
                 <Formik
                     initialValues={initialValues}
                     onSubmit={handleSubmit}
@@ -123,11 +132,15 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
                                 </Avatar>
                                 <Field
                                     placeholder={translate['newsfeed.placeholder']}
+                                    variant="outlined"
                                     className={styles.input}
                                     multiline={true}
                                     name="text"
                                     component={TextField}
                                 />
+                            </div>
+                            <div className={styles.imgPreview}>{preview}</div>
+                            <div className={styles.inputContainer}>
                                 <div className={styles.inputWrapper}>
                                     <input
                                         name="file"
@@ -139,19 +152,18 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
                                         multiple
                                     />
                                     <label htmlFor="inputFile" className={styles.inputFileButton}>
-                                        <GetAppIcon className={styles.inputFileButtonImg} />
+                                        <AttachFileIcon className={styles.inputFileButtonImg} />
                                     </label>
                                 </div>
+                                <button
+                                    disabled={isSubmitting}
+                                    className={styles.submitButton}
+                                    type="submit"
+                                    onClick={submitForm}
+                                >
+                                    {postState}
+                                </button>
                             </div>
-                            <div className={styles.imgPreview}>{imagePreviewDiv}</div>
-                            <button
-                                disabled={isSubmitting}
-                                className={styles.submitButton}
-                                type="submit"
-                                onClick={submitForm}
-                            >
-                                {postState}
-                            </button>
                         </form>
                     )}
                 </Formik>
@@ -164,7 +176,6 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
 
 const mapStateToProps = function (state) {
     return {
-        children: state.news.posts.map((el) => <Post post={el} />),
         language: state.app.language,
         user: state.auth.user,
         token: state.auth.token,
