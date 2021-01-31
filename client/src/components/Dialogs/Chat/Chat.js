@@ -37,12 +37,11 @@ const Chat = (props) => {
 
     return (
         <div>
-            <Grid container component={Paper} className={styles.chatSection}>
+            <Grid container className={styles.chatSection}>
                 <Grid item xs={3} className={styles.borderRight500}>
-                    <Grid item xs={12} style={{ padding: '18px' }}>
+                    <Grid item xs={12} style={{ padding: '12px' }}>
                         <TextField label="Search" variant="outlined" fullWidth />
                     </Grid>
-                    <Divider />
                     <List className={styles.list}>
                         {messages.map(({ id, name, message, avatar }) => (
                             <ListItem key={id} button onClick={onClickDialog}>
@@ -53,7 +52,6 @@ const Chat = (props) => {
                             </ListItem>
                         ))}
                     </List>
-                    <Divider />
                 </Grid>
                 <Grid item xs={9}>
                     <Grid item xs={12}>
