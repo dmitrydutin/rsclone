@@ -1,6 +1,8 @@
+import { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
+import { logout } from '../../redux/reducers/AuthReducer';
 import { toggleTheme, toggleLanguage } from '../../redux/reducers/AppReducer';
 import { getLanguage } from '../../languages/index';
 
@@ -9,12 +11,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
-import Button from '@material-ui/core/Button';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import IconButton from '@material-ui/core/IconButton';
-import TranslateIcon from '@material-ui/icons/Translate';
-import Brightness7Icon from '@material-ui/icons/Brightness7';
-import Brightness4Icon from '@material-ui/icons/Brightness4';
+import DesktopMenu from './parts/DesktopMenu';
+import MobileMenu from './parts/MobileMenu';
 
 const useStyles = makeStyles((theme) => ({
     header: {
@@ -23,13 +21,31 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.header.contrastText,
     },
     companyName: {
-        marginRight: 'auto',
+        marginRight: '20px',
+        padding: '8px 11px',
+        fontSize: '15px',
+        fontWeight: '500',
+        textTransform: 'uppercase',
+        '&:hover': {
+            opacity: 0.75,
+        },
     },
 }));
 
-const Header = ({ isAuth, language, toggleTheme, toggleLanguage, theme }) => {
+const Header = ({ isAuth, user, token, logout, language, toggleLanguage, theme, toggleTheme }) => {
     const classes = useStyles();
     const translate = getLanguage(language);
+
+    const [mobileView, setMobileView] = useState(false);
+
+    useEffect(() => {
+        const setResponsiveness = () => {
+            return window.innerWidth < 900 ? setMobileView(true) : setMobileView(false);
+        };
+
+        setResponsiveness();
+        window.addEventListener('resize', () => setResponsiveness());
+    }, []);
 
     const changeTheme = () => {
         toggleTheme(theme);
@@ -43,47 +59,33 @@ const Header = ({ isAuth, language, toggleTheme, toggleLanguage, theme }) => {
         <AppBar className={classes.header} elevation={0}>
             <Container>
                 <Toolbar disableGutters>
-                    <Link
-                        component={RouterLink}
-                        to="/feed"
-                        color="inherit"
-                        underline="none"
-                        className={classes.companyName}
-                    >
-                        <Typography variant="h6" component="h1">
+                    <Typography variant="body1" component="h1" className={classes.companyName}>
+                        <Link component={RouterLink} to="/feed" color="inherit" underline="none">
                             {translate['header.companyName']}
-                        </Typography>
-                    </Link>
+                        </Link>
+                    </Typography>
 
-                    <Button
-                        color="inherit"
-                        size="large"
-                        startIcon={<TranslateIcon />}
-                        onClick={changeLanguage}
-                    >
-                        {translate['header.language']}
-                    </Button>
-
-                    <IconButton color="inherit" onClick={changeTheme}>
-                        {theme === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
-                    </IconButton>
-
-                    {isAuth ? (
-                        <>
-                            <IconButton color="inherit">
-                                <AccountCircle />
-                            </IconButton>
-                        </>
+                    {mobileView ? (
+                        <MobileMenu
+                            isAuth={isAuth}
+                            token={token}
+                            logout={logout}
+                            language={language}
+                            changeLanguage={changeLanguage}
+                            theme={theme}
+                            changeTheme={changeTheme}
+                        />
                     ) : (
-                        <div>
-                            <Button color="inherit" component={RouterLink} to="/login">
-                                {translate['header.login']}
-                            </Button>
-
-                            <Button color="inherit" component={RouterLink} to="/join">
-                                {translate['header.join']}
-                            </Button>
-                        </div>
+                        <DesktopMenu
+                            isAuth={isAuth}
+                            user={user}
+                            token={token}
+                            logout={logout}
+                            language={language}
+                            changeLanguage={changeLanguage}
+                            theme={theme}
+                            changeTheme={changeTheme}
+                        />
                     )}
                 </Toolbar>
             </Container>
@@ -93,8 +95,10 @@ const Header = ({ isAuth, language, toggleTheme, toggleLanguage, theme }) => {
 
 const mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth,
+    user: state.auth.user,
+    token: state.auth.token,
     language: state.app.language,
     theme: state.app.theme,
 });
 
-export default connect(mapStateToProps, { toggleTheme, toggleLanguage })(Header);
+export default connect(mapStateToProps, { logout, toggleTheme, toggleLanguage })(Header);

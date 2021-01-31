@@ -43,3 +43,9 @@
         margin-bottom: 17px;
     }
 }
+
+@media (max-width: 345px) {
+    .list {
+        flex-direction: column;
+    }
+}

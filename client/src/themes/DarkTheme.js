@@ -6,12 +6,12 @@ const darkTheme = {
             contrastText: '#1A202C',
         },
         background: {
-            default: '#1A202C',
-            secondary: '#222222',
+            default: '#202124',
+            paper: '#2E2F32',
         },
         header: {
-            background: '#1A202C',
-            border: '#363B46',
+            background: '#2E2F32',
+            border: '#17181A',
             contrastText: '#EEEEEF',
         },
         newsfeed:{
@@ -21,8 +21,8 @@ const darkTheme = {
             default:'#333e54'
         },
         footer: {
-            background: '#1A202C',
-            border: '#363B46',
+            background: '#2E2F32',
+            border: '#17181A',
         },
         button: {
             hover: {

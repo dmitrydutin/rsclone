@@ -6,8 +6,8 @@ const lightTheme = {
             contrastText: '#fff',
         },
         background: {
-            default: '#F4F5FD',
-            secondary: '#edeef0',
+            default: '#EDEEF0',
+            paper: '#FEFEFF',
         },
         header: {
             background: '#FEFEFF',

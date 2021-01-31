@@ -1,8 +1,13 @@
 const language = {
     'header.companyName': 'Facebook',
+    'header.news': 'Новости',
+    'header.messenger': 'Мессенджер',
     'header.language': 'Русский',
+    'header.theme': 'Тема',
     'header.login': 'Войти',
     'header.join': 'Регистрация',
+    'header.profile': 'Профиль',
+    'header.logout': 'Выйти',
 
     'error.notFound': 'Страница не найдена',
 
@@ -23,7 +28,7 @@ const language = {
     'login.yup.required': 'Обязательное',
     'login.error': 'Вы ввели неверный логин или пароль',
 
-    'join.signUp': 'Зарегистрироваться',
+    'join.signUp': 'Создать аккаунт',
     'join.reasonForRegistration': 'Зарегистрируйтесь, чтобы отправлять сообщения, фотографии и видео своим друзьям.',
     'join.form.name': 'Имя *',
     'join.form.surname': 'Фамилия *',
