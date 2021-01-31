@@ -6,16 +6,17 @@ const darkTheme = {
             contrastText: '#1A202C',
         },
         background: {
-            default: '#1A202C',
+            default: '#202124',
+            paper: '#2E2F32',
         },
         header: {
-            background: '#1A202C',
-            border: '#363B46',
+            background: '#2E2F32',
+            border: '#17181A',
             contrastText: '#EEEEEF',
         },
         footer: {
-            background: '#1A202C',
-            border: '#363B46',
+            background: '#2E2F32',
+            border: '#17181A',
         },
         button: {
             hover: {

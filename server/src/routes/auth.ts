@@ -44,14 +44,13 @@ router.post(
 
         if (user) {
             const data = {
-                role: user.role.role,
                 name: user.name,
                 surname: user.surname,
                 quote: user.quote,
                 avatar: user.avatar,
                 city: user.city,
+                role: user.role.role,
                 createdAt: user.createdAt,
-                login: user.login,
             };
             const token = generateToken();
 
@@ -104,12 +103,12 @@ router.post(
             });
 
             const data = {
-                role: user.role.role,
                 name: user.name,
                 surname: user.surname,
                 quote: user.quote,
                 avatar: user.avatar,
                 city: user.city,
+                role: user.role.role,
                 createdAt: user.createdAt,
             };
             const token = generateToken();
@@ -138,15 +137,34 @@ router.post(
     '/me',
     auth,
     asyncHandler(async (req, res) => {
-        const user = await Users.findByPk(req.app.get('userId'));
+        const user = await Users.findOne({
+            attributes: ['id', 'name', 'surname', 'quote', 'avatar', 'city', 'createdAt'],
+            include: [
+                {
+                    model: Roles,
+                    attributes: ['role'],
+                },
+            ],
+            where: { id: req.app.get('userId') },
+        });
 
         if (!user) {
             throw createError(403, 'User not found');
         }
 
+        const data = {
+            name: user.name,
+            surname: user.surname,
+            quote: user.quote,
+            avatar: user.avatar,
+            city: user.city,
+            role: user.role.role,
+            createdAt: user.createdAt,
+        };
+
         return res.json({
             status: 200,
-            user,
+            user: data,
         });
     }),
 );

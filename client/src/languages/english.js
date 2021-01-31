@@ -1,8 +1,13 @@
 const language = {
     'header.companyName': 'Facebook',
+    'header.news': 'News',
+    'header.messenger': 'Messenger',
     'header.language': 'English',
+    'header.theme': 'Theme',
     'header.login': 'Login',
     'header.join': 'Join',
+    'header.profile': 'Profile',
+    'header.logout': 'Logout',
 
     'error.notFound': 'This page could not be found',
 
