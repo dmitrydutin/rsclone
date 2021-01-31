@@ -3,7 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import styles from './Post.module.css';
-import { Formik } from 'formik';
+import { Formik, Field } from 'formik';
+import { TextField } from 'formik-material-ui';
 import {
     Card,
     CardHeader,
@@ -14,18 +15,22 @@ import {
     IconButton,
     Typography,
     Collapse,
-    InputBase,
     Paper,
 } from '@material-ui/core';
-import { red } from '@material-ui/core/colors';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteIconBorder from '@material-ui/icons/FavoriteBorder';
 import CommentIcon from '@material-ui/icons/Comment';
 import userAvatar from './assets/images/user.svg';
-import { withLoginRedirect } from '../../hoc/withAuthRedirect';
 import SendIcon from '@material-ui/icons/Send';
-import loader from './assets/images/loader.gif';
+import { setComment, getComments, setLike } from '../../redux/reducers/NewsReducer';
+import * as Yup from 'yup';
+import russian from '../../languages/russian';
+import english from '../../languages/english';
 
-import { setComment, getComments } from '../../redux/reducers/NewsReducer';
+const CommentSchema = Yup.object().shape({
+    text: Yup.string().min(1, 'Too Short!'),
+});
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,13 +38,19 @@ const useStyles = makeStyles((theme) => ({
         margin: 'auto',
         marginTop: 10,
         marginBottom: 10,
-        boxShadow: '0px 0px 10px 3px #b9b8b8',
+        padding: '0px 20px 20px',
         [theme.breakpoints.down('700')]: {
             width: 350,
         },
+        backgroundColor: `${theme.palette.post.default} !important`,
     },
     content: {
-        borderBottom: `2px solid grey`,
+        borderBottom: `4px solid`,
+        borderColor: `${theme.palette.background.default} !important`,
+    },
+    header: {
+        fontSize: 17,
+        fontWeight: 450,
     },
     contentHeader: {
         padding: `10px 0px`,
@@ -59,9 +70,6 @@ const useStyles = makeStyles((theme) => ({
     expandOpen: {
         transform: 'rotate(180deg)',
     },
-    avatar: {
-        backgroundColor: red[250],
-    },
     icon: {
         font: 50,
     },
@@ -74,12 +82,18 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         width: 700,
         boxShadow: 'none',
+        backgroundColor: `${theme.palette.background.default} !important`,
+    },
+    avatar: {
+        backgroundColor: `#5181b8!important`,
     },
     input: {
-        border: '2px solid rgb(180, 178, 178)',
+        border: '2px solid',
         borderRadius: '5px',
+        borderColor: `${theme.palette.primary.main} !important`,
         marginLeft: theme.spacing(1),
         flex: 1,
+        padding: '5px 15px ',
     },
     iconButton: {
         padding: 10,
@@ -88,54 +102,81 @@ const useStyles = makeStyles((theme) => ({
         font: 50,
         color: '#FF0000',
     },
+    text: {
+        color: `${theme.palette.newsfeed.contrastText} !important`,
+        fontSize: '1rem',
+    },
+    icon: {
+        color: `${theme.palette.newsfeed.contrastText} !important`,
+        fontSize: '1.5rem',
+    },
 }));
 
 const Post = (props) => {
-    const { posts, post, user, token, setComment, getComments } = props;
+    const { posts, post, user, token, language, setComment, getComments, setLike } = props;
 
     const classes = useStyles();
 
+    const translate = language === 'english' ? english : russian;
+    const initialValues = { text: '' };
     const [expanded, setExpanded] = useState(false);
-    const [liked, setLiked] = useState(false);
+    const [liked, setLiked] = useState(() => {
+        if (!post.likes.length) {
+            return false;
+        }
+        if (
+            post.likes.find((el) => {
+                return el.postId === post.id && el.userId === user.id;
+            })
+        ) {
+            return true;
+        }
+        return false;
+    });
     const [postState, setPostState] = useState(<SendIcon />);
-    const [textState, setTextState] = useState('');
 
     const handleExpandClick = () => {
         getComments({ posts, postId: post.id, token });
         setExpanded(!expanded);
     };
 
-    const handleLikeClick = () => {
-        setLiked(!liked);
+    const handleLikeClick = async () => {
+        await setLike({ posts, postId: post.id, userId: user.id, token });
+        setLiked(() => {
+            if (
+                post.likes.find((el) => {
+                    return el.postId === post.id && el.userId === user.id;
+                })
+            ) {
+                return true;
+            }
+            return false;
+        });
     };
 
-    const handleTextChange = (e) => {
-        e.preventDefault();
-        setTextState(e.target.value);
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setPostState(
-            <img src={loader} alt={'Loading...'} style={{ height: '40px', width: '35px' }} />,
-        );
-        setComment({
+    const handleSubmit = async (values, { setSubmitting }) => {
+        setPostState(<CircularProgress style={{ height: '40px', width: '35px' }} />);
+        await setComment({
             posts,
             post,
             token,
             query: {
                 postId: post.id,
-                text: textState,
+                text: values.text,
                 user: { login: user.login, avatar: user.avatar },
             },
+            setSubmitting,
         });
+        values.text = '';
         setPostState(<SendIcon />);
-        setTextState('');
     };
 
     return (
         <Card className={classes.root}>
             <CardHeader
+                classes={{
+                    title: classes.header,
+                }}
                 avatar={
                     <Avatar aria-label="recipe" className={classes.avatar}>
                         {post.user?.avatar ? (
@@ -159,7 +200,7 @@ const Post = (props) => {
 
             {post.text ? (
                 <CardContent className={classes.content}>
-                    <Typography color="textSecondary">{post.text}</Typography>
+                    <Typography className={classes.text}>{post.text}</Typography>
                 </CardContent>
             ) : null}
 
@@ -169,13 +210,14 @@ const Post = (props) => {
                     aria-label="like"
                     onClick={handleLikeClick}
                 >
-                    <FavoriteIcon />
-                    {post.likesCount}
+                    {liked ? <FavoriteIcon /> : <FavoriteIconBorder />}
+
+                    <Typography className={classes.icon}>{post.likes.length} </Typography>
                 </IconButton>
 
                 <IconButton aria-label="comment" onClick={handleExpandClick}>
                     <CommentIcon />
-                    <Typography>{post.commentsCount}</Typography>
+                    <Typography className={classes.icon}>{post.commentsCount}</Typography>
                 </IconButton>
             </CardActions>
 
@@ -184,6 +226,9 @@ const Post = (props) => {
                     return (
                         <CardContent className={classes.content}>
                             <CardHeader
+                                classes={{
+                                    title: classes.header,
+                                }}
                                 className={classes.contentHeader}
                                 avatar={
                                     <Avatar aria-label="recipe" className={classes.avatar}>
@@ -195,33 +240,43 @@ const Post = (props) => {
                                     </Avatar>
                                 }
                                 title={comment.user.login ? comment.user.login : 'undefined'}
+                                subheader={<Typography>{comment.text}</Typography>}
                             />
-                            <Typography>{comment.text}</Typography>
                         </CardContent>
                     );
                 })}
 
-                <form onSubmit={(e) => handleSubmit(e)}>
-                    <div className={styles.inputContainer}>
-                        <Paper component="form" className={classes.paper}>
-                            <InputBase
-                                className={classes.input}
-                                multiline={true}
-                                onChange={(e) => handleTextChange(e)}
-                                value={textState}
-                            />
-                            <IconButton
-                                type="submit"
-                                className={classes.iconButton}
-                                aria-label="search"
-                                onClick={(e) => handleSubmit(e)}
-                                disabled={textState ? false : true}
-                            >
-                                {postState}
-                            </IconButton>
-                        </Paper>
-                    </div>
-                </form>
+                <Formik
+                    initialValues={initialValues}
+                    onSubmit={handleSubmit}
+                    validationSchema={CommentSchema}
+                >
+                    {({ submitForm, isSubmitting }) => (
+                        <form>
+                            <div className={styles.inputContainer}>
+                                <Paper component="form" className={classes.paper}>
+                                    <Field
+                                        className={classes.input}
+                                        multiline={true}
+                                        component={TextField}
+                                        name="text"
+                                        fullWidth={true}
+                                        placeholder={translate['post.placeholder']}
+                                    />
+                                    <IconButton
+                                        type="submit"
+                                        className={classes.iconButton}
+                                        aria-label="search"
+                                        onClick={submitForm}
+                                        disabled={isSubmitting}
+                                    >
+                                        {postState}
+                                    </IconButton>
+                                </Paper>
+                            </div>
+                        </form>
+                    )}
+                </Formik>
             </Collapse>
         </Card>
     );
@@ -231,9 +286,10 @@ const mapStateToProps = (state) => ({
     user: state.auth.user,
     token: state.auth.token,
     posts: state.news.posts,
+    language: state.app.language,
 });
 
 export default compose(
-    connect(mapStateToProps, { setComment, getComments }),
+    connect(mapStateToProps, { setComment, getComments, setLike }),
     //withLoginRedirect
 )(Post);

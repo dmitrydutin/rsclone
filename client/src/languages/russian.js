@@ -41,7 +41,11 @@ const language = {
     'join.yup.required': 'Обязательное',
     'join.error': 'Введенный логин уже используется',
 
-    'Newsfeed.post': 'Опубликовать',
+    'newsfeed.post': 'Опубликовать',
+    'newsfeed.placeholder': `Что у Вас нового?`,   
+    'newsfeed.required': `Напишите что-нибудь...`,   
+
+    'post.placeholder': `Оставьте комментарий...`,
 
     greeting: 'Здравствуйте',
     loggedIn: 'Вы вошли в систему',

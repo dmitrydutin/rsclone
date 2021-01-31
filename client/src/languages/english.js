@@ -41,7 +41,11 @@ const language = {
     'join.yup.required': 'Required',
     'join.error': 'Login entered already in use',
 
-    'Newsfeed.post': 'Post',
+    'newsfeed.post': 'Post',
+    'newsfeed.placeholder': `What's new?`,
+    'newsfeed.required': `Write something...`,   
+
+    'post.placeholder': `Leave a comment...`,
 
     greeting: 'Hello',
     loggedIn: 'You are logged in',

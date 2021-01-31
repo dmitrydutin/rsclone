@@ -44,6 +44,7 @@ router.post(
 
         if (user) {
             const data = {
+                id: user.id,
                 name: user.name,
                 surname: user.surname,
                 quote: user.quote,
@@ -103,6 +104,7 @@ router.post(
             });
 
             const data = {
+                id: user.id,
                 name: user.name,
                 surname: user.surname,
                 quote: user.quote,
@@ -153,6 +155,7 @@ router.post(
         }
 
         const data = {
+            id: user.id,
             name: user.name,
             surname: user.surname,
             quote: user.quote,

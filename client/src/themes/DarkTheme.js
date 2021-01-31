@@ -14,6 +14,12 @@ const darkTheme = {
             border: '#17181A',
             contrastText: '#EEEEEF',
         },
+        newsfeed:{
+            contrastText: '#FFFFFF',
+        },
+        post:{
+            default:'#333e54'
+        },
         footer: {
             background: '#2E2F32',
             border: '#17181A',
