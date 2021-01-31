@@ -1,16 +1,43 @@
 import styles from './Error.module.css';
+import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withLogoutRedirect } from '../../hoc/withAuthRedirect';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import { getLanguage } from '../../languages/index';
 
-const Error = () => {
+const Error = ({ language }) => {
+    const translate = getLanguage(language);
+
     return (
         <main className={styles.main}>
             <div className={styles.mainInner}>
-                <h1 className={styles.errorNumber}>404</h1>
-                <p className={styles.errorText}>This page could not be found</p>
+                <Typography
+                    variant="h5"
+                    component="h1"
+                    color="textPrimary"
+                    className={styles.errorNumber}
+                >
+                    404
+                </Typography>
+
+                <Divider orientation="vertical" flexItem />
+
+                <Typography
+                    variant="body2"
+                    component="p"
+                    color="textPrimary"
+                    className={styles.errorText}
+                >
+                    {translate['error.notFound']}
+                </Typography>
             </div>
         </main>
     );
 };
 
-export default compose(withLogoutRedirect)(Error);
+const mapStateToProps = (state) => ({
+    language: state.app.language,
+});
+
+export default compose(connect(mapStateToProps), withLogoutRedirect)(Error);

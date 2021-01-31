@@ -4,9 +4,7 @@ import { connect } from 'react-redux';
 import { withLogoutRedirect } from '../../../hoc/withAuthRedirect';
 import { getDialogs, getMessages } from '../../../redux/reducers/ChatReducer';
 
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -18,6 +16,7 @@ import messages from '../last-messages.json'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Navbar from './Navbar/Navbar'
 import styles from './Chat.module.css'
+
 import clip from './assets/images/clip.png'
 import smile from './assets/images/smile.svg'
 
@@ -55,7 +54,7 @@ const Chat = (props) => {
                 </Grid>
                 <Grid item xs={9}>
                     <Grid item xs={12}>
-                        <Navbar />
+                        <Navbar className={styles.navbar}/>
                     </Grid>
                     <List className={styles.messageArea}>
                         <ListItem className={styles.listItemFriend}>

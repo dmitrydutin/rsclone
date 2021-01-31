@@ -3,88 +3,161 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { join } from '../../redux/reducers/AuthReducer';
 import { withLoginRedirect } from '../../hoc/withAuthRedirect';
-import Container from '@material-ui/core/Container';
+import { getLanguage } from '../../languages/index';
+
 import { Formik, Field, Form } from 'formik';
-import { TextField } from 'formik-material-ui';
-import Button from '@material-ui/core/Button';
 import * as Yup from 'yup';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import { TextField } from 'formik-material-ui';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 
-const JoinSchema = Yup.object().shape({
-    name: Yup.string().min(5, 'Too Short!').max(30, 'Too Long!').required('Required'),
-    surname: Yup.string().min(5, 'Too Short!').max(30, 'Too Long!').required('Required'),
-    login: Yup.string().min(5, 'Too Short!').max(30, 'Too Long!').required('Required'),
-    password: Yup.string().min(5, 'Too Short!').max(30, 'Too Long!').required('Required'),
-});
-
-const Join = (props) => {
-    const { join } = props;
+const Join = ({ language, join }) => {
+    const translate = getLanguage(language);
     const initialValues = { name: '', surname: '', login: '', password: '' };
 
+    const JoinSchema = Yup.object().shape({
+        name: Yup.string()
+            .min(5, translate['join.yup.short'])
+            .max(30, translate['join.yup.long'])
+            .required(translate['join.yup.required']),
+        surname: Yup.string()
+            .min(5, translate['join.yup.short'])
+            .max(30, translate['join.yup.long'])
+            .required(translate['join.yup.required']),
+        login: Yup.string()
+            .min(5, translate['join.yup.short'])
+            .max(30, translate['join.yup.long'])
+            .required(translate['join.yup.required']),
+        password: Yup.string()
+            .min(5, translate['join.yup.short'])
+            .max(30, translate['join.yup.long'])
+            .required(translate['join.yup.required']),
+    });
+
     const onSubmit = (values, { setSubmitting, setErrors }) => {
-        join(values.name, values.surname, values.login, values.password, setSubmitting, setErrors);
+        join(
+            values.name,
+            values.surname,
+            values.login,
+            values.password,
+            setSubmitting,
+            setErrors,
+            translate,
+        );
     };
 
     return (
-        <main className={styles.main}>
-            <Container maxWidth="xs">
-                <Formik
-                    initialValues={initialValues}
-                    onSubmit={onSubmit}
-                    validationSchema={JoinSchema}
-                >
-                    {({ submitForm, isSubmitting }) => (
-                        <Form className={styles.form} autoComplete="off">
-                            <h1 className={styles.title}>Join</h1>
+        <main>
+            <Container>
+                <div className={styles.inner}>
+                    <Formik
+                        initialValues={initialValues}
+                        onSubmit={onSubmit}
+                        validationSchema={JoinSchema}
+                    >
+                        {({ submitForm, isSubmitting }) => (
+                            <Form className={styles.form} autoComplete="off">
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12}>
+                                        <Typography
+                                            variant="h3"
+                                            component="h1"
+                                            align="center"
+                                            color="textPrimary"
+                                        >
+                                            {translate['join.signUp']}
+                                        </Typography>
+                                    </Grid>
 
-                            <div className={styles.fieldGroup}>
-                                <Field
-                                    component={TextField}
-                                    name="name"
-                                    label="Name"
-                                    variant="outlined"
-                                    className={styles.field}
-                                />
+                                    <Grid item xs={12}>
+                                        <Typography
+                                            variant="h6"
+                                            component="h6"
+                                            align="center"
+                                            color="textSecondary"
+                                            className={styles.subtitle}
+                                        >
+                                            {translate['join.reasonForRegistration']}
+                                        </Typography>
+                                    </Grid>
 
-                                <Field
-                                    component={TextField}
-                                    name="surname"
-                                    label="Surname"
-                                    variant="outlined"
-                                    className={styles.field}
-                                />
-                            </div>
+                                    <Grid item xs={6}>
+                                        <Field
+                                            component={TextField}
+                                            name="name"
+                                            label={translate['join.form.name']}
+                                            variant="outlined"
+                                            fullWidth={true}
+                                        />
+                                    </Grid>
 
-                            <Field
-                                component={TextField}
-                                name="login"
-                                label="Login"
-                                variant="outlined"
-                                className={styles.field}
-                            />
+                                    <Grid item xs={6}>
+                                        <Field
+                                            component={TextField}
+                                            name="surname"
+                                            label={translate['join.form.surname']}
+                                            variant="outlined"
+                                            fullWidth={true}
+                                        />
+                                    </Grid>
 
-                            <Field
-                                component={TextField}
-                                name="password"
-                                type="password"
-                                label="Password"
-                                variant="outlined"
-                                className={styles.field}
-                            />
+                                    <Grid item xs={12}>
+                                        <Field
+                                            component={TextField}
+                                            name="login"
+                                            label={translate['join.form.login']}
+                                            variant="outlined"
+                                            fullWidth={true}
+                                        />
+                                    </Grid>
 
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                disabled={isSubmitting}
-                                onClick={submitForm}
-                            >
-                                Join
-                            </Button>
-                        </Form>
-                    )}
-                </Formik>
+                                    <Grid item xs={12}>
+                                        <Field
+                                            component={TextField}
+                                            name="password"
+                                            type="password"
+                                            label={translate['join.form.password']}
+                                            variant="outlined"
+                                            fullWidth={true}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={12}>
+                                        <Typography
+                                            variant="body2"
+                                            component="i"
+                                            color="textSecondary"
+                                        >
+                                            {translate['join.form.requiredFields']}
+                                        </Typography>
+                                    </Grid>
+
+                                    <Grid item xs={12}>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            disabled={isSubmitting}
+                                            onClick={submitForm}
+                                            fullWidth={true}
+                                            size="large"
+                                        >
+                                            {translate['join.form.send']}
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </Form>
+                        )}
+                    </Formik>
+                </div>
             </Container>
         </main>
     );
 };
 
-export default compose(connect(null, { join }), withLoginRedirect)(Join);
+const mapStateToProps = (state) => ({
+    language: state.app.language,
+});
+
+export default compose(connect(mapStateToProps, { join }), withLoginRedirect)(Join);

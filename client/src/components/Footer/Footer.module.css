@@ -1,0 +1,51 @@
+.inner {
+    padding: 9px 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.list {
+    display: flex;
+    align-items: center;
+}
+
+.schoolLogo {
+    width: 112.422px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.schoolLogoLink {
+    height: 20px;
+    display: block;
+}
+
+.schoolLogoIcon {
+    height: 100%;
+}
+
+@media (max-width: 600px) {
+    .inner {
+        flex-direction: column-reverse;
+    }
+
+    .list {
+        order: 3;
+    }
+
+    .schoolLogo {
+        width: auto;
+    }
+
+    .schoolLogoLink {
+        margin-bottom: 17px;
+    }
+}
+
+@media (max-width: 345px) {
+    .list {
+        flex-direction: column;
+    }
+}

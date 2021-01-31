@@ -3,6 +3,7 @@ import path from 'path';
 import sequelize from './database/main';
 
 import authRouter from './routes/auth';
+import feedRouter from './routes/feed';
 import exampleRouter from './routes/example';
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '..', '..', 'client', 'build')));
 
 app.use('/api/auth', authRouter);
+app.use('/api/feed', feedRouter);
 app.use('/api/example', exampleRouter);
 
 app.use((error, req, res, next) => {

@@ -1,4 +1,4 @@
-import { AuthAPI } from '../../api/api';
+import { AuthAPI } from '../../api/api.js';
 
 const SET_USER_DATA = '/auth/SET_USER_DATA';
 
@@ -22,16 +22,14 @@ export const AuthReducer = (state = initialState, action) => {
     }
 };
 
-const setUserDataAction = (isAuth, user, token) => {
-    return {
-        type: SET_USER_DATA,
-        isAuth,
-        user,
-        token,
-    };
-};
+const setUserDataAction = (isAuth, user, token) => ({
+    type: SET_USER_DATA,
+    isAuth,
+    user,
+    token,
+});
 
-export const login = (login, password, setSubmitting, setErrors) => {
+export const login = (login, password, setSubmitting, setErrors, translate) => {
     return async (dispatch) => {
         const response = await AuthAPI.login(login, password);
         setSubmitting(false);
@@ -41,13 +39,13 @@ export const login = (login, password, setSubmitting, setErrors) => {
                 const { user, token } = response.data;
                 dispatch(setUserDataAction(true, user, token));
             } else {
-                setErrors({ login: response.data.reason });
+                setErrors({ login: translate['login.error'] });
             }
         }
     };
 };
 
-export const join = (name, surname, login, password, setSubmitting, setErrors) => {
+export const join = (name, surname, login, password, setSubmitting, setErrors, translate) => {
     return async (dispatch) => {
         const response = await AuthAPI.join(name, surname, login, password);
         setSubmitting(false);
@@ -57,7 +55,7 @@ export const join = (name, surname, login, password, setSubmitting, setErrors) =
                 const { user, token } = response.data;
                 dispatch(setUserDataAction(true, user, token));
             } else {
-                setErrors({ login: response.data.reason });
+                setErrors({ login: translate['join.error'] });
             }
         }
     };

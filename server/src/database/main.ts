@@ -8,6 +8,7 @@ import postModel from '../models/post.model';
 import commentModel from '../models/comment.model';
 import dialogModel from '../models/dialog.model';
 import messageModel from '../models/message.model';
+import likeModel from '../models/like.model';
 
 const models = {};
 
@@ -18,6 +19,7 @@ export const Posts = createModel(postModel);
 export const Comments = createModel(commentModel);
 export const Dialogs = createModel(dialogModel);
 export const Messages = createModel(messageModel);
+export const Likes = createModel(likeModel);
 
 function createModel(callback) {
     const model = callback(sequelize, DataTypes);

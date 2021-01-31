@@ -1,23 +1,30 @@
-.main {
-    height: 100vh;
-    min-height: 500px;
+.inner {
+    height: 100%;
+    margin: 20px auto;
+    max-width: 516px;
+    min-height: calc(100vh - 176px);
 
     display: flex;
     align-items: center;
-    justify-content: center;
 }
 
-.form {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
+.subtitle {
+    margin-bottom: 26px !important;
+    font-weight: 400 !important;
 }
 
-.title {
-    margin: 0;
-    margin-bottom: 26px;
+.link {
+    margin-left: 4px !important;
 }
 
-.field {
-    margin-bottom: 16px!important;
+@media (max-width: 960px) {
+    .subtitle {
+        margin-bottom: 24px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .inner {
+        min-height: calc(100vh - 96px);
+    }
 }
