@@ -261,7 +261,7 @@ const Post = (props) => {
                                         component={TextField}
                                         name="text"
                                         fullWidth={true}
-                                        placeholder={translate['Post.placeholder']}
+                                        placeholder={translate['post.placeholder']}
                                     />
                                     <IconButton
                                         type="submit"

@@ -16,10 +16,7 @@ router.get(
                 'userId',
                 'text',
                 'photo',
-                [
-                    Sequelize.fn('COUNT', Sequelize.col('comments.id')),
-                    'commentsCount',
-                ],
+                [Sequelize.fn('COUNT', Sequelize.col('comments.id')), 'commentsCount'],
             ],
             include: [
                 {
@@ -32,10 +29,10 @@ router.get(
                 },
                 {
                     model: Comments,
-                    attributes: [],                   
+                    attributes: [],
                 },
             ],
-            group: ['posts.id','likes.id'],
+            group: ['posts.id', 'likes.id'],
             order: [['id', 'DESC']],
         });
 

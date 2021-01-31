@@ -35,11 +35,11 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
 
     const translate = language === 'english' ? english : russian;
     const classes = useStyles();
-    const [postState, setPostState] = useState(translate['Newsfeed.post']);
+    const [postState, setPostState] = useState(translate['newsfeed.post']);
     const [state, setState] = useState({ file: '', imagePreviewUrl: '' });
     const initialValues = { text: '' };
     const PostSchema = Yup.object().shape({
-        text: Yup.string().required(translate['Newsfeed.required']),
+        text: Yup.string().required(translate['newsfeed.required']),
     });
 
     let { imagePreviewUrl } = state;
@@ -94,13 +94,13 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
                 setSubmitting,
             });
             values.text = '';
-            setPostState(translate['Newsfeed.post']);
+            setPostState(translate['newsfeed.post']);
             setState({ file: '', imagePreviewUrl: '' });
         });
     };
 
     useEffect(() => {
-        setPostState(translate['Newsfeed.post']);
+        setPostState(translate['newsfeed.post']);
     }, [language, setPostState]);
 
     return (
@@ -122,7 +122,7 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
                                     )}
                                 </Avatar>
                                 <Field
-                                    placeholder={translate['Newsfeed.placeholder']}
+                                    placeholder={translate['newsfeed.placeholder']}
                                     className={styles.input}
                                     multiline={true}
                                     name="text"
