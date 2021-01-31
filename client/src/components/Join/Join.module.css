@@ -2,7 +2,7 @@
     height: 100%;
     margin: 20px auto;
     max-width: 516px;
-    min-height: calc(100vh - 64px);
+    min-height: calc(100vh - 104px);
 
     display: flex;
     align-items: center;
@@ -16,5 +16,11 @@
 @media (max-width: 960px) {
     .subtitle {
         margin-bottom: 24px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .inner {
+        min-height: calc(100vh - 96px);
     }
 }
