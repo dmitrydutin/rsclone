@@ -28,6 +28,7 @@ export const NewsReducer = (state = initialState, action) => {
                 posts: state.posts.map((post, index) => {
                     if (index === action.index) {
                         post.comments = [...action.comments].reverse();
+                        post.commentsCount=action.comments.length;
                     }
                     return post;
                 }),
@@ -41,6 +42,7 @@ export const NewsReducer = (state = initialState, action) => {
                             post.comments = [];
                         }
                         post.comments.push(action.comment);
+                        post.commentsCount++;
                     }
                     return post;
                 }),
@@ -59,10 +61,8 @@ export const NewsReducer = (state = initialState, action) => {
                                 ),
                                 1,
                             );
-                            post.likesCount--;
                         } else {
                             post.likes.push(action.like);
-                            post.likesCount++;
                         }
                     }
                     return post;
@@ -116,7 +116,6 @@ export const getPosts = (token) => {
 
 export const setPost = ({ token, query, setSubmitting }) => {
     return async (dispatch) => {
-        
         const response = await NewsAPI.sendPost(token, query);
         setSubmitting(false);
         if (response.status === 200 && response.data.status === 200) {

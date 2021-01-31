@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
     content: {
         borderBottom: `4px solid`,
-        borderColor: `${theme.palette.background.secondary} !important`,
+        borderColor: `${theme.palette.background.default} !important`,
     },
     header: {
         fontSize: 17,
@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         width: 700,
         boxShadow: 'none',
-        backgroundColor: `${theme.palette.post.default} !important`,
+        backgroundColor: `${theme.palette.background.default} !important`,
     },
     avatar: {
         backgroundColor: `#5181b8!important`,
@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
     input: {
         border: '2px solid',
         borderRadius: '5px',
-        borderColor: `${theme.palette.background.secondary} !important`,
+        borderColor: `${theme.palette.primary.main} !important`,
         marginLeft: theme.spacing(1),
         flex: 1,
         padding: '5px 15px ',

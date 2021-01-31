@@ -32,14 +32,11 @@ router.get(
                 },
                 {
                     model: Comments,
-                    attributes: [],
-                    // required: false
+                    attributes: [],                   
                 },
             ],
             group: ['posts.id','likes.id'],
             order: [['id', 'DESC']],
-            //separate: true
-            //distinct: true,
         });
 
         return res.json({
