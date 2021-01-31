@@ -93,6 +93,7 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
                 token: token,
                 setSubmitting,
             });
+            values.text = '';
             setPostState(translate['Newsfeed.post']);
             setState({ file: '', imagePreviewUrl: '' });
         });

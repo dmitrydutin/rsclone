@@ -121,7 +121,9 @@ const Post = (props) => {
     const initialValues = { text: '' };
     const [expanded, setExpanded] = useState(false);
     const [liked, setLiked] = useState(() => {
-        
+        if (!post.likes.length) {
+            return false;
+        }
         if (
             post.likes.find((el) => {
                 return el.postId === post.id && el.userId === user.id;
