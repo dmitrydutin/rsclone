@@ -56,7 +56,7 @@ const Header = ({ isAuth, user, token, logout, language, toggleLanguage, theme, 
     };
 
     return (
-        <AppBar className={classes.header} elevation={0}>
+        <AppBar className={classes.header} elevation={0} position='sticky'>
             <Container>
                 <Toolbar disableGutters>
                     <Typography variant="body1" component="h1" className={classes.companyName}>

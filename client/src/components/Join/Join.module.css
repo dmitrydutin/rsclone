@@ -1,8 +1,8 @@
 .inner {
-    height: 100vh;
-    margin: 0 auto;
+    height: 100%;
+    margin: 20px auto;
     max-width: 516px;
-    min-height: 650px;
+    min-height: calc(100vh - 64px);
 
     display: flex;
     align-items: center;
