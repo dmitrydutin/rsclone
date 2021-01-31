@@ -2,7 +2,7 @@
     height: 100%;
     margin: 20px auto;
     max-width: 516px;
-    min-height: calc(100vh - 104px);
+    min-height: calc(100vh - 176px);
 
     display: flex;
     align-items: center;
