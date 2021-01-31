@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import Post from '../Post/Post';
 import loader from './assets/images/loader.gif';
 import CloseIcon from '@material-ui/icons/Close';
-import { uploadImage } from './helper.js.js';
+import { uploadImage } from './helper.js';
 import { getPosts, setPost } from '../../redux/reducers/NewsReducer';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import CircularProgress from '@material-ui/core/CircularProgress';
