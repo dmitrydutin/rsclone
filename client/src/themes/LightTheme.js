@@ -33,6 +33,21 @@ const lightTheme = {
                 background: '#DADBF0',
             },
         },
+        chat: {
+            background: '#EDEEF0',
+            color: '#000',
+        },
+        chatMessagesFriend: {
+            background: '#fff',
+            color: '#000',
+        },
+        chatMessagesSelf: {
+            background: '#9bc4fd',
+            color: '#000',
+        },
+        messageArea: {
+            background: 'cornflowerblue',
+        }
     },
 };
 

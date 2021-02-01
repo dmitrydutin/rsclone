@@ -1,11 +1,8 @@
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
-import MoreIcon from '@material-ui/icons/MoreVert';
 import Messages from '../../last-messages.json'
 
 const useStyles = makeStyles((theme) => ({
@@ -17,9 +14,9 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(2),
     },
     toolbar: {
-        background: '#EDEEF0',
-        color: '#000',
-        minHeight: 50,
+        background: theme.palette.chat.background,
+        color: theme.palette.chat.color,
+        minHeight: 70,
         alignItems: 'flex-start',
         paddingTop: theme.spacing(1),
         paddingBottom: theme.spacing(2),
@@ -40,12 +37,6 @@ export default function Navbar() {
                     <Typography className={classes.title} variant="h6" noWrap>
                         {Messages[0].name}
                     </Typography>
-                    <IconButton aria-label="search" color="inherit">
-                        <SearchIcon />
-                    </IconButton>
-                    <IconButton aria-label="display more actions" edge="end" color="inherit">
-                        <MoreIcon />
-                    </IconButton>
                 </Toolbar>
             </AppBar>
         </div>

@@ -33,6 +33,21 @@ const darkTheme = {
                 background: '#DADBF0',
             },
         },
+        chat: {
+            background: '#202124',
+            color: '#fff',
+        },
+        chatMessagesSelf: {
+            background: '#000',
+            color: '#fff',
+        },
+        chatMessagesFriend: {
+            background: '#202124',
+            color: '#000',
+        },
+        messageArea: {
+            background: '#2E2F32',
+        }
     },
 };
 

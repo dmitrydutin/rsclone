@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withLogoutRedirect } from '../../../hoc/withAuthRedirect';
 import { getDialogs, getMessages } from '../../../redux/reducers/ChatReducer';
 import { getLanguage } from '../../../languages/index';
+import { makeStyles } from '@material-ui/core/styles';
 
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -19,11 +20,40 @@ import Navbar from './Navbar/Navbar'
 import styles from './Chat.module.css'
 
 import clip from './assets/images/clip.png'
-import smile from './assets/images/smile.svg'
 
 const Chat = (props) => {
     const { token, getMessages, getDialogs, language } = props;
     const translate = getLanguage(language);
+
+    const useStyles = makeStyles((theme) => ({
+        messageArea: {
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: theme.palette.messageArea.background,
+            height: '77%',
+            fontSize: '20px',
+            overflowY: 'scroll',
+        },
+        listItemFriend: {
+            backgroundColor: theme.palette.chatMessagesFriend.background,
+            width: 'fit-content',
+            borderRadius: '15px',
+            margin: '0 0 10px 10px',
+            paddingTop: '0px',
+            paddingBottom: '0px',
+            maxWidth: '500px',
+        },
+        listItemSelf: {
+            backgroundColor: '#9bc4fd',
+            width: 'fit-content',
+            borderRadius: '15px',
+            margin: '0 10px 10px 10px',
+            paddingTop: '0px',
+            paddingBottom: '0px',
+            alignSelf: 'flex-end',
+            maxWidth: '500px',
+        },
+    }));
 
     useEffect(() => {
         getDialogs(token, 1);
@@ -32,6 +62,8 @@ const Chat = (props) => {
     const onClickDialog = () => {
         getMessages(token, 1);
     };
+
+    const classes = useStyles();
 
     return (
         <div>
@@ -53,52 +85,51 @@ const Chat = (props) => {
                 </Grid>
                 <Grid item xs={9}>
                     <Grid item xs={12}>
-                        <Navbar className={styles.navbar} />
+                        <Navbar />
                     </Grid>
-                    <List className={styles.messageArea}>
-                        <ListItem className={styles.listItemFriend}>
+                    <List className={classes.messageArea}>
+                        <ListItem className={classes.listItemFriend}>
                             <ListItemAvatar>
-                                <Avatar className={styles.avatar} alt={messages[0].name} src={messages[0].avatar} />
+                                <Avatar className={classes.avatar} alt={messages[0].name} src={messages[0].avatar} />
                             </ListItemAvatar>
-                            <ListItemText className={styles.listItemText} primary={messages[0].name} secondary={messages[0].message}>
+                            <ListItemText className={classes.listItemText} primary={messages[0].name} secondary={messages[0].message}>
                             </ListItemText>
                         </ListItem>
-                        <ListItem className={styles.listItemSelf}>
-                            <ListItemText className={styles.listItemText} primary={messages[1].name} secondary={messages[1].message}>
+                        <ListItem className={classes.listItemSelf}>
+                            <ListItemText className={classes.listItemText} primary={messages[1].name} secondary={messages[1].message}>
                             </ListItemText>
                         </ListItem>
-                        <ListItem className={styles.listItemFriend}>
+                        <ListItem className={classes.listItemFriend}>
                             <ListItemAvatar>
-                                <Avatar className={styles.avatar} alt={messages[0].name} src={messages[0].avatar} />
+                                <Avatar className={classes.avatar} alt={messages[0].name} src={messages[0].avatar} />
                             </ListItemAvatar>
-                            <ListItemText className={styles.listItemText} primary={messages[0].name} secondary={messages[2].message}>
+                            <ListItemText className={classes.listItemText} primary={messages[0].name} secondary={messages[2].message}>
                             </ListItemText>
                         </ListItem>
-                        <ListItem className={styles.listItemSelf}>
-                            <ListItemText className={styles.listItemText} primary={messages[1].name} secondary={messages[3].message}>
+                        <ListItem className={classes.listItemSelf}>
+                            <ListItemText className={classes.listItemText} primary={messages[1].name} secondary={messages[3].message}>
                             </ListItemText>
                         </ListItem>
-                        <ListItem className={styles.listItemFriend}>
+                        <ListItem className={classes.listItemFriend}>
                             <ListItemAvatar>
-                                <Avatar className={styles.avatar} alt={messages[0].name} src={messages[0].avatar} />
+                                <Avatar className={classes.avatar} alt={messages[0].name} src={messages[0].avatar} />
                             </ListItemAvatar>
-                            <ListItemText className={styles.listItemText} primary={messages[0].name} secondary={messages[4].message}>
+                            <ListItemText className={classes.listItemText} primary={messages[0].name} secondary={messages[4].message}>
                             </ListItemText>
                         </ListItem>
-                        <ListItem className={styles.listItemSelf}>
-                            <ListItemText className={styles.listItemText} primary={messages[1].name} secondary={messages[5].message}>
+                        <ListItem className={classes.listItemSelf}>
+                            <ListItemText className={classes.listItemText} primary={messages[1].name} secondary={messages[5].message}>
                             </ListItemText>
                         </ListItem>
                     </List>
                     <Grid container className={styles.sendMessageContainer}>
                         <Grid item xs={1} align="left" className={styles.gridClip}>
-                            <img className={styles.clip} src={clip} alt='clip'></img>
+                            <img className={styles.clip} src={clip} alt='clip' />
                         </Grid>
                         <Grid item xs={9}>
                             <TextField label={translate['chat.messagePlaceholder']} fullWidth />
                         </Grid>
                         <Grid item xs={1} align="right">
-                            <img className={styles.clip} src={smile} alt='smile'></img>
                         </Grid>
                         <Grid item xs={1} align="right" style={{ flexBasis: 'unset' }}>
                             <Fab color="primary" aria-label="add" className={styles.sendIcon}><SendIcon /></Fab>
