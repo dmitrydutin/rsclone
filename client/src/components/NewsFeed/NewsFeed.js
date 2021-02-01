@@ -1,21 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { compose } from 'redux';
-import { withLogoutRedirect } from '../../hoc/withAuthRedirect';
 import { makeStyles } from '@material-ui/core/styles';
 import styles from './NewsFeed.module.css';
-import { Container, Avatar } from '@material-ui/core';
+import { Avatar, Button, Paper, IconButton } from '@material-ui/core';
 import { connect } from 'react-redux';
-import Post from '../Post/Post';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import CloseIcon from '@material-ui/icons/Close';
 import { uploadImage } from './helper.js';
-import { getPosts, setPost } from '../../redux/reducers/NewsReducer';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import { setPost } from '../../redux/reducers/NewsReducer';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import russian from '../../languages/russian';
-import english from '../../languages/english';
+import { getLanguage } from '../../languages/index';
 import { Formik, Field } from 'formik';
-import userAvatar from './assets/images/user.svg';
 import { TextField } from 'formik-material-ui';
 import * as Yup from 'yup';
 
@@ -30,29 +25,26 @@ const useStyles = makeStyles((theme) => ({
 
     newPost: {
         margin: '25px auto',
-        width: 650,
         borderRadius: '10px',
         padding: '15px',
-        backgroundColor: `${theme.palette.post.default} !important`,
-        [theme.breakpoints.down('750')]: {
-            width: 350,
-        },
+    },
+    submitButton: {
+        marginLeft: '15px',
         [theme.breakpoints.down('400')]: {
-            width: 200,
+            marginTop: '15px',
         },
     },
 }));
 
-function Newsfeed({ language, user, token, getPosts, setPost }) {
-    useEffect(() => {
-        getPosts(token);
-    }, []);
-
-    const translate = language === 'english' ? english : russian;
+function NewsFeed({ language, user, token, setPost }) {
     const classes = useStyles();
+
+    const initialValues = { text: '' };
+    const translate = getLanguage(language);
+
     const [postState, setPostState] = useState(translate['newsfeed.post']);
     const [state, setState] = useState({ file: '', previewUrl: '' });
-    const initialValues = { text: '' };
+
     const PostSchema = Yup.object().shape({
         text: Yup.string().required(translate['newsfeed.required']),
     });
@@ -62,15 +54,15 @@ function Newsfeed({ language, user, token, getPosts, setPost }) {
 
     if (previewUrl) {
         preview = (
-            <div>
-                <img src={previewUrl} alt={'Image Preview'} />
+            <>
+                <img src={previewUrl} alt={'Preview'} />
                 <button className={styles.closeButton} onClick={(e) => handleClose(e)}>
                     <CloseIcon />
                 </button>
-            </div>
+            </>
         );
     } else {
-        preview = <div></div>;
+        preview = <></>;
     }
 
     const handleImageChange = (e) => {
@@ -92,7 +84,7 @@ function Newsfeed({ language, user, token, getPosts, setPost }) {
             file: '',
             previewUrl: '',
         });
-        preview = <div></div>;
+        preview = <></>;
     };
 
     const handleSubmit = (values, { setSubmitting }) => {
@@ -116,10 +108,10 @@ function Newsfeed({ language, user, token, getPosts, setPost }) {
 
     useEffect(() => {
         setPostState(translate['newsfeed.post']);
-    }, [language, setPostState]);
+    }, [translate, setPostState]);
 
     return (
-        <div className={classes.newPost}>
+        <Paper className={classes.newPost}>
             <Formik
                 initialValues={initialValues}
                 onSubmit={handleSubmit}
@@ -128,12 +120,13 @@ function Newsfeed({ language, user, token, getPosts, setPost }) {
                 {({ submitForm, isSubmitting }) => (
                     <form className={styles.form}>
                         <div className={styles.inputContainer}>
-                            <Avatar aria-label="recipe" className={styles.avatar}>
-                                {user?.avatar ? (
-                                    <img src={user.avatar} alt="Avatar" />
-                                ) : (
-                                    <img src={userAvatar} alt="Avatar" />
-                                )}
+                            <Avatar
+                                aria-label="recipe"
+                                src={user.avatar}
+                                alt="Avatar"
+                                className={styles.avatar}
+                            >
+                                {user.name.slice(0, 1)}
                             </Avatar>
                             <Field
                                 placeholder={translate['newsfeed.placeholder']}
@@ -156,35 +149,38 @@ function Newsfeed({ language, user, token, getPosts, setPost }) {
                                     className={styles.inputFile}
                                     multiple
                                 />
-                                <label htmlFor="inputFile" className={styles.inputFileButton}>
-                                    <AttachFileIcon className={styles.inputFileButtonImg} />
+                                <label htmlFor="inputFile">
+                                    <IconButton
+                                        color="primary"
+                                        htmlFor="inputFile"
+                                        component="span"
+                                        variant="contained"
+                                    >
+                                        <AttachFileIcon className={classes.inputFileButtonImg} />
+                                    </IconButton>
                                 </label>
                             </div>
-                            <button
+                            <Button
+                                color="primary"
                                 disabled={isSubmitting}
-                                className={styles.submitButton}
-                                type="submit"
+                                variant="contained"
+                                className={classes.submitButton}
                                 onClick={submitForm}
                             >
                                 {postState}
-                            </button>
+                            </Button>
                         </div>
                     </form>
                 )}
             </Formik>
-        </div>
+        </Paper>
     );
 }
 
-const mapStateToProps = function (state) {
-    return {
-        language: state.app.language,
-        user: state.auth.user,
-        token: state.auth.token,
-    };
-};
+const mapStateToProps = (state) => ({
+    language: state.app.language,
+    user: state.auth.user,
+    token: state.auth.token,
+});
 
-export default compose(
-    connect(mapStateToProps, { getPosts, setPost }),
-    withLogoutRedirect,
-)(Newsfeed);
+export default compose(connect(mapStateToProps, { setPost }))(NewsFeed);

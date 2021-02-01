@@ -29,7 +29,6 @@
     position: relative;
     text-align: center;
     margin: 5px 15px;
-    width: 100%;
 }
 
 img {
@@ -40,28 +39,6 @@ img {
 .previewText {
     width: 100%;
     margin-top: 20px;
-}
-
-.submitButton {
-    padding: 8px 30px;
-    background: #5181b8;
-    color: #ffffff;
-    border: 2px solid #5181b8;
-    border-radius: 5px;
-    font-weight: 700;
-    font-size: 0.8rem;
-    cursor: pointer;
-    margin-left: 15px;
-    outline: none;
-}
-
-.submitButton:focus {
-    outline: none;
-}
-
-.submitButton b {
-    display: block;
-    margin: 12px 0;
 }
 
 .closeButton {

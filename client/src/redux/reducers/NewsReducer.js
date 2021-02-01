@@ -119,10 +119,10 @@ export const setPost = ({ token, query, setSubmitting }) => {
     return async (dispatch) => {
         const response = await NewsAPI.sendPost(token, query);
         setSubmitting(false);
-        console.log(response);
+
         if (response.status === 200 && response.data.status === 200) {
             const { post } = response.data;
-            console.log(post);
+
             dispatch(
                 setPostAction({
                     ...post,
@@ -141,12 +141,12 @@ export const setComment = ({ posts, post, token, query, setSubmitting }) => {
         });
 
         const response = await NewsAPI.sendComment(token, query);
-        console.log(response);
+
         setSubmitting(false);
 
         if (response.status === 200 && response.data.status === 200) {
             const { comment } = response.data;
-            console.log(comment);
+
             dispatch(
                 setCommentAction(
                     {

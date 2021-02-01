@@ -22,7 +22,7 @@ router.get(
             include: [
                 {
                     model: Users,
-                    attributes: ['avatar', 'login'],
+                    attributes: ['avatar', 'login', 'name', 'surname'],
                 },
                 {
                     model: Likes,
@@ -61,7 +61,7 @@ router.post(
         });
 
         const user = await Users.findOne({
-            attributes: ['login', 'avatar'],
+            attributes: ['login', 'avatar', 'name', 'surname'],
             where: {
                 id: newPost.userId,
             },
@@ -74,6 +74,8 @@ router.post(
                 user: {
                     login: user.login,
                     avatar: user.avatar,
+                    name: user.name,
+                    surname: user.surname,
                 },
             },
         });
@@ -91,13 +93,13 @@ router.get(
         }
 
         const comments = await Comments.findAll({
-            attributes: ['text', 'userId', 'createdAt'],
+            attributes: ['id', 'text', 'userId', 'createdAt'],
             where: { postId },
             order: [['id', 'DESC']],
             include: [
                 {
                     model: Users,
-                    attributes: ['avatar', 'login'],
+                    attributes: ['avatar', 'login', 'name', 'surname'],
                 },
             ],
         });
@@ -134,7 +136,7 @@ router.post(
         });
 
         const user = await Users.findOne({
-            attributes: ['login', 'avatar'],
+            attributes: ['login', 'avatar', 'name', 'surname'],
             where: {
                 id: newComment.userId,
             },
@@ -147,6 +149,8 @@ router.post(
                 user: {
                     login: user.login,
                     avatar: user.avatar,
+                    name: user.name,
+                    surname: user.surname,
                 },
             },
         });

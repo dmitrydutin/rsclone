@@ -1,26 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { compose } from 'redux';
 import { withLogoutRedirect } from '../../hoc/withAuthRedirect';
 import { Container } from '@material-ui/core';
 import { connect } from 'react-redux';
 import Post from '../Post/Post';
 import NewsFeed from '../NewsFeed/NewsFeed';
+import { getPosts } from '../../redux/reducers/NewsReducer';
 
-function Newsfeed({ children }) {
+function Feed({ posts, token, getPosts }) {
+    useEffect(() => {
+        getPosts(token);
+    }, []);
+
     return (
-        <Container>            
-            <NewsFeed />
-            {children.map((el) => (
-                <Post post={el} />
-            ))}
-        </Container>
+        <main>
+            <Container maxWidth="sm">
+                <NewsFeed />
+
+                {posts.map((postInfo) => (
+                    <Post key={postInfo.id} post={postInfo} />
+                ))}
+            </Container>
+        </main>
     );
 }
 
-const mapStateToProps = function (state) {
-    return {       
-        children: state.news.posts,
-    };
-};
+const mapStateToProps = (state) => ({
+    posts: state.news.posts,
+    token: state.auth.token,
+});
 
-export default compose(connect(mapStateToProps), withLogoutRedirect)(Newsfeed);
+export default compose(connect(mapStateToProps, { getPosts }), withLogoutRedirect)(Feed);

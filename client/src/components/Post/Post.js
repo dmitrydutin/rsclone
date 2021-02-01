@@ -16,51 +16,35 @@ import {
     Typography,
     Collapse,
     Paper,
-    Grid,
+    Divider,
 } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteIconBorder from '@material-ui/icons/FavoriteBorder';
 import CommentIcon from '@material-ui/icons/Comment';
-import userAvatar from './assets/images/user.svg';
 import SendIcon from '@material-ui/icons/Send';
 import { setComment, getComments, setLike } from '../../redux/reducers/NewsReducer';
 import * as Yup from 'yup';
-import russian from '../../languages/russian';
-import english from '../../languages/english';
 import { getDateString } from './helper';
-
-const CommentSchema = Yup.object().shape({
-    text: Yup.string().min(1, 'Too Short!'),
-});
+import { getLanguage } from '../../languages/index';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: 650,
         margin: 'auto',
         marginTop: 10,
         marginBottom: 10,
         padding: '0px 20px 20px',
-        [theme.breakpoints.down('750')]: {
-            width: 350,
-        },
-        [theme.breakpoints.down('400')]: {
-            width: 200,
-        },
-        backgroundColor: `${theme.palette.post.default} !important`,
     },
     content: {
         display: 'flex',
         flexDirection: 'row',
-        borderBottom: `4px solid`,
-        borderColor: `${theme.palette.background.default} !important`,
     },
     header: {
         fontSize: 17,
         fontWeight: 450,
     },
     contentHeader: {
-        padding: `16px 16px 5px`,
+        padding: `16px 0px 5px`,
     },
     media: {
         height: 0,
@@ -81,12 +65,11 @@ const useStyles = makeStyles((theme) => ({
         padding: '0',
     },
     paper: {
+        width: '100%',
         padding: '2px 4px',
         display: 'flex',
         alignItems: 'center',
-        width: 700,
         boxShadow: 'none',
-        backgroundColor: `${theme.palette.post.default} !important`,
     },
     avatar: {
         backgroundColor: `#5181b8!important`,
@@ -125,6 +108,9 @@ const useStyles = makeStyles((theme) => ({
     },
     commentDate: {
         fontSize: 14,
+        [theme.breakpoints.down('400')]: {
+            display: 'none',
+        },
     },
     icon: {
         marginLeft: 7,
@@ -142,7 +128,7 @@ const Post = (props) => {
 
     const classes = useStyles();
 
-    const translate = language === 'english' ? english : russian;
+    const translate = getLanguage(language);
     const initialValues = { text: '' };
     const [expanded, setExpanded] = useState(false);
     const [liked, setLiked] = useState(() => {
@@ -159,6 +145,10 @@ const Post = (props) => {
         return false;
     });
     const [postState, setPostState] = useState(<SendIcon />);
+
+    const CommentSchema = Yup.object().shape({
+        text: Yup.string().required(translate['post.required']),
+    });
 
     const handleExpandClick = () => {
         getComments({ posts, postId: post.id, token });
@@ -197,136 +187,149 @@ const Post = (props) => {
     };
 
     return (
-        <Card className={classes.root}>
-            <CardHeader
-                classes={{
-                    title: classes.header,
-                }}
-                className={classes.contentHeader}
-                avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar}>
-                        {post.user?.avatar ? (
-                            <img src={post.user.avatar} alt="Avatar" />
-                        ) : (
-                            <img src={userAvatar} alt="Avatar" />
-                        )}
-                    </Avatar>
-                }
-                title={post.user.login}
-                subheader={getDateString(post.createdAt, language)}
-            />
-
-            {post.text ? (
-                <CardContent className={classes.contentHeader}>
-                    <Typography className={classes.text}>{post.text}</Typography>
-                </CardContent>
-            ) : null}
-
-            {post.photo ? (
-                <CardMedia
-                    className={classes.media}
-                    image={post.photo}
-                    title="Post image"
-                    src={post.photo}
+        <Paper>
+            <Card className={classes.root}>
+                <CardHeader
+                    classes={{
+                        title: classes.header,
+                    }}
+                    className={classes.contentHeader}
+                    avatar={
+                        <Avatar
+                            aria-label="recipe"
+                            src={post.user.avatar}
+                            alt="Avatar"
+                            className={classes.avatar}
+                        >
+                            {user.name.slice(0, 1)}
+                        </Avatar>
+                    }
+                    title={`${post.user.surname} ${post.user.name}`}
+                    subheader={getDateString(post.createdAt, language)}
                 />
-            ) : null}
 
-            <CardActions disableSpacing className={classes.content}>
-                <IconButton
-                    className={liked ? classes.liked : {}}
-                    aria-label="like"
-                    onClick={handleLikeClick}
+                {post.text ? (
+                    <CardContent className={classes.contentHeader}>
+                        <Typography className={classes.text}>{post.text}</Typography>
+                    </CardContent>
+                ) : null}
+
+                {post.photo ? (
+                    <CardMedia
+                        className={classes.media}
+                        image={post.photo}
+                        title="Post image"
+                        src={post.photo}
+                    />
+                ) : null}
+
+                <CardActions disableSpacing className={classes.content}>
+                    <IconButton
+                        className={liked ? classes.liked : ''}
+                        aria-label="like"
+                        onClick={handleLikeClick}
+                    >
+                        {liked ? <FavoriteIcon /> : <FavoriteIconBorder />}
+
+                        <Typography className={classes.icon}>{post.likes.length} </Typography>
+                    </IconButton>
+
+                    <IconButton aria-label="comment" onClick={handleExpandClick}>
+                        <CommentIcon />
+                        <Typography className={classes.icon}>{post.commentsCount}</Typography>
+                    </IconButton>
+                </CardActions>
+                <Divider />
+                <Collapse
+                    in={expanded}
+                    timeout="auto"
+                    unmountOnExit
+                    className={classes.commentSection}
                 >
-                    {liked ? <FavoriteIcon /> : <FavoriteIconBorder />}
-
-                    <Typography className={classes.icon}>{post.likes.length} </Typography>
-                </IconButton>
-
-                <IconButton aria-label="comment" onClick={handleExpandClick}>
-                    <CommentIcon />
-                    <Typography className={classes.icon}>{post.commentsCount}</Typography>
-                </IconButton>
-            </CardActions>
-
-            <Collapse in={expanded} timeout="auto" unmountOnExit className={classes.commentSection}>
-                {post.comments?.map((comment) => {
-                    return (
-                        <CardContent className={classes.content}>
-                            <CardHeader
-                                classes={{
-                                    title: classes.header,
-                                }}
-                                className={classes.commentHeader}
-                                avatar={
-                                    <Avatar aria-label="recipe" className={classes.avatar}>
-                                        {comment.user.avatar ? (
-                                            <img src={comment.user.avatar} alt="Avatar" />
-                                        ) : (
-                                            <img src={userAvatar} alt="Avatar" />
-                                        )}
-                                    </Avatar>
-                                }
-                                //title={comment.user.login ? comment.user.login : 'undefined'}
-                                //subheader={<Typography>{comment.text}</Typography>}
-                            />
-                            <CardContent className={classes.comment}>
-                                <div className={classes.commentUpper}>
-                                    <Typography className={classes.header}>
-                                        {comment.user.login}
-                                    </Typography>
-                                    <Typography className={classes.commentDate}>
-                                        {getDateString(comment.createdAt, language)}
-                                    </Typography>
-                                </div>
-                                <Typography className={classes.commentText}>
-                                    {comment.text}
-                                </Typography>
-                            </CardContent>
-                        </CardContent>
-                    );
-                })}
-
-                <Formik
-                    initialValues={initialValues}
-                    onSubmit={handleSubmit}
-                    validationSchema={CommentSchema}
-                >
-                    {({ submitForm, isSubmitting }) => (
-                        <form className={classes.form}>
-                            <div className={styles.inputContainer}>
-                                <Paper component="form" className={classes.paper}>
-                                    <Avatar aria-label="recipe" className={classes.avatar}>
-                                        {user.avatar ? (
-                                            <img src={user.avatar} alt="Avatar" />
-                                        ) : (
-                                            <img src={userAvatar} alt="Avatar" />
-                                        )}
-                                    </Avatar>
-                                    <Field
-                                        className={classes.input}
-                                        variant="outlined"
-                                        multiline={true}
-                                        component={TextField}
-                                        name="text"
-                                        fullWidth={true}
-                                        placeholder={translate['post.placeholder']}
+                    {post.comments?.map((comment) => {
+                        return (
+                            <>
+                                <CardContent className={classes.content} key={comment.id}>
+                                    <CardHeader
+                                        classes={{
+                                            title: classes.header,
+                                        }}
+                                        className={classes.commentHeader}
+                                        avatar={
+                                            <Avatar
+                                                aria-label="recipe"
+                                                src={comment.user.avatar}
+                                                alt="Avatar"
+                                                className={classes.avatar}
+                                            >
+                                                {user.name.slice(0, 1)}
+                                            </Avatar>
+                                        }
                                     />
-                                    <IconButton
-                                        type="submit"
-                                        className={classes.iconButton}
-                                        aria-label="search"
-                                        onClick={submitForm}
-                                        disabled={isSubmitting}
-                                    >
-                                        {postState}
-                                    </IconButton>
-                                </Paper>
-                            </div>
-                        </form>
-                    )}
-                </Formik>
-            </Collapse>
-        </Card>
+
+                                    <CardContent className={classes.comment}>
+                                        <div className={classes.commentUpper}>
+                                            <Typography className={classes.header}>
+                                                {`${comment.user.surname} ${comment.user.name}`}
+                                            </Typography>
+                                            <Typography className={classes.commentDate}>
+                                                {getDateString(comment.createdAt, language)}
+                                            </Typography>
+                                        </div>
+                                        <Typography className={classes.commentText}>
+                                            {comment.text}
+                                        </Typography>
+                                    </CardContent>
+                                </CardContent>
+                                <Divider />
+                            </>
+                        );
+                    })}
+
+                    <Formik
+                        initialValues={initialValues}
+                        onSubmit={handleSubmit}
+                        validationSchema={CommentSchema}
+                    >
+                        {({ submitForm, isSubmitting }) => (
+                            <form className={classes.form}>
+                                <div className={styles.inputContainer}>
+                                    <Paper className={classes.paper}>
+                                        <Avatar
+                                            aria-label="recipe"
+                                            src={user.avatar}
+                                            alt="Avatar"
+                                            className={classes.avatar}
+                                        >
+                                            {user.name.slice(0, 1)}
+                                        </Avatar>
+
+                                        <Field
+                                            className={classes.input}
+                                            variant="outlined"
+                                            multiline={true}
+                                            component={TextField}
+                                            name="text"
+                                            fullWidth={true}
+                                            placeholder={translate['post.placeholder']}
+                                        />
+                                        <IconButton
+                                            type="submit"
+                                            className={classes.iconButton}
+                                            aria-label="search"
+                                            onClick={submitForm}
+                                            disabled={isSubmitting}
+                                        >
+                                            {postState}
+                                        </IconButton>
+                                    </Paper>
+                                </div>
+                            </form>
+                        )}
+                    </Formik>
+                </Collapse>
+            </Card>
+        </Paper>
     );
 };
 
@@ -337,7 +340,4 @@ const mapStateToProps = (state) => ({
     language: state.app.language,
 });
 
-export default compose(
-    connect(mapStateToProps, { setComment, getComments, setLike }),
-    //withLoginRedirect
-)(Post);
+export default compose(connect(mapStateToProps, { setComment, getComments, setLike }))(Post);
