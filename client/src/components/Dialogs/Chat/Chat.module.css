@@ -1,6 +1,4 @@
 .chatSection {
-    height: 93vh;
-    margin-top: 64px;
 }
 
 .headBG {
@@ -19,7 +17,7 @@
     display: flex;
     flex-direction: column;
     background-color: cornflowerblue;
-    height: 75vh;
+    height: 75%;
     overflow-y: auto;
     font-size: 20px;
     overflow-y: scroll;
@@ -27,7 +25,7 @@
 
 .list {
     overflow-y: scroll;
-    height: 93vh;
+    height: calc(89vh - 64px - 64px);
 }
 
 .inline {
@@ -58,6 +56,7 @@
 .clip {
     cursor: pointer;
     width: 30px;
+    height: 30px;
     margin: 20px;
 }
 

@@ -36,6 +36,7 @@ const App = ({ token, theme, initialized, initializeApp }) => {
                             <Route path="/login" exact component={Login} />
                             <Route path="/join" exact component={Join} />
                             <Route path="/feed" exact component={NewsFeed} />
+                            <Route path="/messenger" exact component={Chat} />
                             <Route component={Error} />
                         </Switch>
 
