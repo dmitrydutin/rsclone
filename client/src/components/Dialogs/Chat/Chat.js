@@ -12,15 +12,13 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Fab from '@material-ui/core/Fab';
 import SendIcon from '@material-ui/icons/Send';
-import messages from '../last-messages.json'
+import messages from '../last-messages.json';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Navbar from './Navbar/Navbar'
-import styles from './Chat.module.css'
+import Navbar from './Navbar/Navbar';
+import styles from './Chat.module.css';
 
-import clip from './assets/images/clip.png'
-import smile from './assets/images/smile.svg'
-
-
+import clip from './assets/images/clip.png';
+import smile from './assets/images/smile.svg';
 
 const Chat = (props) => {
     const { token, getMessages, getDialogs } = props;
@@ -33,13 +31,12 @@ const Chat = (props) => {
         getMessages(token, 1);
     };
 
-
     return (
         <div>
             <Grid container className={styles.chatSection}>
                 <Grid item xs={3} className={styles.borderRight500}>
                     <Grid item xs={12} style={{ padding: '12px' }}>
-                        <TextField label="Search" variant="outlined" fullWidth />
+                        <TextField label="Search" variant="outlined" fullWidth type="search" />
                     </Grid>
                     <List className={styles.list}>
                         {messages.map(({ id, name, message, avatar }) => (
@@ -54,65 +51,100 @@ const Chat = (props) => {
                 </Grid>
                 <Grid item xs={9}>
                     <Grid item xs={12}>
-                        <Navbar className={styles.navbar}/>
+                        <Navbar className={styles.navbar} />
                     </Grid>
                     <List className={styles.messageArea}>
                         <ListItem className={styles.listItemFriend}>
                             <ListItemAvatar>
-                                <Avatar className={styles.avatar} alt={messages[0].name} src={messages[0].avatar} />
+                                <Avatar
+                                    className={styles.avatar}
+                                    alt={messages[0].name}
+                                    src={messages[0].avatar}
+                                />
                             </ListItemAvatar>
-                            <ListItemText className={styles.listItemText} primary={messages[0].name} secondary={messages[0].message}>
-                            </ListItemText>
+                            <ListItemText
+                                className={styles.listItemText}
+                                primary={messages[0].name}
+                                secondary={messages[0].message}
+                            ></ListItemText>
                         </ListItem>
                         <ListItem className={styles.listItemSelf}>
-                            <ListItemText className={styles.listItemText} primary={messages[1].name} secondary={messages[1].message}>
-                            </ListItemText>
+                            <ListItemText
+                                className={styles.listItemText}
+                                primary={messages[1].name}
+                                secondary={messages[1].message}
+                            ></ListItemText>
                         </ListItem>
                         <ListItem className={styles.listItemFriend}>
                             <ListItemAvatar>
-                                <Avatar className={styles.avatar} alt={messages[0].name} src={messages[0].avatar} />
+                                <Avatar
+                                    className={styles.avatar}
+                                    alt={messages[0].name}
+                                    src={messages[0].avatar}
+                                />
                             </ListItemAvatar>
-                            <ListItemText className={styles.listItemText} primary={messages[0].name} secondary={messages[2].message}>
-                            </ListItemText>
+                            <ListItemText
+                                className={styles.listItemText}
+                                primary={messages[0].name}
+                                secondary={messages[2].message}
+                            ></ListItemText>
                         </ListItem>
                         <ListItem className={styles.listItemSelf}>
-                            <ListItemText className={styles.listItemText} primary={messages[1].name} secondary={messages[3].message}>
-                            </ListItemText>
+                            <ListItemText
+                                className={styles.listItemText}
+                                primary={messages[1].name}
+                                secondary={messages[3].message}
+                            ></ListItemText>
                         </ListItem>
                         <ListItem className={styles.listItemFriend}>
                             <ListItemAvatar>
-                                <Avatar className={styles.avatar} alt={messages[0].name} src={messages[0].avatar} />
+                                <Avatar
+                                    className={styles.avatar}
+                                    alt={messages[0].name}
+                                    src={messages[0].avatar}
+                                />
                             </ListItemAvatar>
-                            <ListItemText className={styles.listItemText} primary={messages[0].name} secondary={messages[4].message}>
-                            </ListItemText>
+                            <ListItemText
+                                className={styles.listItemText}
+                                primary={messages[0].name}
+                                secondary={messages[4].message}
+                            ></ListItemText>
                         </ListItem>
                         <ListItem className={styles.listItemSelf}>
-                            <ListItemText className={styles.listItemText} primary={messages[1].name} secondary={messages[5].message}>
-                            </ListItemText>
+                            <ListItemText
+                                className={styles.listItemText}
+                                primary={messages[1].name}
+                                secondary={messages[5].message}
+                            ></ListItemText>
                         </ListItem>
                     </List>
                     <Grid container className={styles.sendMessageContainer}>
                         <Grid item xs={1} align="left" className={styles.gridClip}>
-                            <img className={styles.clip} src={clip} alt='clip'></img>
+                            <img className={styles.clip} src={clip} alt="clip"></img>
                         </Grid>
                         <Grid item xs={9}>
                             <TextField label="Type Something" fullWidth />
                         </Grid>
                         <Grid item xs={1} align="right">
-                            <img className={styles.clip} src={smile} alt='smile'></img>
+                            <img className={styles.clip} src={smile} alt="smile"></img>
                         </Grid>
                         <Grid item xs={1} align="right" style={{ flexBasis: 'unset' }}>
-                            <Fab color="primary" aria-label="add" className={styles.sendIcon}><SendIcon /></Fab>
+                            <Fab color="primary" aria-label="add" className={styles.sendIcon}>
+                                <SendIcon />
+                            </Fab>
                         </Grid>
                     </Grid>
                 </Grid>
             </Grid>
         </div>
     );
-}
+};
 
 const mapStateToProps = (state) => ({
     token: state.auth.token,
-})
+});
 
-export default compose(connect(mapStateToProps, { getMessages, getDialogs }), withLogoutRedirect)(Chat);
+export default compose(
+    connect(mapStateToProps, { getMessages, getDialogs }),
+    withLogoutRedirect,
+)(Chat);

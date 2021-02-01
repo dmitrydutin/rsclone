@@ -28,16 +28,19 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Newsfeed({ children, language, user, token, getPosts, setPost }) {
+function NewsFeed({ children, language, user, token, getPosts, setPost }) {
+    const classes = useStyles();
+
     useEffect(() => {
         getPosts(token);
     }, []);
 
     const translate = language === 'english' ? english : russian;
-    const classes = useStyles();
+
     const [postState, setPostState] = useState(translate['newsfeed.post']);
     const [state, setState] = useState({ file: '', imagePreviewUrl: '' });
     const initialValues = { text: '' };
+
     const PostSchema = Yup.object().shape({
         text: Yup.string().required(translate['newsfeed.required']),
     });
@@ -162,16 +165,14 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
     );
 }
 
-const mapStateToProps = function (state) {
-    return {
-        children: state.news.posts.map((el) => <Post post={el} />),
-        language: state.app.language,
-        user: state.auth.user,
-        token: state.auth.token,
-    };
-};
+const mapStateToProps = (state) => ({
+    children: state.news.posts.map((el) => <Post post={el} />),
+    language: state.app.language,
+    user: state.auth.user,
+    token: state.auth.token,
+});
 
 export default compose(
     connect(mapStateToProps, { getPosts, setPost }),
     withLogoutRedirect,
-)(Newsfeed);
+)(NewsFeed);
