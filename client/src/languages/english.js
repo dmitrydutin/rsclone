@@ -16,6 +16,9 @@ const language = {
     'footer.authors.rynkov': 'Rynkov M.',
     'footer.authors.kabernyk': 'Kabernyk Y.',
 
+    'chat.searchPlaceholder': 'Search',
+    'chat.messagePlaceholder': 'Write a message...',
+
     'login.signIn': 'Sign in',
     'login.haveAccount': 'Don’t have an account?',
     'login.signUp': 'Sign up.',
@@ -43,7 +46,7 @@ const language = {
 
     'newsfeed.post': 'Post',
     'newsfeed.placeholder': `What's new?`,
-    'newsfeed.required': `Write something...`,   
+    'newsfeed.required': `Write something...`,
 
     'post.placeholder': `Leave a comment...`,
 

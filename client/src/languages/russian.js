@@ -16,6 +16,9 @@ const language = {
     'footer.authors.rynkov': 'Рынков М.',
     'footer.authors.kabernyk': 'Коберник Я.',
 
+    'chat.searchPlaceholder': 'Поиск',
+    'chat.messagePlaceholder': 'Напишите сообщение...',
+
     'login.signIn': 'Войти',
     'login.haveAccount': 'Нет учетной записи?',
     'login.signUp': 'Зарегистрироваться.',
@@ -42,8 +45,8 @@ const language = {
     'join.error': 'Введенный логин уже используется',
 
     'newsfeed.post': 'Опубликовать',
-    'newsfeed.placeholder': `Что у Вас нового?`,   
-    'newsfeed.required': `Напишите что-нибудь...`,   
+    'newsfeed.placeholder': `Что у Вас нового?`,
+    'newsfeed.required': `Напишите что-нибудь...`,
 
     'post.placeholder': `Оставьте комментарий...`,
 

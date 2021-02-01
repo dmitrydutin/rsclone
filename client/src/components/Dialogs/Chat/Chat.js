@@ -3,6 +3,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withLogoutRedirect } from '../../../hoc/withAuthRedirect';
 import { getDialogs, getMessages } from '../../../redux/reducers/ChatReducer';
+import { getLanguage } from '../../../languages/index';
 
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -20,10 +21,9 @@ import styles from './Chat.module.css'
 import clip from './assets/images/clip.png'
 import smile from './assets/images/smile.svg'
 
-
-
 const Chat = (props) => {
-    const { token, getMessages, getDialogs } = props;
+    const { token, getMessages, getDialogs, language } = props;
+    const translate = getLanguage(language);
 
     useEffect(() => {
         getDialogs(token, 1);
@@ -33,13 +33,12 @@ const Chat = (props) => {
         getMessages(token, 1);
     };
 
-
     return (
         <div>
             <Grid container className={styles.chatSection}>
                 <Grid item xs={3} className={styles.borderRight500}>
                     <Grid item xs={12} style={{ padding: '12px' }}>
-                        <TextField label="Search" variant="outlined" fullWidth />
+                        <TextField label={translate['chat.searchPlaceholder']} variant="outlined" fullWidth />
                     </Grid>
                     <List className={styles.list}>
                         {messages.map(({ id, name, message, avatar }) => (
@@ -54,7 +53,7 @@ const Chat = (props) => {
                 </Grid>
                 <Grid item xs={9}>
                     <Grid item xs={12}>
-                        <Navbar className={styles.navbar}/>
+                        <Navbar className={styles.navbar} />
                     </Grid>
                     <List className={styles.messageArea}>
                         <ListItem className={styles.listItemFriend}>
@@ -96,7 +95,7 @@ const Chat = (props) => {
                             <img className={styles.clip} src={clip} alt='clip'></img>
                         </Grid>
                         <Grid item xs={9}>
-                            <TextField label="Type Something" fullWidth />
+                            <TextField label={translate['chat.messagePlaceholder']} fullWidth />
                         </Grid>
                         <Grid item xs={1} align="right">
                             <img className={styles.clip} src={smile} alt='smile'></img>
@@ -113,6 +112,7 @@ const Chat = (props) => {
 
 const mapStateToProps = (state) => ({
     token: state.auth.token,
+    language: state.app.language,
 })
 
 export default compose(connect(mapStateToProps, { getMessages, getDialogs }), withLogoutRedirect)(Chat);
