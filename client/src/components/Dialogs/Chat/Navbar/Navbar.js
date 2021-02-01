@@ -17,6 +17,8 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(2),
     },
     toolbar: {
+        background: '#EDEEF0',
+        color: '#000',
         minHeight: 50,
         alignItems: 'flex-start',
         paddingTop: theme.spacing(1),
