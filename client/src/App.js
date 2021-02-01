@@ -12,6 +12,7 @@ import Header from './components/Header/Header';
 import Login from './components/Login/Login';
 import Join from './components/Join/Join';
 import NewsFeed from './components/NewsFeed/NewsFeed';
+import Feed from './components/Feed/Feed';
 import Error from './components/Error/Error';
 import Footer from './components/Footer/Footer';
 
@@ -34,7 +35,7 @@ const App = ({ token, theme, initialized, initializeApp }) => {
                             <Redirect exact from="/" to="/feed" />
                             <Route path="/login" exact component={Login} />
                             <Route path="/join" exact component={Join} />
-                            <Route path="/feed" exact component={NewsFeed} />
+                            <Route path="/feed" exact component={Feed} />
                             <Route component={Error} />
                         </Switch>
 
