@@ -8,20 +8,17 @@ import NewsFeed from '../NewsFeed/NewsFeed';
 
 function Newsfeed({ children }) {
     return (
-        <Container>
-            {/* <NewsFeed>{children}</NewsFeed> */}
-            <NewsFeed>
-                {children.map((el) => (
-                    <Post post={el} />
-                ))}
-            </NewsFeed>
+        <Container>            
+            <NewsFeed />
+            {children.map((el) => (
+                <Post post={el} />
+            ))}
         </Container>
     );
 }
 
 const mapStateToProps = function (state) {
-    return {
-        //children: state.news.posts.map((el) => <Post post={el} />),
+    return {       
         children: state.news.posts,
     };
 };

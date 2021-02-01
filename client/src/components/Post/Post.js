@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: 10,
         marginBottom: 10,
         padding: '0px 20px 20px',
-        [theme.breakpoints.down('700')]: {
+        [theme.breakpoints.down('750')]: {
             width: 350,
         },
         [theme.breakpoints.down('400')]: {

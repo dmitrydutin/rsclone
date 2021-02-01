@@ -30,14 +30,20 @@ const useStyles = makeStyles((theme) => ({
 
     newPost: {
         margin: '25px auto',
-        // boxShadow: '0px 0px 10px 2px #b9b8b8',
+        width: 650,
         borderRadius: '10px',
         padding: '15px',
         backgroundColor: `${theme.palette.post.default} !important`,
+        [theme.breakpoints.down('750')]: {
+            width: 350,
+        },
+        [theme.breakpoints.down('400')]: {
+            width: 200,
+        },
     },
 }));
 
-function Newsfeed({ children, language, user, token, getPosts, setPost }) {
+function Newsfeed({ language, user, token, getPosts, setPost }) {
     useEffect(() => {
         getPosts(token);
     }, []);
@@ -113,64 +119,60 @@ function Newsfeed({ children, language, user, token, getPosts, setPost }) {
     }, [language, setPostState]);
 
     return (
-        <Container className={classes.root}>
-            <div className={classes.newPost}>
-                <Formik
-                    initialValues={initialValues}
-                    onSubmit={handleSubmit}
-                    validationSchema={PostSchema}
-                >
-                    {({ submitForm, isSubmitting }) => (
-                        <form className={styles.form}>
-                            <div className={styles.inputContainer}>
-                                <Avatar aria-label="recipe" className={styles.avatar}>
-                                    {user?.avatar ? (
-                                        <img src={user.avatar} alt="Avatar" />
-                                    ) : (
-                                        <img src={userAvatar} alt="Avatar" />
-                                    )}
-                                </Avatar>
-                                <Field
-                                    placeholder={translate['newsfeed.placeholder']}
-                                    variant="outlined"
-                                    className={styles.input}
-                                    multiline={true}
-                                    name="text"
-                                    component={TextField}
+        <div className={classes.newPost}>
+            <Formik
+                initialValues={initialValues}
+                onSubmit={handleSubmit}
+                validationSchema={PostSchema}
+            >
+                {({ submitForm, isSubmitting }) => (
+                    <form className={styles.form}>
+                        <div className={styles.inputContainer}>
+                            <Avatar aria-label="recipe" className={styles.avatar}>
+                                {user?.avatar ? (
+                                    <img src={user.avatar} alt="Avatar" />
+                                ) : (
+                                    <img src={userAvatar} alt="Avatar" />
+                                )}
+                            </Avatar>
+                            <Field
+                                placeholder={translate['newsfeed.placeholder']}
+                                variant="outlined"
+                                className={styles.input}
+                                multiline={true}
+                                name="text"
+                                component={TextField}
+                            />
+                        </div>
+                        <div className={styles.imgPreview}>{preview}</div>
+                        <div className={styles.inputContainer}>
+                            <div className={styles.inputWrapper}>
+                                <input
+                                    name="file"
+                                    type="file"
+                                    id="inputFile"
+                                    onChange={(e) => handleImageChange(e)}
+                                    accept="image/x-png,image/gif,image/jpeg"
+                                    className={styles.inputFile}
+                                    multiple
                                 />
+                                <label htmlFor="inputFile" className={styles.inputFileButton}>
+                                    <AttachFileIcon className={styles.inputFileButtonImg} />
+                                </label>
                             </div>
-                            <div className={styles.imgPreview}>{preview}</div>
-                            <div className={styles.inputContainer}>
-                                <div className={styles.inputWrapper}>
-                                    <input
-                                        name="file"
-                                        type="file"
-                                        id="inputFile"
-                                        onChange={(e) => handleImageChange(e)}
-                                        accept="image/x-png,image/gif,image/jpeg"
-                                        className={styles.inputFile}
-                                        multiple
-                                    />
-                                    <label htmlFor="inputFile" className={styles.inputFileButton}>
-                                        <AttachFileIcon className={styles.inputFileButtonImg} />
-                                    </label>
-                                </div>
-                                <button
-                                    disabled={isSubmitting}
-                                    className={styles.submitButton}
-                                    type="submit"
-                                    onClick={submitForm}
-                                >
-                                    {postState}
-                                </button>
-                            </div>
-                        </form>
-                    )}
-                </Formik>
-            </div>
-
-            {children}
-        </Container>
+                            <button
+                                disabled={isSubmitting}
+                                className={styles.submitButton}
+                                type="submit"
+                                onClick={submitForm}
+                            >
+                                {postState}
+                            </button>
+                        </div>
+                    </form>
+                )}
+            </Formik>
+        </div>
     );
 }
 

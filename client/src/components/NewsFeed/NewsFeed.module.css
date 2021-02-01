@@ -14,7 +14,7 @@
 
 .input {
     width: 90%;
-    margin-left:15px!important;
+    margin-left: 15px !important;
 }
 .input:focus {
     outline: none;
@@ -29,8 +29,7 @@
     position: relative;
     text-align: center;
     margin: 5px 15px;
-    /* max-height: 200px; */
-    width: 600px;
+    width: 100%;
 }
 
 img {
@@ -119,23 +118,18 @@ img {
     background-color: #5181b8 !important;
 }
 
-@media (max-width: 750px) {
-    .imgPreview {
-        width: 350px;
-    }
-}
-
 @media (max-width: 600px) {
-    .imgPreview {
-        width: 250px;
-    }
     .avatar {
         display: none !important;
     }
 }
 
 @media (max-width: 400px) {
-    .imgPreview {
-        width: 200px;
+    .inputContainer {
+        flex-direction: column;
+        align-items: flex-end;
+    }
+    .submitButton {
+        margin-top: 15px;
     }
 }
