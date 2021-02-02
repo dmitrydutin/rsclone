@@ -74,8 +74,18 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         backgroundColor: `#5181b8!important`,
     },
+    avatarComment: {
+        backgroundColor: `#5181b8!important`,
+        [theme.breakpoints.down('600')]: {
+            display: 'none',
+        },
+    },
     input: {
         marginLeft: 10,
+        [theme.breakpoints.down('600')]: {
+            width: '100%',
+            marginLeft: 0,
+        },
     },
     iconButton: {
         padding: 10,
@@ -99,6 +109,9 @@ const useStyles = makeStyles((theme) => ({
     },
     commentHeader: {
         padding: `10px 0px`,
+        [theme.breakpoints.down('600')]: {
+            display: 'none',
+        },
     },
     commentUpper: {
         display: 'flex',
@@ -260,7 +273,7 @@ const Post = (props) => {
                                                 aria-label="recipe"
                                                 src={comment.user.avatar}
                                                 alt="Avatar"
-                                                className={classes.avatar}
+                                                className={classes.avatarComment}
                                             >
                                                 {user.name.slice(0, 1)}
                                             </Avatar>
@@ -299,7 +312,7 @@ const Post = (props) => {
                                             aria-label="recipe"
                                             src={user.avatar}
                                             alt="Avatar"
-                                            className={classes.avatar}
+                                            className={classes.avatarComment}
                                         >
                                             {user.name.slice(0, 1)}
                                         </Avatar>

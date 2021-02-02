@@ -42,14 +42,14 @@ img {
 }
 
 .closeButton {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 25px;
-    height: 25px;
-    padding: 0;
-    outline: none;
-    background-color: transparent;
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    width: 15px !important;
+    height: 25px !important;
+    padding: 0 !important;
+    outline: none !important;
+    background-color: transparent !important;
 }
 
 .closeButton:hover {
@@ -99,6 +99,10 @@ img {
     .avatar {
         display: none !important;
     }
+    .input {
+        width: 100%;
+        margin-left: 0px !important;
+    }
 }
 
 @media (max-width: 400px) {
@@ -106,6 +110,7 @@ img {
         flex-direction: column;
         align-items: flex-end;
     }
+
     .submitButton {
         margin-top: 15px;
     }
