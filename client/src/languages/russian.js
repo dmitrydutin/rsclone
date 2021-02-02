@@ -42,10 +42,12 @@ const language = {
     'join.error': 'Введенный логин уже используется',
 
     'newsfeed.post': 'Опубликовать',
-    'newsfeed.placeholder': `Что у Вас нового?`,   
-    'newsfeed.required': `Напишите что-нибудь...`,   
+    'newsfeed.placeholder': `Что у Вас нового?`,
+    'newsfeed.required': `Напишите что-нибудь...`,
 
     'post.placeholder': `Оставьте комментарий...`,
+
+    'chat.messagePlaceholder': 'Напишите сообщение',
 
     greeting: 'Здравствуйте',
     loggedIn: 'Вы вошли в систему',

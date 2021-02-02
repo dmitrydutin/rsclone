@@ -43,9 +43,11 @@ const language = {
 
     'newsfeed.post': 'Post',
     'newsfeed.placeholder': `What's new?`,
-    'newsfeed.required': `Write something...`,   
+    'newsfeed.required': `Write something...`,
 
     'post.placeholder': `Leave a comment...`,
+
+    'chat.messagePlaceholder': 'Typing message',
 
     greeting: 'Hello',
     loggedIn: 'You are logged in',

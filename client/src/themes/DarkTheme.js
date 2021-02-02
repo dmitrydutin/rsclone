@@ -24,6 +24,9 @@ const darkTheme = {
             background: '#2E2F32',
             border: '#17181A',
         },
+        chat: {
+            background: '#FEFEFF',
+        },
         button: {
             hover: {
                 color: '#fff',

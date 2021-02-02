@@ -120,13 +120,13 @@ const Chat = (props) => {
                     </List>
                     <Grid container className={styles.sendMessageContainer}>
                         <Grid item xs={1} align="left" className={styles.gridClip}>
-                            <img className={styles.clip} src={clip} alt="clip"></img>
+                            <img className={styles.clip} src={clip} alt="clip" />
                         </Grid>
                         <Grid item xs={9}>
                             <TextField label="Type Something" fullWidth />
                         </Grid>
                         <Grid item xs={1} align="right">
-                            <img className={styles.clip} src={smile} alt="smile"></img>
+                            <img className={styles.clip} src={smile} alt="smile" />
                         </Grid>
                         <Grid item xs={1} align="right" style={{ flexBasis: 'unset' }}>
                             <Fab color="primary" aria-label="add" className={styles.sendIcon}>
