@@ -1,10 +1,14 @@
 import styles from './Search.module.css';
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import { Autocomplete } from '@material-ui/lab';
 import Messages from '../last-messages.json'
+import { getLanguage } from '../../../languages/index';
+import { connect } from 'react-redux';
 
-const Search = () => {
+const Search = ({ language }) => {
+
+    const translate = getLanguage(language);
 
     return (
         <div className={styles.search}>
@@ -16,8 +20,7 @@ const Search = () => {
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        label="Search messages"
-                        margin="normal"
+                        label={translate['chat.searchPlaceholder']}
                         variant="outlined"
                         InputProps={{ ...params.InputProps, type: 'search' }}
                     />
@@ -27,4 +30,8 @@ const Search = () => {
     );
 }
 
-export default Search;
+const mapStateToProps = (state) => ({
+    language: state.app.language,
+});
+
+export default connect(mapStateToProps)(Search);

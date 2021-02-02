@@ -12,14 +12,15 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Fab from '@material-ui/core/Fab';
 import SendIcon from '@material-ui/icons/Send';
 import messages from '../last-messages.json'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Navbar from './Navbar/Navbar'
 import styles from './Chat.module.css'
 import IconButton from '@material-ui/core/IconButton';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
+import Search from '../Search/Search'
 
 const Chat = (props) => {
     const { token, getMessages, getDialogs, language } = props;
@@ -73,7 +74,7 @@ const Chat = (props) => {
             <Grid container className={styles.chatSection}>
                 <Grid item xs={3} className={styles.borderRight500}>
                     <Grid item xs={12} style={{ padding: '12px' }}>
-                        <TextField label={translate['chat.searchPlaceholder']} variant="outlined" fullWidth />
+                        <Search />
                     </Grid>
                     <List className={styles.list}>
                         {messages.map(({ id, name, message, avatar }) => (
