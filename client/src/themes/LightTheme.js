@@ -24,9 +24,6 @@ const lightTheme = {
             background: '#FEFEFF',
             border: '#E0E0E0',
         },
-        chat: {
-            background: '#FEFEFF',
-        },
         button: {
             hover: {
                 color: '#3c44b1',
@@ -39,6 +36,7 @@ const lightTheme = {
         chat: {
             background: '#EDEEF0',
             color: '#000',
+            borderColor: '#DFDFE0',
         },
         chatMessagesFriend: {
             background: '#fff',

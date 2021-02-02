@@ -14,18 +14,15 @@ const darkTheme = {
             border: '#17181A',
             contrastText: '#EEEEEF',
         },
-        newsfeed:{
+        newsfeed: {
             contrastText: '#FFFFFF',
         },
-        post:{
-            default:'#333e54'
+        post: {
+            default: '#333e54',
         },
         footer: {
             background: '#2E2F32',
             border: '#17181A',
-        },
-        chat: {
-            background: '#FEFEFF',
         },
         button: {
             hover: {
@@ -39,6 +36,7 @@ const darkTheme = {
         chat: {
             background: '#202124',
             color: '#fff',
+            borderColor: '#47484B',
         },
         chatMessagesSelf: {
             background: '#000',
@@ -50,7 +48,7 @@ const darkTheme = {
         },
         messageArea: {
             background: '#2E2F32',
-        }
+        },
     },
 };
 

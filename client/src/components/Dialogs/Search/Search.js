@@ -2,12 +2,11 @@ import styles from './Search.module.css';
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import { Autocomplete } from '@material-ui/lab';
-import Messages from '../last-messages.json'
+import Messages from '../last-messages.json';
 import { getLanguage } from '../../../languages/index';
 import { connect } from 'react-redux';
 
 const Search = ({ language }) => {
-
     const translate = getLanguage(language);
 
     return (
@@ -28,7 +27,7 @@ const Search = ({ language }) => {
             />
         </div>
     );
-}
+};
 
 const mapStateToProps = (state) => ({
     language: state.app.language,

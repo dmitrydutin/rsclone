@@ -1,14 +1,15 @@
-.headBG {
-    background-color: #e0e0e0;
+.dialogs {
+    display: flex;
+    flex-direction: column;
 }
 
-.borderRight500 {
-    border-right: 1px solid #e0e0e0;
+.chatSection {
+    height: calc(100vh - 65px - 71px);
 }
 
 .list {
     overflow-y: scroll;
-    height: calc(89vh - 64px - 64px);
+    height: calc(100vh - 65px - 71px - 80px);
 }
 
 .inline {
@@ -30,4 +31,11 @@
 
 .sendMessageContainer {
     padding: 10px;
+}
+
+.messageForm {
+    padding: 15px 0;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
 }
