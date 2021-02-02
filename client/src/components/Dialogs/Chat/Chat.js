@@ -18,8 +18,8 @@ import messages from '../last-messages.json'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Navbar from './Navbar/Navbar'
 import styles from './Chat.module.css'
-
-import clip from './assets/images/clip.png'
+import IconButton from '@material-ui/core/IconButton';
+import AttachFileIcon from '@material-ui/icons/AttachFile';
 
 const Chat = (props) => {
     const { token, getMessages, getDialogs, language } = props;
@@ -52,6 +52,9 @@ const Chat = (props) => {
             paddingBottom: '0px',
             alignSelf: 'flex-end',
             maxWidth: '500px',
+        },
+        input: {
+            display: 'none',
         },
     }));
 
@@ -124,7 +127,12 @@ const Chat = (props) => {
                     </List>
                     <Grid container className={styles.sendMessageContainer}>
                         <Grid item xs={1} align="left" className={styles.gridClip}>
-                            <img className={styles.clip} src={clip} alt='clip' />
+                            <input accept="image/*" className={classes.input} id="icon-button-file" type="file" />
+                            <label htmlFor="icon-button-file">
+                                <IconButton aria-label="upload picture" component="span">
+                                    <AttachFileIcon />
+                                </IconButton>
+                            </label>
                         </Grid>
                         <Grid item xs={9}>
                             <TextField label={translate['chat.messagePlaceholder']} fullWidth />
@@ -137,7 +145,7 @@ const Chat = (props) => {
                     </Grid>
                 </Grid>
             </Grid>
-        </div>
+        </div >
     );
 }
 
