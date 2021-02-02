@@ -1,4 +1,4 @@
-import { Messages } from '../database/main';
+import { Dialogs, Messages, Users } from '../database/main';
 import { auth } from '../middleware/auth';
 import asyncHandler from 'express-async-handler';
 import createError from 'http-errors';
@@ -16,7 +16,19 @@ router.get(
         }
 
         const messages = await Messages.findAll({
-            attributes: ['id', 'text', 'photo'],
+            attributes: ['id', 'text', 'photo', 'isUserMessage'],
+            include: [
+                {
+                    model: Dialogs,
+                    attributes: ['id'],
+                    include: [
+                        {
+                            model: Users,
+                            attributes: ['name', 'surname', 'avatar'],
+                        },
+                    ],
+                },
+            ],
             where: { dialogId },
         });
 

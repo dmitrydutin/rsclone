@@ -10,6 +10,9 @@ export default (sequelize, DataTypes) => {
         photo: {
             type: DataTypes.TEXT,
         },
+        isUserMessage: {
+            type: DataTypes.BOOLEAN
+        }
     });
 
     Messages.associate = (models) => {
