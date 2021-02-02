@@ -73,7 +73,7 @@ const Chat = (props) => {
     const classes = useStyles();
 
     useEffect(() => {
-        getDialogs(token, 1);
+        getDialogs(token, 2);
     }, []);
 
     const onClickDialog = () => {
