@@ -1,6 +1,4 @@
 import axiosLib from 'axios';
-import messages from '../components/Dialogs/last-messages.json';
-import dialogs from '../components/Dialogs/dialogs.json';
 
 const axios = axiosLib.create({
     validateStatus: (status) => {

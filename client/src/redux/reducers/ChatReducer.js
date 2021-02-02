@@ -49,7 +49,7 @@ export const getMessages = (token, dialogId) => {
 export const getDialogs = (token, userId) => {
     return async (dispatch) => {
         const response = await ChatAPI.getDialogs(token, userId);
-        console.log(response);
+
         if (response.status === 200 && response.data.status === 200) {
             const { dialogs } = response.data;
             dispatch(setDialogsAction(dialogs));

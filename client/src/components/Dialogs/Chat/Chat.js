@@ -16,7 +16,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import SendIcon from '@material-ui/icons/Send';
-import messages from '../last-messages.json';
 import Navbar from './Navbar/Navbar';
 import styles from './Chat.module.css';
 import IconButton from '@material-ui/core/IconButton';
@@ -58,10 +57,13 @@ const useStyles = makeStyles((theme) => ({
         borderRight: '1px solid',
         borderRightColor: theme.palette.chat.borderColor,
     },
+    messageImage: {
+        paddingTop: '10px',
+    }
 }));
 
 const Chat = (props) => {
-    const { token, getMessages, getDialogs, language, dialogs } = props;
+    const { token, getMessages, getDialogs, language, dialogs, user, messages } = props;
     const translate = getLanguage(language);
     const initialValues = { messageInput: '' };
     const postState = useState(<SendIcon />);
@@ -69,7 +71,7 @@ const Chat = (props) => {
     const classes = useStyles();
 
     useEffect(() => {
-        getDialogs(token, 2);
+        getDialogs(token, user.id);
     }, []);
 
     const onClickDialog = () => {
@@ -92,7 +94,7 @@ const Chat = (props) => {
 
     return (
         <Grid container className={styles.chatSection}>
-            <Grid item xs={3} className={classes.borderRight500}>
+            <Grid item xs={12} md={3} className={classes.borderRight500}>
                 <div className={styles.dialogs}>
                     <div style={{ padding: '12px' }}>
                         <Search />
@@ -106,7 +108,10 @@ const Chat = (props) => {
                                         {user.name[0]}
                                     </Avatar>
                                 </ListItemAvatar>
-                                <ListItemText primary={`${user.name} ${user.surname}`} secondary={messages[0].text} />
+                                <ListItemText
+                                    primary={`${user.name} ${user.surname}`}
+                                    secondary={messages[0].text}
+                                />
                             </ListItem>
                         ))}
                     </List>
@@ -119,7 +124,21 @@ const Chat = (props) => {
                 </Grid>
 
                 <List className={classes.messageArea}>
-                    <ListItem className={classes.listItemFriend}>
+                    {messages.map((message) => (
+                        <ListItem key={message.id} className={classes.listItemSelf}>
+                            <ListItemText
+                                className={classes.listItemText}
+                                primary={`${user.name} ${user.surname}`}
+                                secondary={message.text}
+                            ></ListItemText>
+                            <img
+                                className={classes.messageImage}
+                                src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png"
+                                alt={message.id}
+                            />
+                        </ListItem>
+                    ))}
+                    {/* <ListItem className={classes.listItemFriend}>
                         <ListItemAvatar>
                             <Avatar
                                 className={classes.avatar}
@@ -133,15 +152,7 @@ const Chat = (props) => {
                             primary={messages[0].name}
                             secondary={messages[0].message}
                         ></ListItemText>
-                    </ListItem>
-
-                    <ListItem className={classes.listItemSelf}>
-                        <ListItemText
-                            className={classes.listItemText}
-                            primary={messages[1].name}
-                            secondary={messages[1].message}
-                        ></ListItemText>
-                    </ListItem>
+                    </ListItem> */}
                 </List>
 
                 <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>
@@ -193,6 +204,8 @@ const mapStateToProps = (state) => ({
     token: state.auth.token,
     language: state.app.language,
     dialogs: state.chat.dialogs,
+    messages: state.chat.messages,
+    user: state.auth.user,
 });
 
 export default compose(
