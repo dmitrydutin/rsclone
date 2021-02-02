@@ -9,7 +9,7 @@ router.get(
     '/',
     auth,
     asyncHandler(async (req, res) => {
-        const { userId } = req.body;
+        const { userId } = req.query;
 
         if (!userId) {
             throw createError(400, 'Not all parameters passed');
