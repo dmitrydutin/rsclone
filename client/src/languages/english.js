@@ -49,6 +49,7 @@ const language = {
     'newsfeed.required': `Write something...`,
 
     'post.placeholder': `Leave a comment...`,
+    'post.required': `Write something...`,
 
     greeting: 'Hello',
     loggedIn: 'You are logged in',

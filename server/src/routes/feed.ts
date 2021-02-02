@@ -16,12 +16,13 @@ router.get(
                 'userId',
                 'text',
                 'photo',
+                'createdAt',
                 [Sequelize.fn('COUNT', Sequelize.col('comments.id')), 'commentsCount'],
             ],
             include: [
                 {
                     model: Users,
-                    attributes: ['avatar', 'login'],
+                    attributes: ['avatar', 'login', 'name', 'surname'],
                 },
                 {
                     model: Likes,
@@ -59,9 +60,24 @@ router.post(
             photo: photo,
         });
 
+        const user = await Users.findOne({
+            attributes: ['login', 'avatar', 'name', 'surname'],
+            where: {
+                id: newPost.userId,
+            },
+        });
+
         return res.json({
             status: 200,
-            post: newPost,
+            post: {
+                ...newPost.dataValues,
+                user: {
+                    login: user.login,
+                    avatar: user.avatar,
+                    name: user.name,
+                    surname: user.surname,
+                },
+            },
         });
     }),
 );
@@ -77,13 +93,13 @@ router.get(
         }
 
         const comments = await Comments.findAll({
-            attributes: ['text', 'userId'],
+            attributes: ['id', 'text', 'userId', 'createdAt'],
             where: { postId },
             order: [['id', 'DESC']],
             include: [
                 {
                     model: Users,
-                    attributes: ['avatar', 'login'],
+                    attributes: ['avatar', 'login', 'name', 'surname'],
                 },
             ],
         });
@@ -119,9 +135,24 @@ router.post(
             text: text,
         });
 
+        const user = await Users.findOne({
+            attributes: ['login', 'avatar', 'name', 'surname'],
+            where: {
+                id: newComment.userId,
+            },
+        });
+
         return res.json({
             status: 200,
-            comment: newComment,
+            comment: {
+                ...newComment.dataValues,
+                user: {
+                    login: user.login,
+                    avatar: user.avatar,
+                    name: user.name,
+                    surname: user.surname,
+                },
+            },
         });
     }),
 );
