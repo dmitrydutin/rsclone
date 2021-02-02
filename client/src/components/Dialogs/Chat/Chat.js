@@ -2,7 +2,12 @@ import { useEffect } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withLogoutRedirect } from '../../../hoc/withAuthRedirect';
-import { getDialogs, getMessages, uploadImage, createMessage } from '../../../redux/reducers/ChatReducer';
+import {
+    getDialogs,
+    getMessages,
+    uploadImage,
+    createMessage,
+} from '../../../redux/reducers/ChatReducer';
 import { getLanguage } from '../../../languages/index';
 import { makeStyles } from '@material-ui/core/styles';
 import { Formik, Field, Form } from 'formik';
@@ -40,6 +45,8 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: '500px',
     },
     listItemSelf: {
+        display: 'flex',
+        flexDirection: 'column',
         backgroundColor: '#9bc4fd',
         width: 'fit-content',
         borderRadius: '15px',
@@ -49,6 +56,9 @@ const useStyles = makeStyles((theme) => ({
         alignSelf: 'flex-end',
         maxWidth: '500px',
     },
+    listItemText: {
+        alignSelf: 'flex-start'
+    },
     input: {
         display: 'none',
     },
@@ -57,12 +67,23 @@ const useStyles = makeStyles((theme) => ({
         borderRightColor: theme.palette.chat.borderColor,
     },
     messageImage: {
-        paddingTop: '10px',
+        width: '250px',
+        paddingBottom: '10px'
     },
 }));
 
 const Chat = (props) => {
-    const { token, getMessages, getDialogs, language, dialogs, user, messages, uploadImage, createMessage } = props;
+    const {
+        token,
+        getMessages,
+        getDialogs,
+        language,
+        dialogs,
+        user,
+        messages,
+        uploadImage,
+        createMessage,
+    } = props;
     const translate = getLanguage(language);
     const initialValues = { messageInput: '', uploadFile: null };
 
@@ -92,7 +113,7 @@ const Chat = (props) => {
 
     return (
         <Grid container className={styles.chatSection}>
-            <Grid item xs={12} md={3} className={classes.borderRight500}>
+            <Grid item xs={3} className={classes.borderRight500}>
                 <div className={styles.dialogs}>
                     <div style={{ padding: '12px' }}>
                         <Search onInput={() => console.log(1)} />
@@ -117,7 +138,7 @@ const Chat = (props) => {
             </Grid>
 
             <Grid item xs={9}>
-                <Grid item xs={12}>
+                <Grid item xs={9}>
                     {messages.length > 0 ? (
                         <Navbar
                             name={messages[0].dialog.user.name}
@@ -139,11 +160,16 @@ const Chat = (props) => {
                                         primary={`${user.name} ${user.surname}`}
                                         secondary={message.text}
                                     ></ListItemText>
-                                    <img
+                                    {message.photo !== null ? (
+                                        <img
                                         className={classes.messageImage}
                                         src={message.photo}
                                         alt={message.id}
                                     />
+                                    ) : (
+                                        <></>
+                                    )}
+
                                 </ListItem>
                             );
                         }

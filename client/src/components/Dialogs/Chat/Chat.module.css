@@ -12,20 +12,6 @@
     height: calc(100vh - 65px - 71px - 80px);
 }
 
-.inline {
-    display: inline;
-}
-
-.gridClip {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.sendMessageContainer {
-    padding: 10px;
-}
-
 .messageForm {
     padding: 15px 0;
     display: flex;
