@@ -1,7 +1,6 @@
 import axiosLib from 'axios';
-import messages from '../components/Dialogs/last-messages.json'
-import dialogs from '../components/Dialogs/dialogs.json'
-
+import messages from '../components/Dialogs/last-messages.json';
+import dialogs from '../components/Dialogs/dialogs.json';
 
 const axios = axiosLib.create({
     validateStatus: (status) => {
@@ -43,17 +42,13 @@ const AuthAPI = {
 };
 
 export const ChatAPI = {
-    getMessages(token, dialogId) {
-        // return axios.post('/api/auth/logout', { dialogId }, { headers: getAuthHeaders(token) });
-        return {
-            data: {
-                status: 200,
-                messages,
-            },
-            status: 200,
-        };
-    },
     getDialogs(token, userId) {
+        return axios.get('/api/dialogs/', {
+            params: { userId },
+            headers: getAuthHeaders(token),
+        });
+    },
+    getMessages(token, userId) {
         // return axios.post('/api/auth/logout', { userId }, { headers: getAuthHeaders(token) });
         return {
             data: {
@@ -64,7 +59,6 @@ export const ChatAPI = {
         };
     },
 };
-
 
 const NewsAPI = {
     sendPost(token, post) {

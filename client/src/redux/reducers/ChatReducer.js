@@ -38,11 +38,10 @@ const setDialogsAction = (dialogs) => ({
 export const getMessages = (token, dialogId) => {
     return async (dispatch) => {
         const response = await ChatAPI.getMessages(token, dialogId);
-        if (response.status === 200) {
-            if (response.data.status === 200) {
-                const { messages } = response.data;
-                dispatch(setMessagesAction(messages));
-            }
+
+        if (response.status === 200 && response.data.status === 200) {
+            const { messages } = response.data;
+            dispatch(setMessagesAction(messages));
         }
     };
 };
@@ -50,11 +49,10 @@ export const getMessages = (token, dialogId) => {
 export const getDialogs = (token, userId) => {
     return async (dispatch) => {
         const response = await ChatAPI.getDialogs(token, userId);
-        if (response.status === 200) {
-            if (response.data.status === 200) {
-                const { dialogs } = response.data;
-                dispatch(setDialogsAction(dialogs));
-            }
+        console.log(response);
+        if (response.status === 200 && response.data.status === 200) {
+            const { dialogs } = response.data;
+            dispatch(setDialogsAction(dialogs));
         }
     };
 };
