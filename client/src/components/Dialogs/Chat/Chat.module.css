@@ -16,13 +16,6 @@
     display: inline;
 }
 
-.clip {
-    cursor: pointer;
-    width: 30px;
-    height: 30px;
-    margin: 20px;
-}
-
 .gridClip {
     display: flex;
     align-items: center;
@@ -36,6 +29,4 @@
 .messageForm {
     padding: 15px 0;
     display: flex;
-    /* justify-content: center; */
-    align-items: center;
 }
