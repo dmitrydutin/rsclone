@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     },
     messageImage: {
         paddingTop: '10px',
-    }
+    },
 }));
 
 const Chat = (props) => {
@@ -120,39 +120,51 @@ const Chat = (props) => {
 
             <Grid item xs={9}>
                 <Grid item xs={12}>
-                    <Navbar />
+                    <Navbar
+                        name={messages[0].dialog.user.name}
+                        surname={messages[0].dialog.user.surname}
+                        avatar={messages[0].dialog.user.avatar}
+                    />
                 </Grid>
 
                 <List className={classes.messageArea}>
-                    {messages.map((message) => (
-                        <ListItem key={message.id} className={classes.listItemSelf}>
-                            <ListItemText
-                                className={classes.listItemText}
-                                primary={`${user.name} ${user.surname}`}
-                                secondary={message.text}
-                            ></ListItemText>
-                            <img
-                                className={classes.messageImage}
-                                src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png"
-                                alt={message.id}
-                            />
-                        </ListItem>
-                    ))}
-                    {/* <ListItem className={classes.listItemFriend}>
-                        <ListItemAvatar>
-                            <Avatar
-                                className={classes.avatar}
-                                alt={messages[0].name}
-                                src={messages[0].avatar}
-                            />
-                        </ListItemAvatar>
+                    {messages.map((message) => {
+                        if (message.isUserMessage) {
+                            return (
+                                <ListItem key={message.id} className={classes.listItemSelf}>
+                                    <ListItemText
+                                        className={classes.listItemText}
+                                        primary={`${user.name} ${user.surname}`}
+                                        secondary={message.text}
+                                    ></ListItemText>
+                                    <img
+                                        className={classes.messageImage}
+                                        src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png"
+                                        alt={message.id}
+                                    />
+                                </ListItem>
+                            );
+                        }
+                        return (
+                            <ListItem className={classes.listItemFriend}>
+                                <ListItemAvatar>
+                                    <Avatar
+                                        className={classes.avatar}
+                                        alt={message.dialog.user.name}
+                                        src={message.dialog.user.avatar}
+                                    >
+                                        {message.dialog.user.name[0]}
+                                    </Avatar>
+                                </ListItemAvatar>
 
-                        <ListItemText
-                            className={classes.listItemText}
-                            primary={messages[0].name}
-                            secondary={messages[0].message}
-                        ></ListItemText>
-                    </ListItem> */}
+                                <ListItemText
+                                    className={classes.listItemText}
+                                    primary={`${message.dialog.user.name} ${message.dialog.user.surname}`}
+                                    secondary={message.text}
+                                ></ListItemText>
+                            </ListItem>
+                        );
+                    })}
                 </List>
 
                 <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>

@@ -21,17 +21,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Navbar() {
+export default function Navbar({ name, surname, avatar }) {
     const classes = useStyles();
 
     return (
         <div className={classes.toolbar}>
-            <Avatar alt="Avatar" src={Messages[0].avatar} className={classes.avatar}>
-                A
+            <Avatar alt="Avatar" src={avatar} className={classes.avatar}>
+                {name[0]}
             </Avatar>
 
             <Typography className={classes.title} variant="h6" noWrap>
-                {Messages[0].name}
+                {`${name} ${surname}`}
             </Typography>
         </div>
     );
