@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Chat = (props) => {
-    const { token, getMessages, getDialogs, language } = props;
+    const { token, getMessages, getDialogs, language, dialogs } = props;
     const translate = getLanguage(language);
     const initialValues = { messageInput: '' };
     const postState = useState(<SendIcon />);
@@ -99,14 +99,14 @@ const Chat = (props) => {
                     </div>
 
                     <List className={styles.list}>
-                        {messages.map(({ id, name, message, avatar }) => (
+                        {dialogs.map(({ id, user, messages }) => (
                             <ListItem key={id} button onClick={onClickDialog}>
                                 <ListItemAvatar>
-                                    <Avatar alt={name} src={avatar}>
-                                        A
+                                    <Avatar alt={user.name} src={user.avatar}>
+                                        {user.name[0]}
                                     </Avatar>
                                 </ListItemAvatar>
-                                <ListItemText primary={name} secondary={message} />
+                                <ListItemText primary={`${user.name} ${user.surname}`} secondary={messages[0].text} />
                             </ListItem>
                         ))}
                     </List>
@@ -140,134 +140,6 @@ const Chat = (props) => {
                             className={classes.listItemText}
                             primary={messages[1].name}
                             secondary={messages[1].message}
-                        ></ListItemText>
-                    </ListItem>
-
-                    <ListItem className={classes.listItemFriend}>
-                        <ListItemAvatar>
-                            <Avatar
-                                className={classes.avatar}
-                                alt={messages[0].name}
-                                src={messages[0].avatar}
-                            />
-                        </ListItemAvatar>
-
-                        <ListItemText
-                            className={classes.listItemText}
-                            primary={messages[0].name}
-                            secondary={messages[2].message}
-                        ></ListItemText>
-                    </ListItem>
-
-                    <ListItem className={classes.listItemSelf}>
-                        <ListItemText
-                            className={classes.listItemText}
-                            primary={messages[1].name}
-                            secondary={messages[3].message}
-                        ></ListItemText>
-                    </ListItem>
-
-                    <ListItem className={classes.listItemFriend}>
-                        <ListItemAvatar>
-                            <Avatar
-                                className={classes.avatar}
-                                alt={messages[0].name}
-                                src={messages[0].avatar}
-                            />
-                        </ListItemAvatar>
-
-                        <ListItemText
-                            className={classes.listItemText}
-                            primary={messages[0].name}
-                            secondary={messages[4].message}
-                        ></ListItemText>
-                    </ListItem>
-
-                    <ListItem className={classes.listItemFriend}>
-                        <ListItemAvatar>
-                            <Avatar
-                                className={classes.avatar}
-                                alt={messages[0].name}
-                                src={messages[0].avatar}
-                            />
-                        </ListItemAvatar>
-
-                        <ListItemText
-                            className={classes.listItemText}
-                            primary={messages[0].name}
-                            secondary={messages[4].message}
-                        ></ListItemText>
-                    </ListItem>
-
-                    <ListItem className={classes.listItemFriend}>
-                        <ListItemAvatar>
-                            <Avatar
-                                className={classes.avatar}
-                                alt={messages[0].name}
-                                src={messages[0].avatar}
-                            />
-                        </ListItemAvatar>
-
-                        <ListItemText
-                            className={classes.listItemText}
-                            primary={messages[0].name}
-                            secondary={messages[4].message}
-                        ></ListItemText>
-                    </ListItem>
-
-                    <ListItem className={classes.listItemFriend}>
-                        <ListItemAvatar>
-                            <Avatar
-                                className={classes.avatar}
-                                alt={messages[0].name}
-                                src={messages[0].avatar}
-                            />
-                        </ListItemAvatar>
-
-                        <ListItemText
-                            className={classes.listItemText}
-                            primary={messages[0].name}
-                            secondary={messages[4].message}
-                        ></ListItemText>
-                    </ListItem>
-
-                    <ListItem className={classes.listItemFriend}>
-                        <ListItemAvatar>
-                            <Avatar
-                                className={classes.avatar}
-                                alt={messages[0].name}
-                                src={messages[0].avatar}
-                            />
-                        </ListItemAvatar>
-
-                        <ListItemText
-                            className={classes.listItemText}
-                            primary={messages[0].name}
-                            secondary={messages[4].message}
-                        ></ListItemText>
-                    </ListItem>
-
-                    <ListItem className={classes.listItemFriend}>
-                        <ListItemAvatar>
-                            <Avatar
-                                className={classes.avatar}
-                                alt={messages[0].name}
-                                src={messages[0].avatar}
-                            />
-                        </ListItemAvatar>
-
-                        <ListItemText
-                            className={classes.listItemText}
-                            primary={messages[0].name}
-                            secondary={messages[4].message}
-                        ></ListItemText>
-                    </ListItem>
-
-                    <ListItem className={classes.listItemSelf}>
-                        <ListItemText
-                            className={classes.listItemText}
-                            primary={messages[1].name}
-                            secondary={messages[5].message}
                         ></ListItemText>
                     </ListItem>
                 </List>
@@ -320,6 +192,7 @@ const Chat = (props) => {
 const mapStateToProps = (state) => ({
     token: state.auth.token,
     language: state.app.language,
+    dialogs: state.chat.dialogs,
 });
 
 export default compose(
