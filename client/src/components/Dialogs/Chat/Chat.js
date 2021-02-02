@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withLogoutRedirect } from '../../../hoc/withAuthRedirect';
-import { getDialogs, getMessages, uploadImage } from '../../../redux/reducers/ChatReducer';
+import { getDialogs, getMessages, uploadImage, createMessage } from '../../../redux/reducers/ChatReducer';
 import { getLanguage } from '../../../languages/index';
 import { makeStyles } from '@material-ui/core/styles';
 import { Formik, Field, Form } from 'formik';
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Chat = (props) => {
-    const { token, getMessages, getDialogs, language, dialogs, user, messages, uploadImage } = props;
+    const { token, getMessages, getDialogs, language, dialogs, user, messages, uploadImage, createMessage } = props;
     const translate = getLanguage(language);
     const initialValues = { messageInput: '', uploadFile: null };
 
@@ -77,7 +77,7 @@ const Chat = (props) => {
     };
 
     const handleSubmit = (values, { setSubmitting, setErrors }) => {
-        console.log(values);
+        createMessage(token, values.messageInput, values.uploadFile, 1);
     };
 
     const validate = (values) => {
@@ -228,6 +228,6 @@ const mapStateToProps = (state) => ({
 });
 
 export default compose(
-    connect(mapStateToProps, { getMessages, getDialogs, uploadImage }),
+    connect(mapStateToProps, { getMessages, getDialogs, uploadImage, createMessage }),
     withLogoutRedirect,
 )(Chat);

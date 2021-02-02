@@ -53,7 +53,7 @@ export const ChatAPI = {
         });
     },
     createMessage(token, message, url, dialogId) {
-        return axios.post('/api/messages', { message, url, dialogId }, { headers: getAuthHeaders(token) });
+        return axios.post('/api/messages', { dialogId, message, url }, { headers: getAuthHeaders(token) });
     },
 };
 

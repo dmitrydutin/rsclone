@@ -39,4 +39,28 @@ router.get(
     }),
 );
 
+router.post(
+    '/',
+    auth,
+    asyncHandler(async (req, res) => {
+        const { dialogId, message, url } = req.body;
+
+        if (!dialogId) {
+            throw createError(400, 'Not all parameters passed');
+        }
+
+        const newMessage = await Messages.create({
+            dialogId,
+            text: message,
+            photo: url,
+            isUserMessage: 1,
+        });
+
+        return res.json({
+            status: 200,
+            message: newMessage,
+        });
+    }),
+);
+
 export default router;
