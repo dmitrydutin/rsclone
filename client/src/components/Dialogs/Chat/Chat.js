@@ -18,15 +18,6 @@ import Avatar from '@material-ui/core/Avatar';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Fab from '@material-ui/core/Fab';
 import SendIcon from '@material-ui/icons/Send';
-<<<<<<< HEAD
-import messages from '../last-messages.json';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Navbar from './Navbar/Navbar';
-import styles from './Chat.module.css';
-
-import clip from './assets/images/clip.png';
-import smile from './assets/images/smile.svg';
-=======
 import messages from '../last-messages.json'
 import Navbar from './Navbar/Navbar'
 import styles from './Chat.module.css'
@@ -72,7 +63,6 @@ const Chat = (props) => {
             display: 'none',
         },
     }));
->>>>>>> adbf949f4113be66d87a4c6f48bf10653e34dab9
 
     const classes = useStyles();
 
@@ -84,23 +74,16 @@ const Chat = (props) => {
         getMessages(token, 1);
     };
 
-<<<<<<< HEAD
-=======
     const handleSubmit = () => {
         console.log('click on submit');
     };
 
->>>>>>> adbf949f4113be66d87a4c6f48bf10653e34dab9
     return (
         <div>
             <Grid container className={styles.chatSection}>
                 <Grid item xs={3} className={styles.borderRight500}>
                     <Grid item xs={12} style={{ padding: '12px' }}>
-<<<<<<< HEAD
-                        <TextField label="Search" variant="outlined" fullWidth type="search" />
-=======
                         <Search />
->>>>>>> adbf949f4113be66d87a4c6f48bf10653e34dab9
                     </Grid>
                     <List className={styles.list}>
                         {messages.map(({ id, name, message, avatar }) => (
@@ -115,35 +98,11 @@ const Chat = (props) => {
                 </Grid>
                 <Grid item xs={9}>
                     <Grid item xs={12}>
-<<<<<<< HEAD
-                        <Navbar className={styles.navbar} />
-=======
                         <Navbar />
->>>>>>> adbf949f4113be66d87a4c6f48bf10653e34dab9
                     </Grid>
                     <List className={classes.messageArea}>
                         <ListItem className={classes.listItemFriend}>
                             <ListItemAvatar>
-<<<<<<< HEAD
-                                <Avatar
-                                    className={styles.avatar}
-                                    alt={messages[0].name}
-                                    src={messages[0].avatar}
-                                />
-                            </ListItemAvatar>
-                            <ListItemText
-                                className={styles.listItemText}
-                                primary={messages[0].name}
-                                secondary={messages[0].message}
-                            ></ListItemText>
-                        </ListItem>
-                        <ListItem className={styles.listItemSelf}>
-                            <ListItemText
-                                className={styles.listItemText}
-                                primary={messages[1].name}
-                                secondary={messages[1].message}
-                            ></ListItemText>
-=======
                                 <Avatar className={classes.avatar} alt={messages[0].name} src={messages[0].avatar} />
                             </ListItemAvatar>
                             <ListItemText className={classes.listItemText} primary={messages[0].name} secondary={messages[0].message}>
@@ -152,30 +111,9 @@ const Chat = (props) => {
                         <ListItem className={classes.listItemSelf}>
                             <ListItemText className={classes.listItemText} primary={messages[1].name} secondary={messages[1].message}>
                             </ListItemText>
->>>>>>> adbf949f4113be66d87a4c6f48bf10653e34dab9
                         </ListItem>
                         <ListItem className={classes.listItemFriend}>
                             <ListItemAvatar>
-<<<<<<< HEAD
-                                <Avatar
-                                    className={styles.avatar}
-                                    alt={messages[0].name}
-                                    src={messages[0].avatar}
-                                />
-                            </ListItemAvatar>
-                            <ListItemText
-                                className={styles.listItemText}
-                                primary={messages[0].name}
-                                secondary={messages[2].message}
-                            ></ListItemText>
-                        </ListItem>
-                        <ListItem className={styles.listItemSelf}>
-                            <ListItemText
-                                className={styles.listItemText}
-                                primary={messages[1].name}
-                                secondary={messages[3].message}
-                            ></ListItemText>
-=======
                                 <Avatar className={classes.avatar} alt={messages[0].name} src={messages[0].avatar} />
                             </ListItemAvatar>
                             <ListItemText className={classes.listItemText} primary={messages[0].name} secondary={messages[2].message}>
@@ -184,30 +122,9 @@ const Chat = (props) => {
                         <ListItem className={classes.listItemSelf}>
                             <ListItemText className={classes.listItemText} primary={messages[1].name} secondary={messages[3].message}>
                             </ListItemText>
->>>>>>> adbf949f4113be66d87a4c6f48bf10653e34dab9
                         </ListItem>
                         <ListItem className={classes.listItemFriend}>
                             <ListItemAvatar>
-<<<<<<< HEAD
-                                <Avatar
-                                    className={styles.avatar}
-                                    alt={messages[0].name}
-                                    src={messages[0].avatar}
-                                />
-                            </ListItemAvatar>
-                            <ListItemText
-                                className={styles.listItemText}
-                                primary={messages[0].name}
-                                secondary={messages[4].message}
-                            ></ListItemText>
-                        </ListItem>
-                        <ListItem className={styles.listItemSelf}>
-                            <ListItemText
-                                className={styles.listItemText}
-                                primary={messages[1].name}
-                                secondary={messages[5].message}
-                            ></ListItemText>
-=======
                                 <Avatar className={classes.avatar} alt={messages[0].name} src={messages[0].avatar} />
                             </ListItemAvatar>
                             <ListItemText className={classes.listItemText} primary={messages[0].name} secondary={messages[4].message}>
@@ -216,25 +133,10 @@ const Chat = (props) => {
                         <ListItem className={classes.listItemSelf}>
                             <ListItemText className={classes.listItemText} primary={messages[1].name} secondary={messages[5].message}>
                             </ListItemText>
->>>>>>> adbf949f4113be66d87a4c6f48bf10653e34dab9
                         </ListItem>
                     </List>
                     <Grid container className={styles.sendMessageContainer}>
                         <Grid item xs={1} align="left" className={styles.gridClip}>
-<<<<<<< HEAD
-                            <img className={styles.clip} src={clip} alt="clip" />
-                        </Grid>
-                        <Grid item xs={9}>
-                            <TextField label="Type Something" fullWidth />
-                        </Grid>
-                        <Grid item xs={1} align="right">
-                            <img className={styles.clip} src={smile} alt="smile" />
-                        </Grid>
-                        <Grid item xs={1} align="right" style={{ flexBasis: 'unset' }}>
-                            <Fab color="primary" aria-label="add" className={styles.sendIcon}>
-                                <SendIcon />
-                            </Fab>
-=======
                             <input accept="image/*" className={classes.input} id="icon-button-file" type="file" />
                             <label htmlFor="icon-button-file">
                                 <IconButton aria-label="upload picture" component="span">
@@ -272,7 +174,6 @@ const Chat = (props) => {
                                     </form>
                                 )}
                             </Formik>
->>>>>>> adbf949f4113be66d87a4c6f48bf10653e34dab9
                         </Grid>
                     </Grid>
                 </Grid>
@@ -283,12 +184,8 @@ const Chat = (props) => {
 
 const mapStateToProps = (state) => ({
     token: state.auth.token,
-<<<<<<< HEAD
-});
-=======
     language: state.app.language,
 })
->>>>>>> adbf949f4113be66d87a4c6f48bf10653e34dab9
 
 export default compose(
     connect(mapStateToProps, { getMessages, getDialogs }),
