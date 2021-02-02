@@ -1,7 +1,8 @@
-import { ChatAPI } from '../../api/api';
+import { ChatAPI, cloudinary } from '../../api/api';
 
 const SET_MESSAGES = '/chat/SET_MESSAGES';
 const SET_DIALOGS = '/chat/SET_DIALOGS';
+const SET_MESSAGE = '/chat/SET_MESSAGE';
 
 const initialState = {
     messages: [],
@@ -20,6 +21,11 @@ export const ChatReducer = (state = initialState, action) => {
                 ...state,
                 dialogs: [...action.dialogs],
             };
+        case SET_MESSAGE:
+            return {
+                ...state,
+                messages: [...state.messages, action.message],
+            };
         default:
             return state;
     }
@@ -28,6 +34,11 @@ export const ChatReducer = (state = initialState, action) => {
 const setMessagesAction = (messages) => ({
     type: SET_MESSAGES,
     messages,
+});
+
+const setMessageAction = (message) => ({
+    type: SET_MESSAGE,
+    message,
 });
 
 const setDialogsAction = (dialogs) => ({
@@ -53,6 +64,27 @@ export const getDialogs = (token, userId) => {
         if (response.status === 200 && response.data.status === 200) {
             const { dialogs } = response.data;
             dispatch(setDialogsAction(dialogs));
+        }
+    };
+};
+
+export const uploadImage = (event, setFieldValue) => {
+    return async () => {
+        const response = await cloudinary.uploadImage(event.target.files[0]);
+        if (response.status === 200) {
+            const { secure_url } = response.data;
+            setFieldValue('uploadFile', secure_url);
+        }
+    };
+};
+
+export const createMessage = (token, message, url, dialogId) => {
+    return async (dispatch) => {
+        const response = await ChatAPI.createMessage(token, message, url, dialogId);
+
+        if (response.status === 200 && response.data.status === 200) {
+            const { message } = response.data;
+            dispatch(setMessageAction(message));
         }
     };
 };

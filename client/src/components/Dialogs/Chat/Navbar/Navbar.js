@@ -1,7 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Messages from '../../last-messages.json';
 import Avatar from '@material-ui/core/Avatar';
 
 const useStyles = makeStyles((theme) => ({
@@ -26,13 +25,17 @@ export default function Navbar({ name, surname, avatar }) {
 
     return (
         <div className={classes.toolbar}>
-            <Avatar alt="Avatar" src={avatar} className={classes.avatar}>
-                {name[0]}
-            </Avatar>
+            {name && (
+                <>
+                    <Avatar alt="Avatar" src={avatar} className={classes.avatar}>
+                        {name[0]}
+                    </Avatar>
 
-            <Typography className={classes.title} variant="h6" noWrap>
-                {`${name} ${surname}`}
-            </Typography>
+                    <Typography className={classes.title} variant="h6" noWrap>
+                        {`${name} ${surname}`}
+                    </Typography>
+                </>
+            )}
         </div>
     );
 }

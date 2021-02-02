@@ -52,6 +52,9 @@ export const ChatAPI = {
             headers: getAuthHeaders(token),
         });
     },
+    createMessage(token, message, url, dialogId) {
+        return axios.post('/api/messages', { message, url, dialogId }, { headers: getAuthHeaders(token) });
+    },
 };
 
 const NewsAPI = {

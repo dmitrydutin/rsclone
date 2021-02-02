@@ -1,5 +1,4 @@
 import { cloudinary } from '../../api/api';
-import clip from '../Dialogs/Chat/assets/images/clip.png'
 
 const Upload = () => {
     const uploadImage = async (e) => {

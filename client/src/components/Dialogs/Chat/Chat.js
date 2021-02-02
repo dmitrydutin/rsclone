@@ -2,11 +2,10 @@ import { useEffect } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withLogoutRedirect } from '../../../hoc/withAuthRedirect';
-import { getDialogs, getMessages } from '../../../redux/reducers/ChatReducer';
+import { getDialogs, getMessages, uploadImage } from '../../../redux/reducers/ChatReducer';
 import { getLanguage } from '../../../languages/index';
 import { makeStyles } from '@material-ui/core/styles';
 import { Formik, Field, Form } from 'formik';
-import { useState } from 'react';
 
 import Grid from '@material-ui/core/Grid';
 import { TextField } from 'formik-material-ui';
@@ -63,10 +62,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Chat = (props) => {
-    const { token, getMessages, getDialogs, language, dialogs, user, messages } = props;
+    const { token, getMessages, getDialogs, language, dialogs, user, messages, uploadImage } = props;
     const translate = getLanguage(language);
-    const initialValues = { messageInput: '' };
-    const postState = useState(<SendIcon />);
+    const initialValues = { messageInput: '', uploadFile: null };
 
     const classes = useStyles();
 
@@ -78,8 +76,8 @@ const Chat = (props) => {
         getMessages(token, 1);
     };
 
-    const handleSubmit = () => {
-        console.log('click on submit');
+    const handleSubmit = (values, { setSubmitting, setErrors }) => {
+        console.log(values);
     };
 
     const validate = (values) => {
@@ -97,7 +95,7 @@ const Chat = (props) => {
             <Grid item xs={12} md={3} className={classes.borderRight500}>
                 <div className={styles.dialogs}>
                     <div style={{ padding: '12px' }}>
-                        <Search />
+                        <Search onInput={() => console.log(1)} />
                     </div>
 
                     <List className={styles.list}>
@@ -120,11 +118,15 @@ const Chat = (props) => {
 
             <Grid item xs={9}>
                 <Grid item xs={12}>
-                    <Navbar
-                        name={messages[0].dialog.user.name}
-                        surname={messages[0].dialog.user.surname}
-                        avatar={messages[0].dialog.user.avatar}
-                    />
+                    {messages.length > 0 ? (
+                        <Navbar
+                            name={messages[0].dialog.user.name}
+                            surname={messages[0].dialog.user.surname}
+                            avatar={messages[0].dialog.user.avatar}
+                        />
+                    ) : (
+                        <Navbar />
+                    )}
                 </Grid>
 
                 <List className={classes.messageArea}>
@@ -139,14 +141,14 @@ const Chat = (props) => {
                                     ></ListItemText>
                                     <img
                                         className={classes.messageImage}
-                                        src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png"
+                                        src={message.photo}
                                         alt={message.id}
                                     />
                                 </ListItem>
                             );
                         }
                         return (
-                            <ListItem className={classes.listItemFriend}>
+                            <ListItem key={message.id} className={classes.listItemFriend}>
                                 <ListItemAvatar>
                                     <Avatar
                                         className={classes.avatar}
@@ -168,13 +170,18 @@ const Chat = (props) => {
                 </List>
 
                 <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>
-                    {({ submitForm, isSubmitting }) => (
+                    {({ submitForm, isSubmitting, setFieldValue }) => (
                         <Form className={styles.messageForm}>
                             <input
-                                accept="image/*"
                                 className={classes.input}
-                                id="icon-button-file"
+                                accept="image/x-png,image/gif,image/jpeg"
                                 type="file"
+                                placeholder="Upload an image"
+                                id="icon-button-file"
+                                name="uploadFile"
+                                onChange={(event) => {
+                                    uploadImage(event, setFieldValue);
+                                }}
                             />
 
                             <label htmlFor="icon-button-file">
@@ -202,7 +209,7 @@ const Chat = (props) => {
                                 disabled={isSubmitting}
                                 onClick={submitForm}
                             >
-                                {postState}
+                                <SendIcon />
                             </IconButton>
                         </Form>
                     )}
@@ -221,6 +228,6 @@ const mapStateToProps = (state) => ({
 });
 
 export default compose(
-    connect(mapStateToProps, { getMessages, getDialogs }),
+    connect(mapStateToProps, { getMessages, getDialogs, uploadImage }),
     withLogoutRedirect,
 )(Chat);
