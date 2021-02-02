@@ -1,18 +1,15 @@
-import { Users, Roles, Tokens } from '../database/main';
-import { v4 as uuidv4 } from 'uuid';
-import md5 from 'md5';
-import path from 'path';
-import dotenv from 'dotenv';
+import { Dialogs } from '../database/main';
 import { auth } from '../middleware/auth';
 import asyncHandler from 'express-async-handler';
 import createError from 'http-errors';
 import { Router } from 'express';
 const router = Router();
 
-router.post(
-    '/login',
+router.get(
+    '/',
+    auth,
     asyncHandler(async (req, res) => {
-        return res.json({});
+
     }),
 );
 

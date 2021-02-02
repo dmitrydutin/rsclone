@@ -4,6 +4,10 @@ export default (sequelize, DataTypes) => {
             type: DataTypes.INTEGER(11),
             allowNull: false,
         },
+        friendUserId: {
+            type: DataTypes.INTEGER(11),
+            allowNull: false,
+        },
     });
 
     Dialogs.associate = (models) => {
@@ -11,6 +15,11 @@ export default (sequelize, DataTypes) => {
 
         Dialogs.belongsTo(models.users, {
             foreignKey: 'userId',
+            onDelete: 'cascade',
+        });
+
+        Dialogs.belongsTo(models.users, {
+            foreignKey: 'friendUserId',
             onDelete: 'cascade',
         });
     };

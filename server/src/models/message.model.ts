@@ -4,10 +4,6 @@ export default (sequelize, DataTypes) => {
             type: DataTypes.INTEGER(11),
             allowNull: false,
         },
-        userId: {
-            type: DataTypes.INTEGER(11),
-            allowNull: false,
-        },
         text: {
             type: DataTypes.TEXT,
         },
@@ -21,13 +17,6 @@ export default (sequelize, DataTypes) => {
 
         Messages.belongsTo(models.dialogs, {
             foreignKey: 'dialogId',
-            onDelete: 'cascade',
-        });
-
-        models.users.hasMany(Messages);
-
-        Messages.belongsTo(models.users, {
-            foreignKey: 'userId',
             onDelete: 'cascade',
         });
     };
