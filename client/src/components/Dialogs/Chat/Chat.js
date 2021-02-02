@@ -80,7 +80,7 @@ const Chat = (props) => {
         console.log('click on submit');
     };
 
-    const validate = (values, props /* only available when using withFormik */) => {
+    const validate = (values) => {
         const errors = {};
 
         if (!values.messageInput) {
