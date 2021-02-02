@@ -1,28 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { compose } from 'redux';
 import { withLogoutRedirect } from '../../hoc/withAuthRedirect';
 import { Container } from '@material-ui/core';
 import { connect } from 'react-redux';
 import Post from '../Post/Post';
 import NewsFeed from '../NewsFeed/NewsFeed';
-import { makeStyles } from '@material-ui/core/styles';
+import { getPosts } from '../../redux/reducers/NewsReducer';
 
-const useStyles = makeStyles((theme) => ({
-    main: {
-        padding: '30px 0',
-    },
-}));
-
-function Feed({ posts }) {
-    const classes = useStyles();
+function Feed({ posts, token, getPosts }) {
+    useEffect(() => {
+        getPosts(token);
+    }, []);
 
     return (
-        <main className={classes.main}>
-            <Container maxWidth="md">
+        <main>
+            <Container maxWidth="sm">
                 <NewsFeed />
 
-                {posts.map((post) => (
-                    <Post key={post.id} post={post} />
+                {posts.map((postInfo) => (
+                    <Post key={postInfo.id} post={postInfo} />
                 ))}
             </Container>
         </main>
@@ -31,6 +27,7 @@ function Feed({ posts }) {
 
 const mapStateToProps = (state) => ({
     posts: state.news.posts,
+    token: state.auth.token,
 });
 
-export default compose(connect(mapStateToProps), withLogoutRedirect)(Feed);
+export default compose(connect(mapStateToProps, { getPosts }), withLogoutRedirect)(Feed);

@@ -1,12 +1,11 @@
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
-import MoreIcon from '@material-ui/icons/MoreVert';
 import Messages from '../../last-messages.json'
+import Avatar from '@material-ui/core/Avatar';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -17,9 +16,9 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(2),
     },
     toolbar: {
-        background: '#EDEEF0',
-        color: '#000',
-        minHeight: 50,
+        background: theme.palette.chat.background,
+        color: theme.palette.chat.color,
+        minHeight: 70,
         alignItems: 'flex-start',
         paddingTop: theme.spacing(1),
         paddingBottom: theme.spacing(2),
@@ -28,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
         alignSelf: 'flex-end',
     },
+    avatar: {
+        marginTop: '10px',
+    }
 }));
 
 export default function Navbar() {
@@ -37,15 +39,12 @@ export default function Navbar() {
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar className={classes.toolbar}>
+                    <ListItemAvatar>
+                        <Avatar className={classes.avatar} alt={Messages[0].name} src={Messages[0].avatar} />
+                    </ListItemAvatar>
                     <Typography className={classes.title} variant="h6" noWrap>
                         {Messages[0].name}
                     </Typography>
-                    <IconButton aria-label="search" color="inherit">
-                        <SearchIcon />
-                    </IconButton>
-                    <IconButton aria-label="display more actions" edge="end" color="inherit">
-                        <MoreIcon />
-                    </IconButton>
                 </Toolbar>
             </AppBar>
         </div>

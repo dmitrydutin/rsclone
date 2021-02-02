@@ -6,20 +6,6 @@
     border-right: 1px solid #e0e0e0;
 }
 
-.navbar {
-    position: fixed;
-}
-
-.messageArea {
-    display: flex;
-    flex-direction: column;
-    background-color: cornflowerblue;
-    height: 75%;
-    overflow-y: auto;
-    font-size: 20px;
-    overflow-y: scroll;
-}
-
 .list {
     overflow-y: scroll;
     height: calc(89vh - 64px - 64px);
@@ -27,27 +13,6 @@
 
 .inline {
     display: inline;
-}
-
-.listItemFriend {
-    background-color: #ffffff;
-    width: fit-content !important;
-    border-radius: 15px;
-    margin: 0 0 10px 10px;
-    padding-top: 0px !important;
-    padding-bottom: 0px !important;
-    max-width: 500px;
-}
-
-.listItemSelf {
-    background-color: #9bc4fd;
-    width: fit-content !important;
-    border-radius: 15px;
-    margin: 0 10px 10px 10px;
-    padding-top: 0px !important;
-    padding-bottom: 0px !important;
-    align-self: flex-end;
-    max-width: 500px;
 }
 
 .clip {
@@ -65,5 +30,4 @@
 
 .sendMessageContainer {
     padding: 10px;
-    max-height: 40px;
 }

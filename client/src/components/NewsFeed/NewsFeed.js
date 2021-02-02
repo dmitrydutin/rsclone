@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { compose } from 'redux';
-import { withLogoutRedirect } from '../../hoc/withAuthRedirect';
 import { makeStyles } from '@material-ui/core/styles';
 import styles from './NewsFeed.module.css';
-import { Container, Avatar } from '@material-ui/core';
+import { Avatar, Button, Paper, IconButton } from '@material-ui/core';
 import { connect } from 'react-redux';
-import Post from '../Post/Post';
+import AttachFileIcon from '@material-ui/icons/AttachFile';
 import CloseIcon from '@material-ui/icons/Close';
 import { uploadImage } from './helper.js';
-import { getPosts, setPost } from '../../redux/reducers/NewsReducer';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import { setPost } from '../../redux/reducers/NewsReducer';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import russian from '../../languages/russian';
-import english from '../../languages/english';
+import { getLanguage } from '../../languages/index';
 import { Formik, Field } from 'formik';
-import userAvatar from './assets/images/user.svg';
 import { TextField } from 'formik-material-ui';
 import * as Yup from 'yup';
 
@@ -26,39 +22,47 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'center',
     },
+
+    newPost: {
+        margin: '25px auto',
+        borderRadius: '10px',
+        padding: '15px',
+    },
+    submitButton: {
+        marginLeft: '15px',
+        [theme.breakpoints.down('400')]: {
+            marginTop: '15px',
+        },
+    },
 }));
 
-function NewsFeed({ children, language, user, token, getPosts, setPost }) {
+function NewsFeed({ language, user, token, setPost }) {
     const classes = useStyles();
 
-    useEffect(() => {
-        getPosts(token);
-    }, []);
-
-    const translate = language === 'english' ? english : russian;
+    const initialValues = { text: '' };
+    const translate = getLanguage(language);
 
     const [postState, setPostState] = useState(translate['newsfeed.post']);
-    const [state, setState] = useState({ file: '', imagePreviewUrl: '' });
-    const initialValues = { text: '' };
+    const [state, setState] = useState({ file: '', previewUrl: '' });
 
     const PostSchema = Yup.object().shape({
         text: Yup.string().required(translate['newsfeed.required']),
     });
 
-    let { imagePreviewUrl } = state;
-    let imagePreviewDiv = null;
+    let { previewUrl } = state;
+    let preview = null;
 
-    if (imagePreviewUrl) {
-        imagePreviewDiv = (
-            <div>
-                <img src={imagePreviewUrl} alt={'Image Preview'} />
+    if (previewUrl) {
+        preview = (
+            <>
+                <img src={previewUrl} alt={'Preview'} />
                 <button className={styles.closeButton} onClick={(e) => handleClose(e)}>
                     <CloseIcon />
                 </button>
-            </div>
+            </>
         );
     } else {
-        imagePreviewDiv = <div></div>;
+        preview = <></>;
     }
 
     const handleImageChange = (e) => {
@@ -68,7 +72,7 @@ function NewsFeed({ children, language, user, token, getPosts, setPost }) {
         reader.onloadend = () => {
             setState({
                 file: file,
-                imagePreviewUrl: reader.result,
+                previewUrl: reader.result,
             });
         };
 
@@ -78,9 +82,9 @@ function NewsFeed({ children, language, user, token, getPosts, setPost }) {
     const handleClose = (e) => {
         setState({
             file: '',
-            imagePreviewUrl: '',
+            previewUrl: '',
         });
-        imagePreviewDiv = <div></div>;
+        preview = <></>;
     };
 
     const handleSubmit = (values, { setSubmitting }) => {
@@ -98,81 +102,85 @@ function NewsFeed({ children, language, user, token, getPosts, setPost }) {
             });
             values.text = '';
             setPostState(translate['newsfeed.post']);
-            setState({ file: '', imagePreviewUrl: '' });
+            setState({ file: '', previewUrl: '' });
         });
     };
 
     useEffect(() => {
         setPostState(translate['newsfeed.post']);
-    }, [language, setPostState]);
+    }, [translate, setPostState]);
 
     return (
-        <Container className={classes.root}>
-            <div className={styles.newPost}>
-                <Formik
-                    initialValues={initialValues}
-                    onSubmit={handleSubmit}
-                    validationSchema={PostSchema}
-                >
-                    {({ submitForm, isSubmitting }) => (
-                        <form className={styles.form}>
-                            <div className={styles.inputContainer}>
-                                <Avatar aria-label="recipe" className={styles.avatar}>
-                                    {user?.avatar ? (
-                                        <img src={user.avatar} alt="Avatar" />
-                                    ) : (
-                                        <img src={userAvatar} alt="Avatar" />
-                                    )}
-                                </Avatar>
-                                <Field
-                                    placeholder={translate['newsfeed.placeholder']}
-                                    className={styles.input}
-                                    multiline={true}
-                                    name="text"
-                                    component={TextField}
+        <Paper className={classes.newPost}>
+            <Formik
+                initialValues={initialValues}
+                onSubmit={handleSubmit}
+                validationSchema={PostSchema}
+            >
+                {({ submitForm, isSubmitting }) => (
+                    <form className={styles.form}>
+                        <div className={styles.inputContainer}>
+                            <Avatar
+                                aria-label="recipe"
+                                src={user.avatar}
+                                alt="Avatar"
+                                className={styles.avatar}
+                            >
+                                {user.name.slice(0, 1)}
+                            </Avatar>
+                            <Field
+                                placeholder={translate['newsfeed.placeholder']}
+                                variant="outlined"
+                                className={styles.input}
+                                multiline={true}
+                                name="text"
+                                component={TextField}
+                            />
+                        </div>
+                        <div className={styles.imgPreview}>{preview}</div>
+                        <div className={styles.inputContainer}>
+                            <div className={styles.inputWrapper}>
+                                <input
+                                    name="file"
+                                    type="file"
+                                    id="inputFile"
+                                    onChange={(e) => handleImageChange(e)}
+                                    accept="image/x-png,image/gif,image/jpeg"
+                                    className={styles.inputFile}
+                                    multiple
                                 />
-                                <div className={styles.inputWrapper}>
-                                    <input
-                                        name="file"
-                                        type="file"
-                                        id="inputFile"
-                                        onChange={(e) => handleImageChange(e)}
-                                        accept="image/x-png,image/gif,image/jpeg"
-                                        className={styles.inputFile}
-                                        multiple
-                                    />
-                                    <label htmlFor="inputFile" className={styles.inputFileButton}>
-                                        <GetAppIcon className={styles.inputFileButtonImg} />
-                                    </label>
-                                </div>
+                                <label htmlFor="inputFile">
+                                    <IconButton
+                                        color="primary"
+                                        htmlFor="inputFile"
+                                        component="span"
+                                        variant="contained"
+                                    >
+                                        <AttachFileIcon className={classes.inputFileButtonImg} />
+                                    </IconButton>
+                                </label>
                             </div>
-                            <div className={styles.imgPreview}>{imagePreviewDiv}</div>
-                            <button
+                            <Button
+                                color="primary"
                                 disabled={isSubmitting}
-                                className={styles.submitButton}
-                                type="submit"
+                                variant="contained"
+                                className={classes.submitButton}
                                 onClick={submitForm}
                             >
                                 {postState}
-                            </button>
-                        </form>
-                    )}
-                </Formik>
-            </div>
-
-            {children}
-        </Container>
+                            </Button>
+                        </div>
+                    </form>
+                )}
+            </Formik>
+        </Paper>
     );
 }
 
 const mapStateToProps = (state) => ({
-    children: state.news.posts.map((el) => <Post post={el} />),
     language: state.app.language,
     user: state.auth.user,
     token: state.auth.token,
 });
 
-export default compose(
-    connect(mapStateToProps, { getPosts, setPost }),
-    withLogoutRedirect,
-)(NewsFeed);
+export default compose(connect(mapStateToProps, { setPost }))(NewsFeed);
