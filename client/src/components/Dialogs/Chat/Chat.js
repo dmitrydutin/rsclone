@@ -7,7 +7,6 @@ import { getLanguage } from '../../../languages/index';
 import { makeStyles } from '@material-ui/core/styles';
 import { Formik, Field, Form } from 'formik';
 import { useState } from 'react';
-import { Paper } from '@material-ui/core';
 
 import Grid from '@material-ui/core/Grid';
 import { TextField } from 'formik-material-ui';
@@ -16,7 +15,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Fab from '@material-ui/core/Fab';
 import SendIcon from '@material-ui/icons/Send';
 import messages from '../last-messages.json';
 import Navbar from './Navbar/Navbar';
@@ -24,8 +22,6 @@ import styles from './Chat.module.css';
 import IconButton from '@material-ui/core/IconButton';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import Search from '../Search/Search';
-import * as Yup from 'yup';
-import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
     messageArea: {
@@ -276,28 +272,9 @@ const Chat = (props) => {
                     </ListItem>
                 </List>
 
-                {/* <Grid container className={styles.sendMessageContainer}>
-                    <Grid item xs={1} align="left" className={styles.gridClip}>
-                        <input
-                            accept="image/*"
-                            className={classes.input}
-                            id="icon-button-file"
-                            type="file"
-                        />
-
-                        <label htmlFor="icon-button-file">
-                            <IconButton aria-label="upload picture" component="span">
-                                <AttachFileIcon />
-                            </IconButton>
-                        </label>
-                    </Grid>
-
-                    <Grid item xs={9}> */}
                 <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>
                     {({ submitForm, isSubmitting }) => (
                         <Form className={styles.messageForm}>
-                            {/* <div className={styles.inputContainer}>
-                                        <Paper component="form" className={classes.paper}> */}
                             <input
                                 accept="image/*"
                                 className={classes.input}
@@ -332,13 +309,9 @@ const Chat = (props) => {
                             >
                                 {postState}
                             </IconButton>
-                            {/* </Paper>
-                                    </div> */}
                         </Form>
                     )}
                 </Formik>
-                {/* </Grid>
-                </Grid> */}
             </Grid>
         </Grid>
     );

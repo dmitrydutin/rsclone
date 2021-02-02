@@ -51,8 +51,6 @@ const language = {
     'post.placeholder': `Leave a comment...`,
     'post.required': `Write something...`,
 
-    'chat.messagePlaceholder': 'Typing message',
-
     greeting: 'Hello',
     loggedIn: 'You are logged in',
 };

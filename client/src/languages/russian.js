@@ -49,9 +49,7 @@ const language = {
     'newsfeed.required': `Напишите что-нибудь...`,
 
     'post.placeholder': `Оставьте комментарий...`,
-    'post.required': `Напишите что-нибудь...`,   
-
-    'chat.messagePlaceholder': 'Напишите сообщение',
+    'post.required': `Напишите что-нибудь...`,
 
     greeting: 'Здравствуйте',
     loggedIn: 'Вы вошли в систему',
