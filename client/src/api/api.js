@@ -48,15 +48,11 @@ export const ChatAPI = {
             headers: getAuthHeaders(token),
         });
     },
-    getMessages(token, userId) {
-        // return axios.post('/api/auth/logout', { userId }, { headers: getAuthHeaders(token) });
-        return {
-            data: {
-                status: 200,
-                dialogs,
-            },
-            status: 200,
-        };
+    getMessages(token, dialogId) {
+        return axios.get('/api/messages/', {
+            params: { dialogId },
+            headers: getAuthHeaders(token),
+        });
     },
 };
 
