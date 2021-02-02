@@ -56,9 +56,14 @@ function NewsFeed({ language, user, token, setPost }) {
         preview = (
             <>
                 <img src={previewUrl} alt={'Preview'} />
-                <button className={styles.closeButton} onClick={(e) => handleClose(e)}>
+                <Button
+                    className={styles.closeButton}
+                    color="primary"
+                    variant="outlined"
+                    onClick={(e) => handleClose(e)}
+                >
                     <CloseIcon />
-                </button>
+                </Button>
             </>
         );
     } else {
