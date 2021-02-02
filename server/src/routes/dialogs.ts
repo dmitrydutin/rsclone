@@ -20,7 +20,7 @@ router.get(
             include: [
                 {
                     model: Messages,
-                    attributes: ['text', 'photo'],
+                    attributes: ['text'],
                     limit: 1,
                     order: [['id', 'DESC']],
                 },
