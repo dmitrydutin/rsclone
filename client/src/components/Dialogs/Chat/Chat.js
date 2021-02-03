@@ -207,6 +207,13 @@ const Chat = (props) => {
                                     primary={`${senderUser?.name} ${senderUser?.surname}`}
                                     secondary={message.text}
                                 ></ListItemText>
+                                {message.photo !== null && (
+                                        <img
+                                            className={classes.messageImage}
+                                            src={message.photo}
+                                            alt={message.id}
+                                        />
+                                    )}
                             </ListItem>
                         );
                     })}
