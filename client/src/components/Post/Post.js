@@ -8,7 +8,6 @@ import { TextField } from 'formik-material-ui';
 import {
     Card,
     CardHeader,
-    CardMedia,
     CardContent,
     CardActions,
     Avatar,
