@@ -231,9 +231,13 @@ const Profile = ({
                                         </Grid>
                                     </Paper>
 
-                                    {posts.map((postInfo) => (
-                                        <Post post={postInfo} key={postInfo.id} />
-                                    ))}
+                                    <Grid container>
+                                        {posts.map((postInfo) => (
+                                            <Grid item xs={12} key={postInfo.id}>
+                                                <Post post={postInfo} />
+                                            </Grid>
+                                        ))}
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
