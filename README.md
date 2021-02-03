@@ -1,4 +1,4 @@
-# RSS social network
+# Facebook clone
 
 ## Installation
 
