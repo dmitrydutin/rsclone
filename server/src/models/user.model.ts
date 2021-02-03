@@ -28,6 +28,9 @@ export default (sequelize, DataTypes) => {
         avatar: {
             type: DataTypes.TEXT,
         },
+        about: {
+            type: DataTypes.TEXT,
+        },
         city: {
             type: DataTypes.STRING(150),
         },

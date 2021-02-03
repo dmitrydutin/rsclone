@@ -15,16 +15,8 @@ import { TextField } from 'formik-material-ui';
 import * as Yup from 'yup';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        maxWidth: '100%',
-        paddingTop: 70,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-
     newPost: {
-        margin: '25px auto',
+        margin: '20px auto',
         borderRadius: '10px',
         padding: '15px',
     },

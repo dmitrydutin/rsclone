@@ -6,11 +6,13 @@ import { loadFromLocalStorage, saveToLocalStorage } from './helpers/localStorage
 import { AppReducer } from './reducers/AppReducer';
 import { AuthReducer } from './reducers/AuthReducer';
 import { NewsReducer } from './reducers/NewsReducer';
+import { ProfileReducer } from './reducers/ProfileReducer';
 
 const rootReducer = combineReducers({
     app: AppReducer,
     auth: AuthReducer,
     news: NewsReducer,
+    profile: ProfileReducer,
 });
 
 const store = createStore(

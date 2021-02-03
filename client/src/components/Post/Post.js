@@ -38,6 +38,10 @@ const useStyles = makeStyles((theme) => ({
     content: {
         display: 'flex',
         flexDirection: 'row',
+        padding: '8px 0px',
+    },
+    cardMainContent: {
+        padding: '7px 3.5px 20px 3.5px',
     },
     header: {
         fontSize: 17,
@@ -46,10 +50,20 @@ const useStyles = makeStyles((theme) => ({
     contentHeader: {
         padding: `16px 0px 5px`,
     },
+    CardMainActions: {
+        padding: 0,
+    },
+    contentText: {
+        padding: 0,
+        paddingTop: '3px',
+        '&:last-child': {
+            padding: 0,
+        },
+    },
     media: {
-        height: 0,
-        backgroundSize: '100% 100%',
-        paddingTop: '56.25%',
+        width: '100%',
+        height: '100%',
+        paddingTop: '10px',
     },
     expand: {
         transform: 'rotate(0deg)',
@@ -66,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
         width: '100%',
-        padding: '2px 4px',
+        padding: '0',
         display: 'flex',
         alignItems: 'center',
         boxShadow: 'none',
@@ -93,6 +107,10 @@ const useStyles = makeStyles((theme) => ({
     liked: {
         fontSize: '1.5rem',
         color: '#FF0000',
+        marginLeft: '-10px',
+    },
+    notLiked: {
+        marginLeft: '-10px',
     },
     text: {
         color: `${theme.palette.newsfeed.contrastText} !important`,
@@ -221,24 +239,23 @@ const Post = (props) => {
                     subheader={getDateString(post.createdAt, language)}
                 />
 
-                {post.text ? (
-                    <CardContent className={classes.contentHeader}>
-                        <Typography className={classes.text}>{post.text}</Typography>
-                    </CardContent>
-                ) : null}
+                <div className={classes.cardMainContent}>
+                    {post.text ? (
+                        <CardContent className={classes.contentText}>
+                            <Typography className={classes.text}>{post.text}</Typography>
+                        </CardContent>
+                    ) : null}
 
-                {post.photo ? (
-                    <CardMedia
-                        className={classes.media}
-                        image={post.photo}
-                        title="Post image"
-                        src={post.photo}
-                    />
-                ) : null}
+                    {post.photo && (
+                        <img src={post.photo} alt="Post media" className={classes.media} />
+                    )}
+                </div>
 
-                <CardActions disableSpacing className={classes.content}>
+                <Divider />
+
+                <CardActions disableSpacing className={classes.CardMainActions}>
                     <IconButton
-                        className={liked ? classes.liked : ''}
+                        className={liked ? classes.liked : classes.notLiked}
                         aria-label="like"
                         onClick={handleLikeClick}
                     >
@@ -252,7 +269,9 @@ const Post = (props) => {
                         <Typography className={classes.icon}>{post.commentsCount}</Typography>
                     </IconButton>
                 </CardActions>
+
                 <Divider />
+
                 <Collapse
                     in={expanded}
                     timeout="auto"
@@ -261,8 +280,8 @@ const Post = (props) => {
                 >
                     {post.comments?.map((comment) => {
                         return (
-                            <>
-                                <CardContent className={classes.content} key={comment.id}>
+                            <div key={comment.id}>
+                                <CardContent className={classes.content}>
                                     <CardHeader
                                         classes={{
                                             title: classes.header,
@@ -295,7 +314,7 @@ const Post = (props) => {
                                     </CardContent>
                                 </CardContent>
                                 <Divider />
-                            </>
+                            </div>
                         );
                     })}
 
