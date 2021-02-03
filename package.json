@@ -1,0 +1,18 @@
+{
+    "name": "rsclone",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "start": "node ./server/build/index",
+        "build-client": "(cd client && npm i && npm run build && cd ..)",
+        "build-server": "(cd server && npm i && npm run build && cd ..)",
+        "heroku-postbuild": "npm run build-client && npm run build-server"
+    },
+    "engines": {
+        "node": "14.x",
+        "npm": "6.x"
+    },
+    "dependencies": {
+        "@material-ui/lab": "^4.0.0-alpha.57"
+    }
+}
