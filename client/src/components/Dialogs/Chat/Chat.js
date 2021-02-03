@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
         height: 'calc(100vh - 65px - 71px - 80px - 76px)',
         fontSize: '20px',
         overflowY: 'scroll',
-        [theme.breakpoints.down('700')]: {
+        [theme.breakpoints.down('959')]: {
             height: '600px',
         },
     },
@@ -87,7 +87,9 @@ const Chat = (props) => {
         uploadImage,
         createMessage,
     } = props;
-    const [dialogId, setDialogId] = useState(0);
+
+    const [dialogId, setDialogId] = useState(null);
+    const [senderUser, setSenderUser] = useState(null);
     const translate = getLanguage(language);
     const initialValues = { messageInput: '', uploadFile: null };
 
@@ -95,16 +97,24 @@ const Chat = (props) => {
 
     useEffect(() => {
         getDialogs(token, user.id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onClickDialog = (id) => {
+    const onClickDialog = (user, id) => {
         setDialogId(id);
+        setSenderUser(user);
         getMessages(token, id);
     };
 
     const handleSubmit = (values, { setSubmitting, setFieldValue }) => {
-        createMessage(token, values.messageInput, values.uploadFile, dialogId, user.id, setSubmitting);
+        createMessage(
+            token,
+            values.messageInput,
+            values.uploadFile,
+            dialogId,
+            user.id,
+            setSubmitting,
+        );
         setFieldValue('messageInput', '');
         setFieldValue('uploadFile', null);
     };
@@ -125,7 +135,7 @@ const Chat = (props) => {
 
     return (
         <Grid container className={styles.chatSection}>
-            <Grid item xs={12} sm={3} className={classes.borderRight500}>
+            <Grid item xs={12} md={3} className={classes.borderRight500}>
                 <div className={styles.dialogs}>
                     <div style={{ padding: '12px' }}>
                         <Search onInput={searchHandler} />
@@ -133,7 +143,7 @@ const Chat = (props) => {
 
                     <List className={styles.list}>
                         {dialogs.map(({ id, user, messages }) => (
-                            <ListItem key={id} button onClick={() => onClickDialog(id)} id={id}>
+                            <ListItem key={id} button onClick={() => onClickDialog(user, id)}>
                                 <ListItemAvatar>
                                     <Avatar alt={user.name} src={user.avatar}>
                                         {user.name[0]}
@@ -141,7 +151,7 @@ const Chat = (props) => {
                                 </ListItemAvatar>
                                 <ListItemText
                                     primary={`${user.name} ${user.surname}`}
-                                    secondary={messages[0] === undefined ? '' : messages[0].text}
+                                    secondary={messages.length > 0 ? messages[0].text : ''}
                                 />
                             </ListItem>
                         ))}
@@ -149,12 +159,12 @@ const Chat = (props) => {
                 </div>
             </Grid>
 
-            <Grid item xs={12} sm={9}>
-                {messages.length > 0 ? (
+            <Grid item xs={12} md={9}>
+                {dialogs.length > 0 ? (
                     <Navbar
-                        name={messages[0].dialog.user.name}
-                        surname={messages[0].dialog.user.surname}
-                        avatar={messages[0].dialog.user.avatar}
+                        name={senderUser?.name}
+                        surname={senderUser?.surname}
+                        avatar={senderUser?.avatar}
                     />
                 ) : (
                     <Navbar />
@@ -185,16 +195,16 @@ const Chat = (props) => {
                                 <ListItemAvatar>
                                     <Avatar
                                         className={classes.avatar}
-                                        alt={message.dialog.user.name}
-                                        src={message.dialog.user.avatar}
+                                        alt={senderUser?.name}
+                                        src={senderUser?.avatar}
                                     >
-                                        {message.dialog.user.name[0]}
+                                        {senderUser?.name?.slice(0, 1)}
                                     </Avatar>
                                 </ListItemAvatar>
 
                                 <ListItemText
                                     className={classes.listItemText}
-                                    primary={`${message.dialog.user.name} ${message.dialog.user.surname}`}
+                                    primary={`${senderUser?.name} ${senderUser?.surname}`}
                                     secondary={message.text}
                                 ></ListItemText>
                             </ListItem>

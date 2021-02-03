@@ -11,8 +11,6 @@ export default (sequelize, DataTypes) => {
     });
 
     Dialogs.associate = (models) => {
-        models.users.hasMany(Dialogs);
-
         Dialogs.belongsTo(models.users, {
             foreignKey: 'firstUserId',
             onDelete: 'cascade',
