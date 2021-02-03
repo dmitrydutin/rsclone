@@ -38,7 +38,14 @@ const useStyles = makeStyles((theme) => ({
             height: '600px',
         },
     },
+    listItemContainer: {
+        display: 'flex',
+        alignSelf: 'flex-start',
+        paddingTop: '10px'
+    },
     listItemFriend: {
+        display: 'flex',
+        flexDirection: 'column',
         backgroundColor: theme.palette.chatMessagesFriend.background,
         width: 'fit-content',
         borderRadius: '15px',
@@ -46,6 +53,9 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: '0px',
         paddingBottom: '0px',
         maxWidth: '500px',
+    },
+    friendAvatar: {
+        alignSelf: 'flex-start',
     },
     listItemSelf: {
         display: 'flex',
@@ -192,28 +202,31 @@ const Chat = (props) => {
                         }
                         return (
                             <ListItem key={message.id} className={classes.listItemFriend}>
-                                <ListItemAvatar>
-                                    <Avatar
-                                        className={classes.avatar}
-                                        alt={senderUser?.name}
-                                        src={senderUser?.avatar}
-                                    >
-                                        {senderUser?.name?.slice(0, 1)}
-                                    </Avatar>
-                                </ListItemAvatar>
+                                <div className={classes.listItemContainer}>
+                                    <ListItemAvatar className={classes.friendAvatar}>
+                                        <Avatar
+                                            className={classes.avatar}
+                                            alt={senderUser?.name}
+                                            src={senderUser?.avatar}
+                                        >
+                                            {senderUser?.name?.slice(0, 1)}
+                                        </Avatar>
+                                    </ListItemAvatar>
 
-                                <ListItemText
-                                    className={classes.listItemText}
-                                    primary={`${senderUser?.name} ${senderUser?.surname}`}
-                                    secondary={message.text}
-                                ></ListItemText>
+                                    <ListItemText
+                                        className={classes.listItemText}
+                                        primary={`${senderUser?.name} ${senderUser?.surname}`}
+                                        secondary={message.text}
+                                    ></ListItemText>
+                                </div>
+
                                 {message.photo !== null && (
-                                        <img
-                                            className={classes.messageImage}
-                                            src={message.photo}
-                                            alt={message.id}
-                                        />
-                                    )}
+                                    <img
+                                        className={classes.messageImage}
+                                        src={message.photo}
+                                        alt={message.id}
+                                    />
+                                )}
                             </ListItem>
                         );
                     })}
