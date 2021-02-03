@@ -20,3 +20,7 @@
     position: sticky;
     top: 76.5px;
 }
+
+.about {
+    word-break: break-all;
+}

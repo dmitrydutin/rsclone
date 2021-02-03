@@ -102,6 +102,7 @@ const Profile = ({
                                             variant="body1"
                                             component="span"
                                             color="textPrimary"
+                                            className={styles.about}
                                         >
                                             {user.about || translate['profile.empty']}
                                         </Typography>

@@ -66,7 +66,7 @@ const language = {
     'profile.dialog.city': 'Город',
     'profile.dialog.about': 'О себе:',
     'profile.dialog.changeAvatar': 'Изменить аватар',
-    'profile.dialog.edit': 'Изменить',
+    'profile.dialog.edit': 'Подтвердить',
 };
 
 export default language;

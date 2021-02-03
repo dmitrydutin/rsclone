@@ -65,7 +65,7 @@ const language = {
     'profile.dialog.city': 'City',
     'profile.dialog.about': 'About',
     'profile.dialog.changeAvatar': 'Change avatar',
-    'profile.dialog.edit': 'Edit',
+    'profile.dialog.edit': 'Confirm',
 };
 
 export default language;
