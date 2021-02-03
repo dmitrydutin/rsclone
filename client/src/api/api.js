@@ -40,9 +40,9 @@ const AuthAPI = {
 };
 
 export const ChatAPI = {
-    getDialogs(token, userId) {
+    getDialogs(token, userId, searchInput) {
         return axios.get('/api/dialogs/', {
-            params: { userId },
+            params: { userId, searchInput },
             headers: getAuthHeaders(token),
         });
     },
@@ -52,8 +52,8 @@ export const ChatAPI = {
             headers: getAuthHeaders(token),
         });
     },
-    createMessage(token, message, url, dialogId) {
-        return axios.post('/api/messages', { dialogId, message, url }, { headers: getAuthHeaders(token) });
+    createMessage(token, message, url, dialogId, userId) {
+        return axios.post('/api/messages', { dialogId, message, url, userId }, { headers: getAuthHeaders(token) });
     },
 };
 

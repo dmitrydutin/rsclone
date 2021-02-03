@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withLogoutRedirect } from '../../../hoc/withAuthRedirect';
@@ -34,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
         height: 'calc(100vh - 65px - 71px - 80px - 76px)',
         fontSize: '20px',
         overflowY: 'scroll',
+        [theme.breakpoints.down('700')]: {
+            height: '600px',
+        },
     },
     listItemFriend: {
         backgroundColor: theme.palette.chatMessagesFriend.background,
@@ -57,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: '500px',
     },
     listItemText: {
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
     },
     input: {
         display: 'none',
@@ -68,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     },
     messageImage: {
         width: '250px',
-        paddingBottom: '10px'
+        paddingBottom: '10px',
     },
 }));
 
@@ -84,6 +87,7 @@ const Chat = (props) => {
         uploadImage,
         createMessage,
     } = props;
+    const [dialogId, setDialogId] = useState(0);
     const translate = getLanguage(language);
     const initialValues = { messageInput: '', uploadFile: null };
 
@@ -91,14 +95,18 @@ const Chat = (props) => {
 
     useEffect(() => {
         getDialogs(token, user.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onClickDialog = () => {
-        getMessages(token, 1);
+    const onClickDialog = (id) => {
+        setDialogId(id);
+        getMessages(token, id);
     };
 
-    const handleSubmit = (values, { setSubmitting, setErrors }) => {
-        createMessage(token, values.messageInput, values.uploadFile, 1);
+    const handleSubmit = (values, { setSubmitting, setFieldValue }) => {
+        createMessage(token, values.messageInput, values.uploadFile, dialogId, user.id, setSubmitting);
+        setFieldValue('messageInput', '');
+        setFieldValue('uploadFile', null);
     };
 
     const validate = (values) => {
@@ -111,17 +119,21 @@ const Chat = (props) => {
         return errors;
     };
 
+    const searchHandler = (event) => {
+        getDialogs(token, user.id, event.target.value);
+    };
+
     return (
         <Grid container className={styles.chatSection}>
-            <Grid item xs={3} className={classes.borderRight500}>
+            <Grid item xs={12} sm={3} className={classes.borderRight500}>
                 <div className={styles.dialogs}>
                     <div style={{ padding: '12px' }}>
-                        <Search onInput={() => console.log(1)} />
+                        <Search onInput={searchHandler} />
                     </div>
 
                     <List className={styles.list}>
                         {dialogs.map(({ id, user, messages }) => (
-                            <ListItem key={id} button onClick={onClickDialog}>
+                            <ListItem key={id} button onClick={() => onClickDialog(id)} id={id}>
                                 <ListItemAvatar>
                                     <Avatar alt={user.name} src={user.avatar}>
                                         {user.name[0]}
@@ -129,7 +141,7 @@ const Chat = (props) => {
                                 </ListItemAvatar>
                                 <ListItemText
                                     primary={`${user.name} ${user.surname}`}
-                                    secondary={messages[0].text}
+                                    secondary={messages[0] === undefined ? '' : messages[0].text}
                                 />
                             </ListItem>
                         ))}
@@ -137,22 +149,20 @@ const Chat = (props) => {
                 </div>
             </Grid>
 
-            <Grid item xs={9}>
-                <Grid item xs={9}>
-                    {messages.length > 0 ? (
-                        <Navbar
-                            name={messages[0].dialog.user.name}
-                            surname={messages[0].dialog.user.surname}
-                            avatar={messages[0].dialog.user.avatar}
-                        />
-                    ) : (
-                        <Navbar />
-                    )}
-                </Grid>
+            <Grid item xs={12} sm={9}>
+                {messages.length > 0 ? (
+                    <Navbar
+                        name={messages[0].dialog.user.name}
+                        surname={messages[0].dialog.user.surname}
+                        avatar={messages[0].dialog.user.avatar}
+                    />
+                ) : (
+                    <Navbar />
+                )}
 
                 <List className={classes.messageArea}>
                     {messages.map((message) => {
-                        if (message.isUserMessage) {
+                        if (message.userId === user.id) {
                             return (
                                 <ListItem key={message.id} className={classes.listItemSelf}>
                                     <ListItemText
@@ -160,16 +170,13 @@ const Chat = (props) => {
                                         primary={`${user.name} ${user.surname}`}
                                         secondary={message.text}
                                     ></ListItemText>
-                                    {message.photo !== null ? (
+                                    {message.photo !== null && (
                                         <img
-                                        className={classes.messageImage}
-                                        src={message.photo}
-                                        alt={message.id}
-                                    />
-                                    ) : (
-                                        <></>
+                                            className={classes.messageImage}
+                                            src={message.photo}
+                                            alt={message.id}
+                                        />
                                     )}
-
                                 </ListItem>
                             );
                         }
@@ -196,7 +203,7 @@ const Chat = (props) => {
                 </List>
 
                 <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validate}>
-                    {({ submitForm, isSubmitting, setFieldValue }) => (
+                    {({ submitForm, isSubmitting, setFieldValue, setSubmitting }) => (
                         <Form className={styles.messageForm}>
                             <input
                                 className={classes.input}
@@ -206,7 +213,7 @@ const Chat = (props) => {
                                 id="icon-button-file"
                                 name="uploadFile"
                                 onChange={(event) => {
-                                    uploadImage(event, setFieldValue);
+                                    uploadImage(event, setFieldValue, setSubmitting);
                                 }}
                             />
 

@@ -1,4 +1,5 @@
 import { Dialogs, Messages, Users } from '../database/main';
+import Sequelize, { Op } from 'sequelize';
 import { auth } from '../middleware/auth';
 import asyncHandler from 'express-async-handler';
 import createError from 'http-errors';
@@ -9,7 +10,7 @@ router.get(
     '/',
     auth,
     asyncHandler(async (req, res) => {
-        const { userId } = req.query;
+        const { userId, searchInput } = req.query;
 
         if (!userId) {
             throw createError(400, 'Not all parameters passed');
@@ -27,9 +28,17 @@ router.get(
                 {
                     model: Users,
                     attributes: ['name', 'surname', 'avatar'],
+                    where: {
+                        [Op.or]: [
+                            { name: { [Op.substring]: searchInput ? searchInput : '' } },
+                            { surname: { [Op.substring]: searchInput ? searchInput : '' } },
+                        ],
+                    },
                 },
             ],
-            where: { userId },
+            where: {
+                [Op.or]: [{ firstUserId: userId }, { secondUserId: userId }],
+            },
         });
 
         return res.json({

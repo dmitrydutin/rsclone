@@ -1,10 +1,10 @@
 export default (sequelize, DataTypes) => {
     const Dialogs = sequelize.define('dialogs', {
-        userId: {
+        firstUserId: {
             type: DataTypes.INTEGER(11),
             allowNull: false,
         },
-        friendUserId: {
+        secondUserId: {
             type: DataTypes.INTEGER(11),
             allowNull: false,
         },
@@ -14,12 +14,12 @@ export default (sequelize, DataTypes) => {
         models.users.hasMany(Dialogs);
 
         Dialogs.belongsTo(models.users, {
-            foreignKey: 'userId',
+            foreignKey: 'firstUserId',
             onDelete: 'cascade',
         });
 
         Dialogs.belongsTo(models.users, {
-            foreignKey: 'friendUserId',
+            foreignKey: 'secondUserId',
             onDelete: 'cascade',
         });
     };

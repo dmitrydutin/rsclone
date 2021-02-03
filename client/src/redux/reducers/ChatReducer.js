@@ -57,9 +57,9 @@ export const getMessages = (token, dialogId) => {
     };
 };
 
-export const getDialogs = (token, userId) => {
+export const getDialogs = (token, userId, searchInput) => {
     return async (dispatch) => {
-        const response = await ChatAPI.getDialogs(token, userId);
+        const response = await ChatAPI.getDialogs(token, userId, searchInput);
 
         if (response.status === 200 && response.data.status === 200) {
             const { dialogs } = response.data;
@@ -68,9 +68,12 @@ export const getDialogs = (token, userId) => {
     };
 };
 
-export const uploadImage = (event, setFieldValue) => {
+export const uploadImage = (event, setFieldValue, setSubmitting) => {
     return async () => {
+        setSubmitting(true);
         const response = await cloudinary.uploadImage(event.target.files[0]);
+        setSubmitting(false);
+
         if (response.status === 200) {
             const { secure_url } = response.data;
             setFieldValue('uploadFile', secure_url);
@@ -78,9 +81,10 @@ export const uploadImage = (event, setFieldValue) => {
     };
 };
 
-export const createMessage = (token, message, url, dialogId) => {
+export const createMessage = (token, message, url, dialogId, userId, setSubmitting) => {
     return async (dispatch) => {
-        const response = await ChatAPI.createMessage(token, message, url, dialogId);
+        const response = await ChatAPI.createMessage(token, message, url, dialogId, userId);
+        setSubmitting(false);
 
         if (response.status === 200 && response.data.status === 200) {
             const { message } = response.data;

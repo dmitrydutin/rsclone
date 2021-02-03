@@ -5,6 +5,9 @@ import sequelize from './database/main';
 import authRouter from './routes/auth';
 import feedRouter from './routes/feed';
 import profileRouter from './routes/profile';
+import messagesRouter from './routes/messages';
+import dialogsRouter from './routes/dialogs';
+
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -16,6 +19,8 @@ app.use(express.static(path.join(__dirname, '..', '..', 'client', 'build')));
 app.use('/api/auth', authRouter);
 app.use('/api/feed', feedRouter);
 app.use('/api/profile', profileRouter);
+app.use('/api/dialogs', dialogsRouter);
+app.use('/api/messages', messagesRouter);
 
 app.use((error, req, res, next) => {
     res.json({
