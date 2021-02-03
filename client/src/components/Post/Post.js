@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
     },
     cardMainContent: {
         padding: '7px 3.5px 20px 3.5px',
+        wordBreak: 'break-all',
     },
     header: {
         fontSize: 17,
@@ -61,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     },
     media: {
         width: '100%',
-        height: '100%',
+        minHeight: '500px',
         paddingTop: '10px',
     },
     expand: {
