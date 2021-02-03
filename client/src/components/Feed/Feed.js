@@ -13,7 +13,7 @@ function Feed({ posts, token, getPosts }) {
     }, []);
 
     return (
-        <main>
+        <main style={{ paddingBottom: '10px' }}>
             <Container maxWidth="sm">
                 <NewsFeed />
 

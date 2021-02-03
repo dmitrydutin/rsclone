@@ -29,7 +29,8 @@ const language = {
     'login.error': 'Вы ввели неверный логин или пароль',
 
     'join.signUp': 'Создать аккаунт',
-    'join.reasonForRegistration': 'Зарегистрируйтесь, чтобы отправлять сообщения, фотографии и видео своим друзьям.',
+    'join.reasonForRegistration':
+        'Зарегистрируйтесь, чтобы отправлять сообщения, фотографии и видео своим друзьям.',
     'join.form.name': 'Имя *',
     'join.form.surname': 'Фамилия *',
     'join.form.login': 'Логин *',
@@ -42,14 +43,30 @@ const language = {
     'join.error': 'Введенный логин уже используется',
 
     'newsfeed.post': 'Опубликовать',
-    'newsfeed.placeholder': `Что у Вас нового?`,   
-    'newsfeed.required': `Напишите что-нибудь...`,   
+    'newsfeed.placeholder': `Что у Вас нового?`,
+    'newsfeed.required': `Напишите что-нибудь...`,
 
     'post.placeholder': `Оставьте комментарий...`,
-    'post.required': `Напишите что-нибудь...`,   
+    'post.required': `Напишите что-нибудь...`,
 
-    greeting: 'Здравствуйте',
-    loggedIn: 'Вы вошли в систему',
+    'profile.about': 'О себе',
+    'profile.empty': 'Пусто',
+    'profile.quote': 'Цитата',
+    'profile.city': 'Город',
+    'profile.notSpecified': 'не указан',
+    'profile.dateOfCreation': 'Дата создания',
+    'profile.postsCount': 'Пост(ов)',
+    'profile.likesCount': 'Лайк(ов)',
+    'profile.commentsCount': 'Комментариев',
+
+    'profile.dialog.title': 'Изменить профиль',
+    'profile.dialog.name': 'Имя',
+    'profile.dialog.surname': 'Фамилия',
+    'profile.dialog.quote': 'Цитата',
+    'profile.dialog.city': 'Город',
+    'profile.dialog.about': 'О себе:',
+    'profile.dialog.changeAvatar': 'Изменить аватар',
+    'profile.dialog.edit': 'Изменить',
 };
 
 export default language;

@@ -46,8 +46,8 @@ const NewsAPI = {
     sendComment(token, comment) {
         return axios.post('/api/feed/comments', comment, { headers: getAuthHeaders(token) });
     },
-    getPosts(token) {
-        return axios.get('/api/feed/posts', { headers: getAuthHeaders(token) });
+    getPosts(token, userId) {
+        return axios.get('/api/feed/posts', { params: { userId }, headers: getAuthHeaders(token) });
     },
     getComments(token, postId) {
         return axios.get('/api/feed/comments', {
@@ -60,4 +60,31 @@ const NewsAPI = {
     },
 };
 
-export { cloudinary, AuthAPI, NewsAPI };
+const ProfileAPI = {
+    getUserData(token, id) {
+        return axios.get(`/api/profile/${id}`, { headers: getAuthHeaders(token) });
+    },
+    getPostsCount(token, userId) {
+        return axios.get('/api/profile/posts/count', {
+            params: { userId },
+            headers: getAuthHeaders(token),
+        });
+    },
+    getLikesCount(token, userId) {
+        return axios.get('/api/profile/likes/count', {
+            params: { userId },
+            headers: getAuthHeaders(token),
+        });
+    },
+    getCommentsCount(token, userId) {
+        return axios.get('/api/profile/comments/count', {
+            params: { userId },
+            headers: getAuthHeaders(token),
+        });
+    },
+    editUserData(token, userId, user) {
+        return axios.post(`/api/profile/users/${userId}`, user, { headers: getAuthHeaders(token) });
+    },
+};
+
+export { cloudinary, AuthAPI, NewsAPI, ProfileAPI };

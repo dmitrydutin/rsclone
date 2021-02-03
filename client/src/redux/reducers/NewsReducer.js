@@ -103,9 +103,9 @@ const setLikeAction = (like, userId, postId, index) => ({
     index,
 });
 
-export const getPosts = (token) => {
+export const getPosts = (token, userId) => {
     return async (dispatch) => {
-        const response = await NewsAPI.getPosts(token);
+        const response = await NewsAPI.getPosts(token, userId);
 
         if (response.status === 200 && response.data.status === 200) {
             const { posts } = response.data;

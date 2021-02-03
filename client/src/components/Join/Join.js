@@ -58,7 +58,7 @@ const Join = ({ language, join }) => {
                         validationSchema={JoinSchema}
                     >
                         {({ submitForm, isSubmitting }) => (
-                            <Form className={styles.form} autoComplete="off">
+                            <Form className={styles.form}>
                                 <Grid container spacing={2}>
                                     <Grid item xs={12}>
                                         <Typography
@@ -90,6 +90,7 @@ const Join = ({ language, join }) => {
                                             label={translate['join.form.name']}
                                             variant="outlined"
                                             fullWidth={true}
+                                            autoComplete='true'
                                         />
                                     </Grid>
 
@@ -100,6 +101,7 @@ const Join = ({ language, join }) => {
                                             label={translate['join.form.surname']}
                                             variant="outlined"
                                             fullWidth={true}
+                                            autoComplete='true'
                                         />
                                     </Grid>
 
@@ -110,6 +112,7 @@ const Join = ({ language, join }) => {
                                             label={translate['join.form.login']}
                                             variant="outlined"
                                             fullWidth={true}
+                                            autoComplete='true'
                                         />
                                     </Grid>
 
@@ -121,6 +124,7 @@ const Join = ({ language, join }) => {
                                             label={translate['join.form.password']}
                                             variant="outlined"
                                             fullWidth={true}
+                                            autoComplete='true'
                                         />
                                     </Grid>
 

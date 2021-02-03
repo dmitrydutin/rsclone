@@ -1,5 +1,5 @@
 import { Users, Posts, Comments, Likes } from '../database/main';
-import Sequelize from 'sequelize';
+import Sequelize, { Op } from 'sequelize';
 import { auth } from '../middleware/auth';
 import asyncHandler from 'express-async-handler';
 import createError from 'http-errors';
@@ -10,6 +10,8 @@ router.get(
     '/posts',
     auth,
     asyncHandler(async (req, res) => {
+        const { userId } = req.query;
+
         const posts = await Posts.findAll({
             attributes: [
                 'id',
@@ -35,6 +37,11 @@ router.get(
             ],
             group: ['posts.id', 'likes.id'],
             order: [['id', 'DESC']],
+            where: {
+                userId: {
+                    [Op.like]: userId ? userId : '%',
+                },
+            },
         });
 
         return res.json({
