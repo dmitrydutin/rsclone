@@ -43,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
         padding: '7px 3.5px 20px 3.5px',
         wordBreak: 'break-all',
     },
+    commentText: {
+        wordBreak: 'break-all',
+    },
     header: {
         fontSize: 17,
         fontWeight: 450,
