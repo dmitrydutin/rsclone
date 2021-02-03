@@ -1,4 +1,5 @@
-import { Users, Roles, Tokens } from '../database/main';
+import { Users, Dialogs, Roles, Tokens } from '../database/main';
+import { Op } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import md5 from 'md5';
 import path from 'path';
@@ -120,6 +121,24 @@ router.post(
                 userId: user.id,
                 expiresAt: new Date(Date.now() + 3600 * 1000).toISOString(),
             });
+
+            const users = await Users.findAll({
+                attributes: ['id'],
+                where: {
+                    id: {
+                        [Op.ne]: user.id,
+                    },
+                },
+            });
+
+            await Dialogs.bulkCreate(
+                users.map((userInfo) => {
+                    return {
+                        firstUserId: user.id,
+                        secondUserId: userInfo.id,
+                    };
+                }),
+            );
 
             return res.json({
                 status: 200,
