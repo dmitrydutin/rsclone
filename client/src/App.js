@@ -11,8 +11,8 @@ import { LinearProgress } from '@material-ui/core';
 import Header from './components/Header/Header';
 import Login from './components/Login/Login';
 import Join from './components/Join/Join';
-import NewsFeed from './components/NewsFeed/NewsFeed';
 import Feed from './components/Feed/Feed';
+import Profile from './components/Profile/Profile';
 import Error from './components/Error/Error';
 import Footer from './components/Footer/Footer';
 
@@ -36,6 +36,7 @@ const App = ({ token, theme, initialized, initializeApp }) => {
                             <Route path="/login" exact component={Login} />
                             <Route path="/join" exact component={Join} />
                             <Route path="/feed" exact component={Feed} />
+                            <Route path="/profile" exact component={Profile} />
                             <Route component={Error} />
                         </Switch>
 
