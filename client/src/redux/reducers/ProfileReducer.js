@@ -1,4 +1,5 @@
 import { ProfileAPI, cloudinary } from '../../api/api.js';
+import { getAuthUserData } from './AuthReducer';
 
 const SET_USER_DATA = '/profile/SET_USER_DATA';
 const SET_POSTS_COUNT = '/profile/SET_POSTS_COUNT';
@@ -110,7 +111,9 @@ export const editUserData = (token, userId, user, setSubmitting) => {
 
         if (response.status === 200 && response.data.status === 200) {
             const { user } = response.data;
+
             dispatch(setUserDataAction(user));
+            dispatch(getAuthUserData(token));
         }
     };
 };

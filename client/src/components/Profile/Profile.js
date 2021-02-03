@@ -50,6 +50,10 @@ const Profile = ({
         getCommentsCount(token, userId);
     }, []);
 
+    useEffect(() => {
+        closeEditDialog();
+    }, [user]);
+
     const [open, setOpen] = useState(false);
 
     const openEditDialog = () => {

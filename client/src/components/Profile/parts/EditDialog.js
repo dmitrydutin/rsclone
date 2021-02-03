@@ -85,7 +85,7 @@ const EditDialog = ({
                                         label={translate['profile.dialog.name']}
                                         variant="outlined"
                                         fullWidth={true}
-                                        autoComplete='true'
+                                        autoComplete="true"
                                     />
                                 </Grid>
 
@@ -96,7 +96,7 @@ const EditDialog = ({
                                         label={translate['profile.dialog.surname']}
                                         variant="outlined"
                                         fullWidth={true}
-                                        autoComplete='true'
+                                        autoComplete="true"
                                     />
                                 </Grid>
 
@@ -107,7 +107,7 @@ const EditDialog = ({
                                         label={translate['profile.dialog.quote']}
                                         variant="outlined"
                                         fullWidth={true}
-                                        autoComplete='true'
+                                        autoComplete="true"
                                     />
                                 </Grid>
 
@@ -118,7 +118,7 @@ const EditDialog = ({
                                         label={translate['profile.dialog.city']}
                                         variant="outlined"
                                         fullWidth={true}
-                                        autoComplete='true'
+                                        autoComplete="true"
                                     />
                                 </Grid>
 
@@ -130,7 +130,7 @@ const EditDialog = ({
                                         variant="outlined"
                                         fullWidth={true}
                                         multiline={true}
-                                        autoComplete='true'
+                                        autoComplete="true"
                                     />
                                 </Grid>
 
