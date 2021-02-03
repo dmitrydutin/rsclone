@@ -6,7 +6,6 @@ import authRouter from './routes/auth';
 import feedRouter from './routes/feed';
 import messagesRouter from './routes/messages';
 import dialogsRouter from './routes/dialogs';
-import exampleRouter from './routes/example';
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -19,7 +18,6 @@ app.use('/api/auth', authRouter);
 app.use('/api/feed', feedRouter);
 app.use('/api/messages', messagesRouter);
 app.use('/api/dialogs', dialogsRouter);
-app.use('/api/example', exampleRouter);
 
 app.use((error, req, res, next) => {
     res.json({
