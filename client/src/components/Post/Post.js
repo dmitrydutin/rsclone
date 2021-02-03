@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     },
     media: {
         width: '100%',
-        height: '100%',
+        height: '500px',
         paddingTop: '10px',
     },
     expand: {
