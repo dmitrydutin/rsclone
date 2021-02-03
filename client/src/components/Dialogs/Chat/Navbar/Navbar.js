@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         paddingLeft: theme.spacing(2),
-        [theme.breakpoints.down('700')]: {
+        [theme.breakpoints.down('959')]: {
             borderTop: `1px solid ${theme.palette.chat.borderColor}`,
         },
     },

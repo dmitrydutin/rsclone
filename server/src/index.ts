@@ -8,7 +8,6 @@ import profileRouter from './routes/profile';
 import messagesRouter from './routes/messages';
 import dialogsRouter from './routes/dialogs';
 
-
 const app = express();
 const port = process.env.PORT || 5000;
 

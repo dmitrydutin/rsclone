@@ -1,5 +1,5 @@
 import { Dialogs, Messages, Users } from '../database/main';
-import Sequelize, { Op } from 'sequelize';
+import { Op } from 'sequelize';
 import { auth } from '../middleware/auth';
 import asyncHandler from 'express-async-handler';
 import createError from 'http-errors';
@@ -17,7 +17,7 @@ router.get(
         }
 
         const dialogs = await Dialogs.findAll({
-            attributes: ['id'],
+            attributes: ['id', 'firstUserId', 'secondUserId'],
             include: [
                 {
                     model: Messages,
@@ -25,25 +25,43 @@ router.get(
                     limit: 1,
                     order: [['id', 'DESC']],
                 },
-                {
-                    model: Users,
-                    attributes: ['name', 'surname', 'avatar'],
-                    where: {
-                        [Op.or]: [
-                            { name: { [Op.substring]: searchInput ? searchInput : '' } },
-                            { surname: { [Op.substring]: searchInput ? searchInput : '' } },
-                        ],
-                    },
-                },
             ],
             where: {
                 [Op.or]: [{ firstUserId: userId }, { secondUserId: userId }],
             },
         });
 
+        const dialogsWithCorrectId = dialogs.map((dialog) => {
+            const authorId =
+                dialog.firstUserId == userId ? dialog.secondUserId : dialog.firstUserId;
+            return { id: dialog.id, userId: authorId, messages: dialog.messages };
+        });
+
+        const usersId = dialogsWithCorrectId.map((dialog) => dialog.userId);
+
+        const users = await Users.findAll({
+            attributes: ['id', 'name', 'surname', 'avatar'],
+            where: {
+                id: usersId,
+                [Op.or]: [
+                    { name: { [Op.substring]: searchInput ? searchInput : '' } },
+                    { surname: { [Op.substring]: searchInput ? searchInput : '' } },
+                ],
+            },
+        });
+
+        let result = dialogsWithCorrectId.map((dialog) => {
+            const user = users.find((user) => user.id === dialog.userId);
+            delete dialog.userId;
+            dialog.user = user;
+            return dialog;
+        });
+
+        result = result.filter((dialog) => dialog.user !== undefined);
+
         return res.json({
             status: 200,
-            dialogs,
+            dialogs: result,
         });
     }),
 );

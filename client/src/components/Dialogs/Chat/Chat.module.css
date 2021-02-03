@@ -17,7 +17,7 @@
     display: flex;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 959px) {
     .chatSection {
         height: auto;
     }
