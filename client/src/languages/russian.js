@@ -16,6 +16,9 @@ const language = {
     'footer.authors.rynkov': 'Рынков М.',
     'footer.authors.kabernyk': 'Коберник Я.',
 
+    'chat.searchPlaceholder': 'Поиск',
+    'chat.messagePlaceholder': 'Напишите сообщение...',
+
     'login.signIn': 'Войти',
     'login.haveAccount': 'Нет учетной записи?',
     'login.signUp': 'Зарегистрироваться.',

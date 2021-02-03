@@ -14,6 +14,7 @@ import Join from './components/Join/Join';
 import Feed from './components/Feed/Feed';
 import Profile from './components/Profile/Profile';
 import Error from './components/Error/Error';
+import Chat from './components/Dialogs/Chat/Chat';
 import Footer from './components/Footer/Footer';
 
 const App = ({ token, theme, initialized, initializeApp }) => {
@@ -35,6 +36,7 @@ const App = ({ token, theme, initialized, initializeApp }) => {
                             <Redirect exact from="/" to="/feed" />
                             <Route path="/login" exact component={Login} />
                             <Route path="/join" exact component={Join} />
+                            <Route path="/messenger" exact component={Chat} />
                             <Route path="/feed" exact component={Feed} />
                             <Route path="/profile" exact component={Profile} />
                             <Route component={Error} />

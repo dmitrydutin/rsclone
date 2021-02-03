@@ -16,6 +16,9 @@ const language = {
     'footer.authors.rynkov': 'Rynkov M.',
     'footer.authors.kabernyk': 'Kabernyk Y.',
 
+    'chat.searchPlaceholder': 'Search',
+    'chat.messagePlaceholder': 'Write a message...',
+
     'login.signIn': 'Sign in',
     'login.haveAccount': 'Don’t have an account?',
     'login.signUp': 'Sign up.',

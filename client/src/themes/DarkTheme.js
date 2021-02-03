@@ -14,11 +14,11 @@ const darkTheme = {
             border: '#17181A',
             contrastText: '#EEEEEF',
         },
-        newsfeed:{
+        newsfeed: {
             contrastText: '#FFFFFF',
         },
-        post:{
-            default:'#333e54'
+        post: {
+            default: '#333e54',
         },
         footer: {
             background: '#2E2F32',
@@ -32,6 +32,22 @@ const darkTheme = {
             selected: {
                 background: '#DADBF0',
             },
+        },
+        chat: {
+            background: '#202124',
+            color: '#fff',
+            borderColor: '#47484B',
+        },
+        chatMessagesSelf: {
+            background: '#000',
+            color: '#fff',
+        },
+        chatMessagesFriend: {
+            background: '#202124',
+            color: '#000',
+        },
+        messageArea: {
+            background: '#2E2F32',
         },
     },
 };

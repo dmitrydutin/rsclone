@@ -39,6 +39,24 @@ const AuthAPI = {
     },
 };
 
+export const ChatAPI = {
+    getDialogs(token, userId) {
+        return axios.get('/api/dialogs/', {
+            params: { userId },
+            headers: getAuthHeaders(token),
+        });
+    },
+    getMessages(token, dialogId) {
+        return axios.get('/api/messages/', {
+            params: { dialogId },
+            headers: getAuthHeaders(token),
+        });
+    },
+    createMessage(token, message, url, dialogId) {
+        return axios.post('/api/messages', { dialogId, message, url }, { headers: getAuthHeaders(token) });
+    },
+};
+
 const NewsAPI = {
     sendPost(token, post) {
         return axios.post('/api/feed/posts', post, { headers: getAuthHeaders(token) });

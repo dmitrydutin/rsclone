@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.footer.background,
         borderTop: `1px solid ${theme.palette.footer.border}`,
     },
+    list: {
+        backgroundColor: theme.palette.background.default,
+    },
     listItem: {
         width: 'auto',
         borderRadius: '0.29rem',

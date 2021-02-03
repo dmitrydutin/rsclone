@@ -14,11 +14,11 @@ const lightTheme = {
             border: '#E0E0E0',
             contrastText: '#2d3748',
         },
-        newsfeed:{
+        newsfeed: {
             contrastText: '#000000',
         },
-        post:{
-            default:'#F4F5FD'
+        post: {
+            default: '#F4F5FD',
         },
         footer: {
             background: '#FEFEFF',
@@ -33,6 +33,22 @@ const lightTheme = {
                 background: '#DADBF0',
             },
         },
+        chat: {
+            background: '#EDEEF0',
+            color: '#000',
+            borderColor: '#DFDFE0',
+        },
+        chatMessagesFriend: {
+            background: '#fff',
+            color: '#000',
+        },
+        chatMessagesSelf: {
+            background: '#9bc4fd',
+            color: '#000',
+        },
+        messageArea: {
+            background: 'cornflowerblue',
+        }
     },
 };
 
