@@ -51,8 +51,24 @@ const language = {
     'post.placeholder': `Leave a comment...`,
     'post.required': `Write something...`,
 
-    greeting: 'Hello',
-    loggedIn: 'You are logged in',
+    'profile.about': 'About',
+    'profile.empty': 'Empty',
+    'profile.quote': 'Quote',
+    'profile.city': 'City',
+    'profile.notSpecified': 'not specified',
+    'profile.dateOfCreation': 'Date of creation',
+    'profile.postsCount': 'Post(s)',
+    'profile.likesCount': 'Like(s)',
+    'profile.commentsCount': 'Comment(s)',
+
+    'profile.dialog.title': 'Edit profile',
+    'profile.dialog.name': 'Name',
+    'profile.dialog.surname': 'Surname',
+    'profile.dialog.quote': 'Quote',
+    'profile.dialog.city': 'City',
+    'profile.dialog.about': 'About',
+    'profile.dialog.changeAvatar': 'Change avatar',
+    'profile.dialog.edit': 'Confirm',
 };
 
 export default language;

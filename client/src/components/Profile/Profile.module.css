@@ -1,0 +1,26 @@
+.main {
+    margin: 20px 0;
+}
+
+.paper {
+    padding: 14px;
+}
+
+.avatar {
+    width: 100% !important;
+    min-height: 260px;
+}
+
+.infoDivider {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+.sticky {
+    position: sticky;
+    top: 76.5px;
+}
+
+.about {
+    word-break: break-all;
+}

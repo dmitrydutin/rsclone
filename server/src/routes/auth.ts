@@ -32,7 +32,7 @@ router.post(
         const passwordHash = getPasswordHash(password);
 
         const user = await Users.findOne({
-            attributes: ['id', 'name', 'surname', 'quote', 'avatar', 'city', 'createdAt', 'login'],
+            attributes: ['id', 'login', 'name', 'surname', 'avatar'],
             include: [
                 {
                     model: Roles,
@@ -93,7 +93,7 @@ router.post(
 
         if (created) {
             const user = await Users.findOne({
-                attributes: ['id', 'name', 'surname', 'quote', 'avatar', 'city', 'createdAt'],
+                attributes: ['id', 'login', 'name', 'surname', 'avatar'],
                 include: [
                     {
                         model: Roles,
@@ -140,7 +140,7 @@ router.post(
     auth,
     asyncHandler(async (req, res) => {
         const user = await Users.findOne({
-            attributes: ['id', 'name', 'surname', 'quote', 'avatar', 'city', 'createdAt'],
+            attributes: ['id', 'login', 'name', 'surname', 'avatar'],
             include: [
                 {
                     model: Roles,

@@ -15,16 +15,8 @@ import { TextField } from 'formik-material-ui';
 import * as Yup from 'yup';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        maxWidth: '100%',
-        paddingTop: 70,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-
     newPost: {
-        margin: '25px auto',
+        margin: '20px auto',
         borderRadius: '10px',
         padding: '15px',
     },
@@ -56,9 +48,14 @@ function NewsFeed({ language, user, token, setPost }) {
         preview = (
             <>
                 <img src={previewUrl} alt={'Preview'} />
-                <button className={styles.closeButton} onClick={(e) => handleClose(e)}>
+                <Button
+                    className={styles.closeButton}
+                    color="primary"
+                    variant="outlined"
+                    onClick={(e) => handleClose(e)}
+                >
                     <CloseIcon />
-                </button>
+                </Button>
             </>
         );
     } else {

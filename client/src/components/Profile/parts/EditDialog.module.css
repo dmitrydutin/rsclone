@@ -1,0 +1,16 @@
+.dialogTitle {
+    padding: 30px 30px 10px 30px !important;
+    font-size: 30px !important;
+}
+
+.dialogTitle > * {
+    font-size: inherit !important;
+}
+
+.dialogContent {
+    padding: 30px !important;
+}
+
+.invisible {
+    display: none;
+}

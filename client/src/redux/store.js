@@ -7,12 +7,14 @@ import { AppReducer } from './reducers/AppReducer';
 import { AuthReducer } from './reducers/AuthReducer';
 import { ChatReducer } from './reducers/ChatReducer';
 import { NewsReducer } from './reducers/NewsReducer';
+import { ProfileReducer } from './reducers/ProfileReducer';
 
 const rootReducer = combineReducers({
     app: AppReducer,
     auth: AuthReducer,
     chat: ChatReducer,
     news: NewsReducer,
+    profile: ProfileReducer,
 });
 
 const store = createStore(

@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
         padding: '8px 11px',
         fontSize: '15px',
         fontWeight: '500',
+        transition: 'opacity 0.1s ease-in-out',
         '&:hover': {
             opacity: 0.75,
         },
@@ -27,8 +28,14 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 'auto',
     },
     avatar: {
+        marginLeft: '12px',
         width: theme.spacing(5),
         height: theme.spacing(5),
+        cursor: 'pointer',
+        transition: 'opacity 0.1s ease-in-out',
+        '&:hover': {
+            opacity: 0.75,
+        },
     },
 }));
 
@@ -90,16 +97,15 @@ const DesktopMenu = ({
 
             {isAuth ? (
                 <>
-                    <IconButton color="inherit" onClick={handleClick}>
-                        <Avatar
-                            alt="Avatar"
-                            src={user.avatar}
-                            className={classes.avatar}
-                            variant="rounded"
-                        >
-                            {user.name.slice(0, 1)}
-                        </Avatar>
-                    </IconButton>
+                    <Avatar
+                        alt="Avatar"
+                        src={user.avatar}
+                        className={classes.avatar}
+                        variant="rounded"
+                        onClick={handleClick}
+                    >
+                        {user.name.slice(0, 1)}
+                    </Avatar>
 
                     <Menu
                         anchorEl={anchorEl}

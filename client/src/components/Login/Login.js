@@ -44,7 +44,7 @@ const Login = ({ language, login }) => {
                         validationSchema={LoginSchema}
                     >
                         {({ submitForm, isSubmitting }) => (
-                            <Form className={styles.form} autoComplete="off">
+                            <Form className={styles.form}>
                                 <Grid container spacing={2}>
                                     <Grid item xs={12}>
                                         <Typography
@@ -85,6 +85,7 @@ const Login = ({ language, login }) => {
                                             label={translate['login.form.login']}
                                             variant="outlined"
                                             fullWidth={true}
+                                            autoComplete='true'
                                         />
                                     </Grid>
 
@@ -96,6 +97,7 @@ const Login = ({ language, login }) => {
                                             label={translate['login.form.password']}
                                             variant="outlined"
                                             fullWidth={true}
+                                            autoComplete='true'
                                         />
                                     </Grid>
 
