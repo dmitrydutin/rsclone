@@ -16,7 +16,7 @@ router.get(
         }
 
         const messages = await Messages.findAll({
-            attributes: ['id', 'text', 'photo', 'isUserMessage'],
+            attributes: ['id', 'text', 'photo', 'userId'],
             include: [
                 {
                     model: Dialogs,
@@ -43,17 +43,17 @@ router.post(
     '/',
     auth,
     asyncHandler(async (req, res) => {
-        const { dialogId, message, url } = req.body;
+        const { dialogId, userId, message, url } = req.body;
 
-        if (!dialogId) {
+        if (!dialogId || !userId) {
             throw createError(400, 'Not all parameters passed');
         }
 
         const newMessage = await Messages.create({
             dialogId,
+            userId,
             text: message,
             photo: url,
-            isUserMessage: 1,
         });
 
         return res.json({

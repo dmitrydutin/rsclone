@@ -14,6 +14,9 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         paddingLeft: theme.spacing(2),
+        [theme.breakpoints.down('700')]: {
+            borderTop: `1px solid ${theme.palette.chat.borderColor}`,
+        },
     },
     title: {
         paddingLeft: theme.spacing(2),
